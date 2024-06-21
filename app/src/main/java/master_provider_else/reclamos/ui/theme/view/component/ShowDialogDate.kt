@@ -1,0 +1,4 @@
+package master_provider_else.reclamos.ui.theme.view.component
+
+class ShowDialogDate {
+}
