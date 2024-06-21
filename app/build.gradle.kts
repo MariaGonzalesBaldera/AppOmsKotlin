@@ -93,6 +93,8 @@ dependencies {
   //navigation
   val nav_version = "2.7.7"
   implementation("androidx.navigation:navigation-compose:$nav_version")
-
+//mapbox
+  implementation("com.mapbox.maps:android:11.4.1")
+  implementation("com.mapbox.extension:maps-compose:11.4.1")
 
 }

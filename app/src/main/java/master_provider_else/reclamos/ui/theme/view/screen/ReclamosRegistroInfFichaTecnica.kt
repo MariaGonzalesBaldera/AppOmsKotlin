@@ -172,13 +172,15 @@ fun  ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
                 title = "",
                 subTitle = "Seleccione Fecha",
                 painter = painterResource(id = R.drawable.icono_date),
-                descriptionImage = "Icono de calendario"
+                descriptionImage = "Icono de calendario",
+                onClick={}
             )
             CardTextImage(
                 title = "",
                 subTitle = "Seleccione Hora",
                 painter = painterResource(id = R.drawable.icono_hour),
-                descriptionImage = "Icono de calendario"
+                descriptionImage = "Icono de calendario",
+                onClick={}
             )
             Spacer(modifier = Modifier.padding(5.dp))
             Box(

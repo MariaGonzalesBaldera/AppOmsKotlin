@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +27,7 @@ import master_provider_else.reclamos.ConfirmExitDialog
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.ToolbarTop
 import master_provider_else.reclamos.navigation.AppScreens
+import master_provider_else.reclamos.ui.theme.view.component.map.ContentMap
 import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
 
 @Composable
@@ -107,6 +111,12 @@ fun MenuItem(
           route = AppScreens.AlumbradoDatosCampoFragmentScreen.route
         )
       }
+    }
+    Spacer(modifier = modifier.width(30.dp))
+    OutlinedButton(onClick = { navController.navigate(
+      route = AppScreens.ContentMapScreen.route
+    ) }) {
+      Text(text = "Ir a mapa")
     }
   }
 
