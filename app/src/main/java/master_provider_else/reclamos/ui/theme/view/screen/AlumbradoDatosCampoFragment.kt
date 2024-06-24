@@ -13,11 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
@@ -31,6 +36,12 @@ import master_provider_else.reclamos.CardTextImage
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.SpinnerText
 import master_provider_else.reclamos.TransparentTextField
+import master_provider_else.reclamos.ui.theme.view.component.ShowDialogDate
+import master_provider_else.reclamos.utils.formatSelectedDate
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @Preview(showBackground = true)
 @Composable
@@ -38,17 +49,22 @@ private fun TestView() {
   AlumbradoDatosCampoFragment()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlumbradoDatosCampoFragment(modifier: Modifier = Modifier) {
   val orderValue = rememberSaveable() { mutableStateOf("") }
   val focusManager = LocalFocusManager.current
+  val stateFechaVefi = rememberDatePickerState()
+  val stateFechaSubsanacion = rememberDatePickerState()
+  var showDialog by remember { mutableStateOf(false) }
+  var showDialog2 by remember { mutableStateOf(false) }
 
   LazyColumn(modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)) {
     item {
       Box(
         modifier = modifier
-            .background(color = Color.White)
-            .fillMaxSize()
+          .background(color = Color.White)
+          .fillMaxSize()
       ) {
 
         val entry1 = Pair("Key1", "Entry1")
@@ -66,8 +82,8 @@ fun AlumbradoDatosCampoFragment(modifier: Modifier = Modifier) {
       Spacer(modifier = Modifier.padding(5.dp))
       Box(
         modifier = modifier
-            .background(color = Color.White)
-            .fillMaxSize()
+          .background(color = Color.White)
+          .fillMaxSize()
       ) {
         MaterialTheme {
 
@@ -88,26 +104,44 @@ fun AlumbradoDatosCampoFragment(modifier: Modifier = Modifier) {
         "Node",
         "",
         painterResource(id = R.drawable.agregaritem),
-        "Imagen de más"
+        "Imagen de más",
+        onClick = {}
       )
       Spacer(modifier = Modifier.padding(5.dp))
+
+      val formattedDateVeri = formatSelectedDate(stateFechaVefi.selectedDateMillis)
       CardTextImage(
-        "Fecha Verificación",
-        "Seleccione la fecha",
-        painterResource(id = R.drawable.icono_date),
-        "Icono de calendario"
+        title = "Fecha Verificación",
+        subTitle = if (formattedDateVeri == null) "Seleccione la fecha" else "$formattedDateVeri",
+        painter = painterResource(id = R.drawable.icono_date),
+        descriptionImage = "Icono de calendario",
+        onClick = { showDialog = true }
       )
+      ShowDialogDate(
+        stateFechaVefi,
+        showDialog,
+        onDismissRequest = { showDialog = false },
+        clickButtonConfirm = { showDialog = false })
+      Spacer(modifier = Modifier.padding(5.dp))
+
+      val formattedDateSub = formatSelectedDate(stateFechaSubsanacion.selectedDateMillis)
       CardTextImage(
-        "Fecha Subsanación",
-        "Seleccione la fecha",
-        painterResource(id = R.drawable.icono_date),
-        "Icono de calendario"
+        title = "Fecha Subsanación",
+        subTitle = if (formattedDateSub == null) "Seleccione la fecha" else "$formattedDateSub",
+        painter = painterResource(id = R.drawable.icono_date),
+        descriptionImage = "Icono de calendario",
+        onClick = { showDialog2 = true }
       )
+      ShowDialogDate(
+        stateFechaSubsanacion,
+        showDialog2,
+        onDismissRequest = { showDialog2 = false },
+        clickButtonConfirm = { showDialog2 = false })
       Spacer(modifier = Modifier.padding(5.dp))
       Box(
         modifier = modifier
-            .background(color = Color.White)
-            .fillMaxSize()
+          .background(color = Color.White)
+          .fillMaxSize()
       ) {
         TransparentTextField(
           textFieldValue = orderValue,
@@ -123,8 +157,8 @@ fun AlumbradoDatosCampoFragment(modifier: Modifier = Modifier) {
       Spacer(modifier = Modifier.padding(40.dp))
       Box(
         modifier = modifier
-            .background(color = Color.White)
-            .fillMaxSize()
+          .background(color = Color.White)
+          .fillMaxSize()
       ) {
         Column {
           Row(
@@ -151,3 +185,4 @@ fun AlumbradoDatosCampoFragment(modifier: Modifier = Modifier) {
     }
   }
 }
+

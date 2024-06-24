@@ -6,5 +6,6 @@ sealed class AppScreens(val route: String) {
   object AppOmsKotlinApp : AppScreens("app_activity")
   object ReclamosListaActivityScreen : AppScreens("list_activity")
   object AlumbradoDatosCampoFragmentScreen : AppScreens("alumbrado_datos_campos")
+  object ContentMapScreen : AppScreens("map_activity")
 
 }
