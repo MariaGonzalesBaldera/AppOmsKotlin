@@ -97,4 +97,9 @@ dependencies {
   implementation("com.mapbox.maps:android:11.4.1")
   implementation("com.mapbox.extension:maps-compose:11.4.1")
 
+  //getUbication
+  implementation("com.google.android.gms:play-services-location:21.3.0")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
+  implementation("com.google.android.gms:play-services-maps:18.1.0")
+
 }
