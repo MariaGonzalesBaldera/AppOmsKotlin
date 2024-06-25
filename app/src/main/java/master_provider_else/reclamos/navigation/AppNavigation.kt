@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.AppOmsKoltinApp
-import master_provider_else.reclamos.ui.theme.view.component.map.ContentMap
+import master_provider_else.reclamos.ui.theme.view.component.map.MainMaps
 import master_provider_else.reclamos.ui.theme.view.screen.AlumbradoDatosCampoFragment
 import master_provider_else.reclamos.ui.theme.view.screen.LoginScreen
 import master_provider_else.reclamos.ui.theme.view.screen.MenuActivity
@@ -33,7 +33,7 @@ fun AppNavigation(userViewModel:UserViewModel) {
       AlumbradoDatosCampoFragment()
     }
     composable(route = AppScreens.ContentMapScreen.route) {
-      ContentMap()
+      MainMaps()
     }
 
   }
