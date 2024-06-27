@@ -3,8 +3,10 @@ package master_provider_else.reclamos.ui.theme.view.screen
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,13 +25,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.CardItemContent
 import master_provider_else.reclamos.ConfirmExitDialog
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.ToolbarTop
 import master_provider_else.reclamos.navigation.AppScreens
+import master_provider_else.reclamos.ui.theme.view.component.ScreenTakePhoto
 import master_provider_else.reclamos.ui.theme.view.component.map.MainMaps
 import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
 
@@ -98,17 +103,35 @@ fun MenuItem(
         )
       }
     }
-    Spacer(modifier = modifier.width(30.dp))
-    OutlinedButton(onClick = {
-      val intent = Intent(context, MainMaps::class.java)
-      context.startActivity(intent)
-
-      //navController.navigate(
-      //route = AppScreens.ContentMapScreen.route
-      //)
-    }
+    Spacer(modifier = modifier.width(20.dp))
+    Row(
+      Modifier
+        .fillMaxSize()
+        .padding(10.dp),
+      horizontalArrangement = Arrangement.SpaceBetween,
+      verticalAlignment = Alignment.Bottom
     ) {
-      Text(text = "Ir a mapa")
+      OutlinedButton(onClick = {
+        val intent = Intent(context, MainMaps::class.java)
+        context.startActivity(intent)
+
+        //navController.navigate(
+        //route = AppScreens.ContentMapScreen.route
+        //)
+      }
+      ) {
+        Text(text = "Ir a mapa")
+      }
+      OutlinedButton(onClick = {
+        val intent = Intent(context, ScreenTakePhoto::class.java)
+        context.startActivity(intent)
+        //navController.navigate(
+        //route = AppScreens.ContentMapScreen.route
+        //)
+      }
+      ) {
+        Text(text = "Tomar foto")
+      }
     }
   }
 
