@@ -65,7 +65,7 @@ fun ReclamosListaActivity(
 fun ContentTabItem(navController: NavController, modifier: Modifier, viewModel: UserViewModel) {
   var tabIndex by remember { mutableIntStateOf(0) }
   val tabs = listOf("Programado", "Ejecutado")
-    val context = LocalContext.current
+  val context = LocalContext.current
 
   @Composable
   fun EjecutadoScreen(context: Context, viewModel: UserViewModel) {
@@ -321,7 +321,7 @@ fun ContentTabItem(navController: NavController, modifier: Modifier, viewModel: 
           .fillMaxWidth()
           .padding(4.dp)
       ) {
-        BotonDefault(title = "Sincronizar") {
+        BotonDefault(title = "Sincronizar", onClick = {
           //showDialog = true
           //if (isOnline(context)) {
           //
@@ -332,7 +332,7 @@ fun ContentTabItem(navController: NavController, modifier: Modifier, viewModel: 
           //}
           //if (showDialog) {
           // ProgressDialog(onDismissRequest = { showDialog = false })
-        }
+        })
       }
 
     }

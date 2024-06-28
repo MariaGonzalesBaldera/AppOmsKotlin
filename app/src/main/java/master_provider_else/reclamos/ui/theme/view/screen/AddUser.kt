@@ -119,7 +119,7 @@ fun FormUser(
       }
       Spacer(modifier = Modifier.padding(5.dp))
 
-      BotonDefault(title = "Registrar") {
+      BotonDefault(title = "Registrar",onClick= {
         if (checkedState) {
           checkedStateValue = "1"
         } else {
@@ -134,7 +134,7 @@ fun FormUser(
           //viewModel.addUsers(user)
           navController.popBackStack()
         }
-      }
+      })
     }
   }
 

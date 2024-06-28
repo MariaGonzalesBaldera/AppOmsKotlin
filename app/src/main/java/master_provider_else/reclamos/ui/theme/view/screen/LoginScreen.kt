@@ -50,12 +50,17 @@ import master_provider_else.reclamos.ui.theme.toast
 import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
 
 @Composable
-fun LoginScreen(navController: NavController,userViewModel:UserViewModel){
-  Greeting(userViewModel = userViewModel, navController=navController)
+fun LoginScreen(navController: NavController, userViewModel: UserViewModel) {
+  Greeting(userViewModel = userViewModel, navController = navController)
 }
+
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun Greeting(modifier: Modifier = Modifier, userViewModel: UserViewModel, navController: NavController) {
+fun Greeting(
+  modifier: Modifier = Modifier,
+  userViewModel: UserViewModel,
+  navController: NavController
+) {
   val context = LocalContext.current
   val focusManager = LocalFocusManager.current
   var passwordVisibility by remember { mutableStateOf(false) }
@@ -67,9 +72,9 @@ fun Greeting(modifier: Modifier = Modifier, userViewModel: UserViewModel, navCon
   val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
   userViewModel.validModel.observe(lifecycleOwner) { value ->
-    if(value==true){
+    if (value == true) {
       navController.navigate(route = AppScreens.MenuActivityScreen.route)
-    }else {
+    } else {
       context.toast("Credenciales inválidas")
     }
   }
@@ -194,21 +199,22 @@ fun Greeting(modifier: Modifier = Modifier, userViewModel: UserViewModel, navCon
               .padding(top = 20.dp),
             contentAlignment = Alignment.Center
           ) {
-            BotonDefault(title = "Ingresar") {
-              if(userValue.value.isNotBlank() || passwordValue.value.isNotBlank()){
-                if(checkedState){
+            BotonDefault(title = "Ingresar", onClick = {
+              if (userValue.value.isNotBlank() || passwordValue.value.isNotBlank()) {
+                if (checkedState) {
                   userViewModel.saveCredentials(
                     userValue.value,
                     passwordValue.value,
-                    "1")
-                }else{
+                    "1"
+                  )
+                } else {
                   userViewModel.clearCredentials()
                 }
-                userViewModel.onLoginView(userValue.value,passwordValue.value)
-              }else{
+                userViewModel.onLoginView(userValue.value, passwordValue.value)
+              } else {
                 context.toast("Usuario o contraseña vacia")
               }
-            }
+            })
           }
         }
 
