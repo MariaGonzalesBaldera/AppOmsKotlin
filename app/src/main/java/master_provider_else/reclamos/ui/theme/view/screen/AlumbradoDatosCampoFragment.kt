@@ -168,11 +168,11 @@ fun AlumbradoDatosCampoFragment(modifier: Modifier = Modifier) {
 
           ) {
             BotonDefault(
-              title = "Finalizar"
-            ) { /* Acción al hacer clic en el botón */ }
+              title = "Finalizar",
+              onClick = { /* Acción al hacer clic en el botón */ })
             BotonDefault(
-              title = "Desestimar"
-            ) { /* Acción al hacer clic en el botón */ }
+              title = "Desestimar",
+              onClick = { /* Acción al hacer clic en el botón */ })
             Image(
               painter = painterResource(id = R.drawable.pin_verde),
               contentDescription = "Pin color verde",
