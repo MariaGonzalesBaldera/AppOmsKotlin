@@ -14,13 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun BotonDefault(modifier: Modifier = Modifier,title: String, onCLick: () -> Unit) {
+fun BotonDefault(modifier: Modifier = Modifier,title: String, onClick: () -> Unit) {
     Button(
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = R.color.colorPrimary)
         ),
         shape = RoundedCornerShape(20),
-        onClick = onCLick,// { /* Acción al hacer clic en el botón */ },
+        onClick = onClick,// { /* Acción al hacer clic en el botón */ },
         modifier = modifier
             .height(50.dp)
 

@@ -102,4 +102,9 @@ dependencies {
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
   implementation("com.google.android.gms:play-services-maps:18.1.0")
 
+  // PERMISOS
+  implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+
+  //coil
+  implementation("io.coil-kt:coil-compose:1.4.0")
 }

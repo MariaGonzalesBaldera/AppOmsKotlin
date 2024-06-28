@@ -49,10 +49,9 @@ import master_provider_else.reclamos.R
 import master_provider_else.reclamos.ui.theme.toast
 import master_provider_else.reclamos.ui.theme.view.component.map.ui.theme.AppOmsKotlinTheme
 
-
 class MainMaps : ComponentActivity() {
 
-  val permissions = arrayOf(
+  private val permissions = arrayOf(
     android.Manifest.permission.ACCESS_COARSE_LOCATION,
     android.Manifest.permission.ACCESS_FINE_LOCATION,
   )
