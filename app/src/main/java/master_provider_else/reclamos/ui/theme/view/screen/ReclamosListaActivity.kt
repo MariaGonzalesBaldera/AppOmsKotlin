@@ -65,7 +65,7 @@ fun ReclamosListaActivity(
 fun ContentTabItem(navController: NavController, modifier: Modifier, viewModel: UserViewModel) {
   var tabIndex by remember { mutableIntStateOf(0) }
   val tabs = listOf("Programado", "Ejecutado")
-  val context = LocalContext.current
+    val context = LocalContext.current
 
   @Composable
   fun EjecutadoScreen(context: Context, viewModel: UserViewModel) {

@@ -53,7 +53,7 @@ fun  ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
 
                     SpinnerText(
                         label = "Tipo Denuncia Verificada" ,
-                        listOf(entry1, entry2, entry3),
+                        list = listOf(entry1, entry2, entry3),
                         preselected = entry2,
                         onSelectionChanged = { selected -> /* do something with selected */ }
                     )
