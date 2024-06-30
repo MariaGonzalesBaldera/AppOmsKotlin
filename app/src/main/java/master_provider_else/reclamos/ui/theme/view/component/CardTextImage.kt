@@ -55,7 +55,7 @@ fun CardTextImage(
       Row(
         horizontalArrangement = Arrangement.Absolute.SpaceBetween,
         modifier = Modifier
-          .fillMaxSize()
+          .fillMaxWidth()
 
       ) {
         Text(

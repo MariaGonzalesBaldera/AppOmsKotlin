@@ -5,12 +5,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.AppOmsKoltinApp
+import master_provider_else.reclamos.ui.theme.view.component.CardAlumbradoDesestimar
 import master_provider_else.reclamos.ui.theme.view.component.ScreenTakePhoto
-import master_provider_else.reclamos.ui.theme.view.component.map.MainMaps
 import master_provider_else.reclamos.ui.theme.view.screen.AlumbradoDatosCampoFragment
 import master_provider_else.reclamos.ui.theme.view.screen.LoginScreen
+import master_provider_else.reclamos.ui.theme.view.screen.MainMapsActivity
 import master_provider_else.reclamos.ui.theme.view.screen.MenuActivity
-import master_provider_else.reclamos.ui.theme.view.screen.ReclamosListaActivity
 import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
 
 
@@ -27,14 +27,14 @@ fun AppNavigation(userViewModel: UserViewModel) {
     composable(route = AppScreens.AppOmsKotlinApp.route) {
       AppOmsKoltinApp()
     }
-    composable(route = AppScreens.ReclamosListaActivityScreen.route) {
-      ReclamosListaActivity(navController = navController, userViewModel = userViewModel)
+    composable(route = AppScreens.CardAlumbradoDesestimar.route) {
+      CardAlumbradoDesestimar()
     }
     composable(route = AppScreens.AlumbradoDatosCampoFragmentScreen.route) {
       AlumbradoDatosCampoFragment()
     }
     composable(route = AppScreens.ContentMapScreen.route) {
-      MainMaps()
+      MainMapsActivity()
     }
     composable(route = AppScreens.ContentCameraScreen.route) {
       ScreenTakePhoto()

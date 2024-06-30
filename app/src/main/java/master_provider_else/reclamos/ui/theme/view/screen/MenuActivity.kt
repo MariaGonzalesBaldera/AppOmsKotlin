@@ -35,7 +35,6 @@ import master_provider_else.reclamos.R
 import master_provider_else.reclamos.ToolbarTop
 import master_provider_else.reclamos.navigation.AppScreens
 import master_provider_else.reclamos.ui.theme.view.component.ScreenTakePhoto
-import master_provider_else.reclamos.ui.theme.view.component.map.MainMaps
 import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
 
 @Composable
@@ -51,7 +50,6 @@ fun MenuActivity(navController: NavController, userViewModel: UserViewModel) {
         navController,
         modifier = Modifier.padding(padding),
         username = username,
-        viewModel = userViewModel,
         context = context
       )
     }
@@ -64,7 +62,6 @@ fun MenuItem(
   navController: NavController,
   modifier: Modifier,
   username: String,
-  viewModel: UserViewModel,
   context: Context
 ) {
   var showDialog by remember { mutableStateOf(false) }
@@ -112,12 +109,12 @@ fun MenuItem(
       verticalAlignment = Alignment.Bottom
     ) {
       OutlinedButton(onClick = {
-        val intent = Intent(context, MainMaps::class.java)
+        val intent = Intent(context, MainMapsActivity::class.java)
         context.startActivity(intent)
 
         //navController.navigate(
-        //route = AppScreens.ContentMapScreen.route
-        //)
+        //route = AppScreens.LocationScreen.route
+       // )
       }
       ) {
         Text(text = "Ir a mapa")
@@ -132,7 +129,30 @@ fun MenuItem(
       ) {
         Text(text = "Tomar foto")
       }
+      //borrarluego
+      OutlinedButton(onClick = {
+        //val intent = Intent(context, AppScreens.CardAlumbradoDesestimar::class.java)
+        //context.startActivity(intent)
+        navController.navigate(
+        route = AppScreens.CardAlumbradoDesestimar.route
+        )
+      }
+      ) {
+        Text(text = "CARD")
+      }
     }
   }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShowPrev() {
+  val navController = rememberNavController()
+  MenuItem(
+    navController=navController,
+    modifier= Modifier,
+    username="mama",
+    context= LocalContext.current
+  )
 }
