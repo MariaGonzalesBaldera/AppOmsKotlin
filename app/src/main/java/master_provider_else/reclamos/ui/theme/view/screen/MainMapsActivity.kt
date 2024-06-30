@@ -1,4 +1,4 @@
-package master_provider_else.reclamos.ui.theme.view.component.map
+package master_provider_else.reclamos.ui.theme.view.screen
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -46,10 +46,10 @@ import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import master_provider_else.reclamos.R
+import master_provider_else.reclamos.ui.theme.AppOmsKotlinTheme
 import master_provider_else.reclamos.ui.theme.toast
-import master_provider_else.reclamos.ui.theme.view.component.map.ui.theme.AppOmsKotlinTheme
 
-class MainMaps : ComponentActivity() {
+class MainMapsActivity : ComponentActivity() {
 
   private val permissions = arrayOf(
     android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -101,7 +101,7 @@ class MainMaps : ComponentActivity() {
 
     enableEdgeToEdge()
     setContent {
-      var context = LocalContext.current
+      val context = LocalContext.current
       context.toast("estamos en mainMaps")
       var currentLocation by remember {
         mutableStateOf(LatLng(0.toDouble(), 0.toDouble()))
@@ -121,7 +121,7 @@ class MainMaps : ComponentActivity() {
         modifier = Modifier.fillMaxSize(),
         color = androidx.compose.material.MaterialTheme.colors.background
       ) {
-        LocationScreen(this@MainMaps, currentLocation)
+        LocationScreen(this@MainMapsActivity, currentLocation)
 
       }
     }
@@ -214,22 +214,3 @@ class MainMaps : ComponentActivity() {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

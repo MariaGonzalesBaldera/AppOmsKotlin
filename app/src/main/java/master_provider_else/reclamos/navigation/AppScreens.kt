@@ -8,5 +8,6 @@ sealed class AppScreens(val route: String) {
   object AlumbradoDatosCampoFragmentScreen : AppScreens("alumbrado_datos_campos")
   object ContentMapScreen : AppScreens("map_activity")
   object ContentCameraScreen : AppScreens("camera_screen")
+  object CardAlumbradoDesestimar : AppScreens("card_alumbrado")
 
 }

@@ -42,7 +42,8 @@ import master_provider_else.reclamos.ui.theme.toast
 @Composable
 fun CardAlumbradoFichaTecnica() {
   var tabIndex by remember { mutableIntStateOf(0) }
-  val tabs = listOf("Datos campo", "Actividades","Materiales","Fotos")
+  val tabs = listOf("Datos campo", "Actividades", "Materiales", "Fotos")
+  val context = LocalContext.current
   Box(
     modifier = Modifier
       .fillMaxSize()
@@ -53,7 +54,9 @@ fun CardAlumbradoFichaTecnica() {
         title = "LLAMAR",
         icon = Icons.Default.Call,
         modifier = Modifier.fillMaxWidth(),
-        onClick = {})
+        onClick = {
+          CallPhone(context, "+51999000999")
+        })
       Spacer(modifier = Modifier.padding(1.dp))
       LazyColumn(modifier = Modifier.fillMaxWidth()) {
         item {
@@ -110,6 +113,7 @@ fun TabDatos() {
     Text(text = "Datos", fontSize = 25.sp)
   }
 }
+
 @Composable
 fun TabActividades() {
   Column(
@@ -122,6 +126,7 @@ fun TabActividades() {
     Text(text = "Actividades", fontSize = 25.sp)
   }
 }
+
 @Composable
 fun TabMateriales() {
   Column(
@@ -134,6 +139,7 @@ fun TabMateriales() {
     Text(text = "Materiales", fontSize = 25.sp)
   }
 }
+
 @Composable
 fun TabFotos() {
   Column(

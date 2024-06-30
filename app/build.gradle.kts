@@ -4,6 +4,8 @@ plugins {
   id("kotlin-kapt")
   id("com.google.dagger.hilt.android")
   id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
+  id("dagger.hilt.android.plugin")
+
 }
 
 android {
@@ -107,4 +109,7 @@ dependencies {
 
   //coil
   implementation("io.coil-kt:coil-compose:1.4.0")
+}
+kapt {
+  correctErrorTypes = true
 }

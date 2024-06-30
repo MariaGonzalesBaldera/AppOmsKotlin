@@ -13,6 +13,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +24,7 @@ import master_provider_else.reclamos.R
 @Preview(showBackground = true)
 @Composable()
 fun AlumbradoListaItem() {
+  val context = LocalContext.current
   Column {
     Row() {
       Column {
@@ -55,7 +57,9 @@ fun AlumbradoListaItem() {
           CardListItem(textTitle = "Celular:", textValue = "Celular reclamo")
           Row() {
             IconButton(
-              onClick = {}, modifier = Modifier
+              onClick = {
+                CallPhone(context, "+51999000999")
+              }, modifier = Modifier
                 .padding(start = 5.dp)
                 .width(30.dp)
                 .height(20.dp)
