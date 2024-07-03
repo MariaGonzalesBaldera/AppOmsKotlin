@@ -1,12 +1,9 @@
 package master_provider_else.reclamos
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -34,9 +31,9 @@ fun BotonDefault(
     ),
     shape = RoundedCornerShape(20),
     onClick = onClick,
-    modifier = modifier.height(50.dp)
+    modifier = modifier.fillMaxWidth()
   ) {
-    Row(modifier = Modifier.padding(8.dp)) {
+    Row() {
       icon?.let {
         Icon(
           imageVector = it,
@@ -52,4 +49,15 @@ fun BotonDefault(
       )
     }
   }
+}
+
+@Preview
+@Composable
+private fun ShowButton() {
+
+  BotonDefault(
+    title = "Login",
+    onClick = { /* Acción al hacer clic en el botón */ })
+
+
 }

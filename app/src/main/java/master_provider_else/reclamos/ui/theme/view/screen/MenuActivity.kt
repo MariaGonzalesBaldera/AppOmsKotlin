@@ -104,41 +104,19 @@ fun MenuItem(
     Row(
       Modifier
         .fillMaxSize()
-        .padding(10.dp),
-      horizontalArrangement = Arrangement.SpaceBetween,
+        .padding(20.dp),
       verticalAlignment = Alignment.Bottom
     ) {
-      OutlinedButton(onClick = {
-        val intent = Intent(context, MainMapsActivity::class.java)
-        context.startActivity(intent)
-
-        //navController.navigate(
-        //route = AppScreens.LocationScreen.route
-       // )
-      }
-      ) {
-        Text(text = "Ir a mapa")
-      }
-      OutlinedButton(onClick = {
-        val intent = Intent(context, ScreenTakePhoto::class.java)
-        context.startActivity(intent)
-        //navController.navigate(
-        //route = AppScreens.ContentMapScreen.route
-        //)
-      }
-      ) {
-        Text(text = "Tomar foto")
-      }
-      //borrarluego
       OutlinedButton(onClick = {
         //val intent = Intent(context, AppScreens.CardAlumbradoDesestimar::class.java)
         //context.startActivity(intent)
         navController.navigate(
-        route = AppScreens.CardAlumbradoDesestimar.route
+          route = AppScreens.ShowComponentsScreen.route
+
         )
       }
       ) {
-        Text(text = "CARD")
+        Text(text = "Components")
       }
     }
   }
@@ -150,9 +128,9 @@ fun MenuItem(
 private fun ShowPrev() {
   val navController = rememberNavController()
   MenuItem(
-    navController=navController,
-    modifier= Modifier,
-    username="mama",
-    context= LocalContext.current
+    navController = navController,
+    modifier = Modifier,
+    username = "mama",
+    context = LocalContext.current
   )
 }

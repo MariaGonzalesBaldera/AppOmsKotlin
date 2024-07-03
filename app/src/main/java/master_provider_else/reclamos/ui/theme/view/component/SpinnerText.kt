@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
@@ -43,7 +44,9 @@ fun SpinnerText(
 ) {
   var selected by remember { mutableStateOf(preselected) }
   var expanded by remember { mutableStateOf(false) }  // initial value
-  Box {
+  Box(
+    modifier = Modifier.padding(5.dp)
+  ) {
     Column {
       OutlinedTextField(
         value = (selected.second),
@@ -53,10 +56,10 @@ fun SpinnerText(
         trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
         readOnly = true,
 
-      )
+        )
       DropdownMenu(
-        modifier = Modifier.width(320.dp)
-          .background(colorResource(id = R.color.colorPlatino)),
+        modifier = Modifier
+          .background(colorResource(id = R.color.colorPlatino)).fillMaxWidth(),
         expanded = expanded,
 
         onDismissRequest = { expanded = false },
@@ -71,7 +74,7 @@ fun SpinnerText(
             },
             colors = MenuDefaults.itemColors(
               textColor = colorResource(id = R.color.colorText),
-              ),
+            ),
             text = {
               Text(
                 text = (entry.second),

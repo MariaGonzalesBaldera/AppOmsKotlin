@@ -1,6 +1,7 @@
 package master_provider_else.reclamos.ui.theme.view.component
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,11 +32,10 @@ fun BotonDefaultLine(
     ),
     shape = RoundedCornerShape(20),
     onClick = onClick,// { /* Acción al hacer clic en el botón */ },
-    modifier = modifier
-      .height(50.dp)
+    modifier = modifier.fillMaxWidth()
 
   ) {
-    Row(modifier = Modifier.padding(8.dp)) {
+    Row() {
       icon?.let {
         Icon(
           imageVector = it,

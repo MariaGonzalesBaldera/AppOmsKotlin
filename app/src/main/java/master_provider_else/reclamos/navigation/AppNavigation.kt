@@ -5,12 +5,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.AppOmsKoltinApp
+import master_provider_else.reclamos.ProgressDialogLoading
+import master_provider_else.reclamos.ui.theme.view.component.AlumbradoListaItem
 import master_provider_else.reclamos.ui.theme.view.component.CardAlumbradoDesestimar
+import master_provider_else.reclamos.ui.theme.view.component.CardAlumbradoFichaTecnica
+import master_provider_else.reclamos.ui.theme.view.component.CardSelectMaterial
 import master_provider_else.reclamos.ui.theme.view.component.ScreenTakePhoto
 import master_provider_else.reclamos.ui.theme.view.screen.AlumbradoDatosCampoFragment
 import master_provider_else.reclamos.ui.theme.view.screen.LoginScreen
 import master_provider_else.reclamos.ui.theme.view.screen.MainMapsActivity
 import master_provider_else.reclamos.ui.theme.view.screen.MenuActivity
+import master_provider_else.reclamos.ui.theme.view.screen.ReclamoListaScreen
+import master_provider_else.reclamos.ui.theme.view.screen.ReclamosRegistroInfFichaTecnica
+import master_provider_else.reclamos.ui.theme.view.screen.ShowComponentsScreen
 import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
 
 
@@ -27,7 +34,7 @@ fun AppNavigation(userViewModel: UserViewModel) {
     composable(route = AppScreens.AppOmsKotlinApp.route) {
       AppOmsKoltinApp()
     }
-    composable(route = AppScreens.CardAlumbradoDesestimar.route) {
+    composable(route = AppScreens.AlumbradoDesestimarCard.route) {
       CardAlumbradoDesestimar()
     }
     composable(route = AppScreens.AlumbradoDatosCampoFragmentScreen.route) {
@@ -40,5 +47,27 @@ fun AppNavigation(userViewModel: UserViewModel) {
       ScreenTakePhoto()
     }
 
+//show card
+    composable(route = AppScreens.AlumbradoListaItemCard.route) {
+      AlumbradoListaItem()
+    }
+    composable(route = AppScreens.AlumbradoFichaTecnicaCard.route) {
+      CardAlumbradoFichaTecnica()
+    }
+    composable(route = AppScreens.SelectMaterialCard.route) {
+      CardSelectMaterial()
+    }
+    composable(route = AppScreens.ProgressDialogLoadingCard.route) {
+      ProgressDialogLoading({})
+    }
+    composable(route = AppScreens.ReclamoListaScreen.route) {
+      ReclamoListaScreen(navController,userViewModel)
+    }
+    composable(route = AppScreens.ReclamosRegistroInfFichaTecnicaScreen.route) {
+      ReclamosRegistroInfFichaTecnica()
+    }
+    composable(route = AppScreens.ShowComponentsScreen.route) {
+      ShowComponentsScreen(navController = navController)
+    }
   }
 }
