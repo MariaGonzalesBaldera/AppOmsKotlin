@@ -36,7 +36,7 @@ fun AlumbradoListaItem() {
           color = colorResource(id = R.color.colorAccent)
         )
         CardListItem(textTitle = "Reclamo:", textValue = "Código Reclamo")
-        CardListItem(textTitle = "Nombre:", textValue = "Nombre Suministro XXXXXXXXXXXXXXXXX")
+        CardListItem(textTitle = "Nombre:", textValue = "Nombre Suministro XXXXXXX")
         CardListItem(textTitle = "Dirección:", textValue = "")
         CardListItem(textTitle = "Descripción:", textValue = "XXXXXXXXXXXXXXXXX")
         CardListItem(textTitle = "Referencia:", textValue = "")
