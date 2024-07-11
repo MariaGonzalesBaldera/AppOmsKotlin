@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#157DC1</color>
+    <color name="colorPrimaryLetter">#154465</color>
 
     <color name="colorPrimaryDark">#FF0D6197</color>
     <color name="colorAccent">#8b8c8c</color>
@@ -16,4 +17,5 @@
     <color name="colorButtonLogin">#188CD8</color>
     <color name="colorText">#000000</color>
     <color name="colorTextWhite">#FFFFFF</color>
+    <color name="colorTextGray">#3d3d3d</color>
 </resources>

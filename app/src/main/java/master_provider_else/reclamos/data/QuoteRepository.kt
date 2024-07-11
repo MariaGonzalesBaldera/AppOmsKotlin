@@ -21,6 +21,7 @@ class QuoteRepository @Inject constructor(
   // *********** User ***********
   suspend fun getLoginFromApi(usuario: String, pass: String): Response<ApiResponse> {
     val response: Response<ApiResponse> = api.getLogin(usuario, pass)
+    Log.e("getLoginFromApi",response.message())
     return response
   }
 

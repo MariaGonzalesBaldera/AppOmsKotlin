@@ -5,8 +5,6 @@ data class UserModel(
   var pass: String,
   var cuadrilla: String = "",
   var nombreUsuario: String = "",
-  var recordar: String = "",
   var token: String = "",
-  var estadoDB: String = "",
   var tiempoNotificacion: String = ""
 )

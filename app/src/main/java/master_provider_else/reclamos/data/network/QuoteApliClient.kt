@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface QuoteApliClient {
-  @POST("/login")
+  @POST("api/Token")
   suspend fun loginUser(
     @Body request: LoginRequest
   ): Response<ApiResponse>

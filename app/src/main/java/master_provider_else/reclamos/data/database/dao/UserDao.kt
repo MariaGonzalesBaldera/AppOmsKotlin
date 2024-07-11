@@ -24,11 +24,11 @@ interface UserDao {
   @Delete
   suspend fun deleteUser(item: UserEntity)
 
-  @Query("SELECT * from Usuario WHERE id = :id")
-  fun getUserWithId(id: Int): Flow<UserEntity>
+  //@Query("SELECT * from Usuario WHERE id = :id")
+  //fun getUserWithId(id: Int): Flow<UserEntity>
 
-  @Query("SELECT * from Usuario ORDER BY id ASC")
-  fun getAllUsers(): List<UserEntity>
+ // @Query("SELECT * from Usuario ORDER BY id ASC")
+ // fun getAllUsers(): List<UserEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleUsers(usuario: List<UserEntity>)

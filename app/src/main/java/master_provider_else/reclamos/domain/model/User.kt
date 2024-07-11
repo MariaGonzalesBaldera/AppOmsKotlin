@@ -8,9 +8,7 @@ data class User(
   val pass: String,
   val cuadrilla: String = "",
   val nombreUsuario: String = "",
-  val recordar: String = "",
   val token: String = "",
-  val estadoDB: String = "",
   val tiempoNotificacion: String = ""
 )
 
@@ -19,8 +17,6 @@ fun UserEntity.toDomain() = User(
   pass,
   cuadrilla,
   nombreUsuario,
-  recordar,
   token,
-  estadoDB,
   tiempoNotificacion
 )
