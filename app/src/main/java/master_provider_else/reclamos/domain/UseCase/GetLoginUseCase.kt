@@ -13,26 +13,26 @@ import javax.inject.Inject
 class GetLoginUseCase @Inject constructor(
   private val repository: QuoteRepository
 ) {
-  suspend operator fun invoke(usuario: String, pass: String): User?{
+  suspend operator fun invoke(usuario: String, pass: String): User? {
     val result: Response<ApiResponse> = repository.getLoginFromApi(usuario, pass)
+    Log.e("invoke", result.body().toString() + usuario+" - "+pass)
     return if (result.isSuccessful) {
-      if(result.body()?.Respuesta?.error==0){
+      if (result.body()?.respuesta?.error == 0) {
         val userEntity = UserEntity(
           usuario = usuario,
           pass = pass,
-          cuadrilla = result.body()?.Respuesta?.body?.codigoCuadrilla.toString(),
-          nombreUsuario = result.body()?.Respuesta?.body?.nombreusuario.toString(),
-          recordar = result.body()?.Respuesta?.body?.codigoCuadrilla.toString(),
-          token = result.body()?.Respuesta?.body?.token.toString(),
-          estadoDB = result.body()?.Respuesta?.body?.codigoCuadrilla.toString(),
-          tiempoNotificacion = result.body()?.Respuesta?.body?.codigoCuadrilla.toString()
+          cuadrilla = result.body()?.respuesta?.body?.codigoCuadrilla.toString(),
+          nombreUsuario = result.body()?.respuesta?.body?.nombreUsuario.toString(),
+          token = result.body()?.respuesta?.body?.token.toString(),
+          tiempoNotificacion = result.body()?.respuesta?.body?.codigoCuadrilla.toString()
         )
         Log.e("UsuarioUseCase", result.body().toString())
+
         repository.insertUser(userEntity)
         userEntity.toDomain()
-      }else{
+      } else {
         Log.e("UsuarioUseCase", "busqueda en la db")
-        return repository.getLoginFromDataBase(usuario=usuario,pass=pass)
+        return repository.getLoginFromDataBase(usuario = usuario, pass = pass)
       }
     } else {
       null

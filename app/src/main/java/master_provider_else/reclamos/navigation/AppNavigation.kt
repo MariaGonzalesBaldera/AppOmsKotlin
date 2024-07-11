@@ -1,6 +1,9 @@
 package master_provider_else.reclamos.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -18,7 +21,7 @@ import master_provider_else.reclamos.ui.theme.view.screen.MenuActivity
 import master_provider_else.reclamos.ui.theme.view.screen.ReclamoListaScreen
 import master_provider_else.reclamos.ui.theme.view.screen.ReclamosRegistroInfFichaTecnica
 import master_provider_else.reclamos.ui.theme.view.screen.ShowComponentsScreen
-import master_provider_else.reclamos.ui.theme.viewModel.UserViewModel
+import master_provider_else.reclamos.viewModel.UserViewModel
 
 
 @Composable
@@ -58,7 +61,8 @@ fun AppNavigation(userViewModel: UserViewModel) {
       CardSelectMaterial()
     }
     composable(route = AppScreens.ProgressDialogLoadingCard.route) {
-      ProgressDialogLoading({})
+      val showProgress by remember { mutableStateOf(false) }
+      ProgressDialogLoading({},showProgress)
     }
     composable(route = AppScreens.ReclamoListaScreen.route) {
       ReclamoListaScreen(navController,userViewModel)

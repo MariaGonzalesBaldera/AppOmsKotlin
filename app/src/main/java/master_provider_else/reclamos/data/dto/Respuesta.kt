@@ -1,7 +1,11 @@
 package master_provider_else.reclamos.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class Respuesta(
-  val body: ResponseBody,
-  val error: Int,
-  val message: String
+  @SerializedName("error") val error: Int,
+  @SerializedName("message") val message: String,
+  @SerializedName("body") val body: ResponseBody,
+  @SerializedName("method") val method: String
 )
+

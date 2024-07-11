@@ -2,4 +2,5 @@
     <string name="app_name">AppOmsKotlin</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_activity_main_maps">MainMaps</string>
+    <string name="title_activity_prueba">Prueba</string>
 </resources>

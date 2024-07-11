@@ -1,8 +1,10 @@
 package master_provider_else.reclamos.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class ResponseBody(
-  val codigoCuadrilla: Int,
-  val nombreusuario: String,
-  val tiempoNotificacion: String?,
-  val token: String?
+  @SerializedName("token") val token: String,
+  @SerializedName("codigoCuadrilla") val codigoCuadrilla: String,
+  @SerializedName("nombreusuario") val nombreUsuario: String,
+  @SerializedName("TiempoNotificacion") val tiempoNotificacion: String
 )

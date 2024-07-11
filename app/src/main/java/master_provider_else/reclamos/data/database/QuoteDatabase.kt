@@ -9,7 +9,7 @@ import master_provider_else.reclamos.data.database.entity.UserEntity
 
 @Database(
   entities = [UserEntity::class, ReclamoEntity::class, ReclamoInformeEntity::class],
-  version = 1
+  version = 2
 )
 abstract class QuoteDatabase : RoomDatabase() {
   abstract fun getLogin(): UserDao
