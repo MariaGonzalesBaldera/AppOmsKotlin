@@ -6,6 +6,7 @@ import master_provider_else.reclamos.data.database.dao.UserDao
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.database.entity.UserEntity
 import master_provider_else.reclamos.data.dto.ApiResponse
+import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.network.QuoteService
 import master_provider_else.reclamos.domain.model.Claim
 import master_provider_else.reclamos.domain.model.User
@@ -21,7 +22,7 @@ class QuoteRepository @Inject constructor(
   // *********** User ***********
   suspend fun getLoginFromApi(usuario: String, pass: String): Response<ApiResponse> {
     val response: Response<ApiResponse> = api.getLogin(usuario, pass)
-    Log.e("getLoginFromApi",response.message())
+    Log.e("getLoginFromApi", response.message())
     return response
   }
 
@@ -41,6 +42,24 @@ class QuoteRepository @Inject constructor(
     }
   }
   // *********** ReportClaim ***********
+
+  suspend fun getClaimFromApi(
+    contentType: String,
+    authorization: String,
+    strCodigoCuadrilla: String,
+    strCodigoEstadoReclamo: String,
+    strAP: String
+  ): Response<ApiResponseReclamo> {
+    val response: Response<ApiResponseReclamo> = api.getReclamo(
+      contentType,
+      authorization,
+      strCodigoCuadrilla,
+      strCodigoEstadoReclamo,
+      strAP
+    )
+    Log.e("getClaimFromApi", response.message())
+    return response
+  }
 
   suspend fun getReclamoInDataBase(codigoReclamo: String): Claim? {
     val response: ReclamoEntity? = userDao.getReclamo(codigoReclamo)

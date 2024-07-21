@@ -28,11 +28,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
         <activity
-            android:name=".ui.theme.view.screen.MainMapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_main_maps"
-            android:theme="@style/Theme.AppOmsKotlin" />
-        <activity
             android:name=".ui.theme.view.screen.InitialLoginScreen"
             android:exported="true"
             android:label="@string/app_name"
