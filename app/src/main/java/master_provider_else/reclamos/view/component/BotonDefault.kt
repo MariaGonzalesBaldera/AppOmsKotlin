@@ -38,7 +38,8 @@ fun BotonDefault(
         Icon(
           imageVector = it,
           contentDescription = "Icono",
-          modifier = Modifier.padding(horizontal = 2.dp)
+          modifier = Modifier.padding(horizontal = 2.dp),
+          tint = colorResource(id = R.color.colorTextWhite)
         )
       }
       Text(

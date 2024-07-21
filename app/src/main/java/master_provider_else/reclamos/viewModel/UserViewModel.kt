@@ -1,6 +1,8 @@
 package master_provider_else.reclamos.viewModel
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,9 +21,11 @@ class UserViewModel @Inject constructor(
   var getLoginUseCase: GetLoginUseCase,
   var userPreferences: UserPreferences
 ) : ViewModel() {
+  var getToken: String = ""
   val validModel = MutableLiveData<Boolean>()
   private val _errorMessage = MutableLiveData<String?>()
   val errorMessage: LiveData<String?> get() = _errorMessage
+
   //verificar si existe usuario guardado en memoria
   private val _userCredentials = MutableStateFlow<User?>(null)
   val userCredentials: StateFlow<User?> get() = _userCredentials
@@ -37,7 +41,12 @@ class UserViewModel @Inject constructor(
 
     viewModelScope.launch {
       val result = getLoginUseCase(usuario, pass)
+      if (result != null) {
+        getToken = result.token
+
+      }
       Log.e("onLoginView", result.toString())
+      Log.e("token de login", getToken)
       if (result != null) {
         validModel.postValue(true)
         Log.e("Agregado al viewModel", result.toString())
@@ -47,13 +56,15 @@ class UserViewModel @Inject constructor(
       }
     }
   }
+
   fun saveCredentials(username: String, password: String, checked: String) {
     viewModelScope.launch {
       try {
         userPreferences.saveUserCredentials(
           username = username,
           password = password,
-          checked = checked
+          checked = checked,
+          token = getToken
         )
       } catch (e: Exception) {
         _errorMessage.value = e.message

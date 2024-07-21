@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import master_provider_else.reclamos.navigation.AppNavigation
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 import master_provider_else.reclamos.viewModel.UserViewModel
 
 @AndroidEntryPoint
@@ -15,7 +16,8 @@ class InitialLoginScreen() : ComponentActivity() {
     setContent {
       //AppOmsKotlinTheme {
         val userViewModel: UserViewModel by viewModels()
-        AppNavigation(userViewModel)
+        val claimViewModel: ClaimViewModel by viewModels()
+        AppNavigation(userViewModel,claimViewModel)
       //}
     }
   }

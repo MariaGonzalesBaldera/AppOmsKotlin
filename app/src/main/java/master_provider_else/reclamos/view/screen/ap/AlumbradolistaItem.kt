@@ -1,7 +1,8 @@
-package master_provider_else.reclamos.ui.theme.view.component
+package master_provider_else.reclamos.view.screen.ap
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,21 +13,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import master_provider_else.reclamos.R
+import master_provider_else.reclamos.navigation.AppScreens
+import master_provider_else.reclamos.ui.theme.view.component.CallPhone
+import master_provider_else.reclamos.ui.theme.view.component.CardListItem
 
-@Composable()
-fun AlumbradoListaItem() {
+@Composable
+fun AlumbradolistaItem(navController: NavController) {
 
   val context = LocalContext.current
   Column(
@@ -77,7 +77,11 @@ fun AlumbradoListaItem() {
           painterResource(id = R.drawable.ic_sed)
         )
       }
-      Column(modifier = Modifier.padding(top = 5.dp)) {
+      Column(modifier = Modifier
+        .padding(top = 5.dp)
+        .clickable {
+          navController.navigate(route = AppScreens.LocationMap.createRoute("AP"))
+        }) {
         Image(
           painter = painterResource(id = R.drawable.pin_celeste_2),
           contentDescription = "pin celeste",
@@ -138,11 +142,4 @@ fun AlumbradoListaItem() {
       )
     }
   }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-private fun ShowAlumbrado() {
-  AlumbradoListaItem()
 }

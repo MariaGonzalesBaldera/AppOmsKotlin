@@ -4,24 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -36,7 +29,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -57,7 +49,7 @@ data class Item(
 )
 
 @Composable
-fun ExpandableListItem(item: Item, isExpanded: Boolean, onItemClick: (Int) -> Unit) {
+fun ExpandableListItem(item: Item, isExpanded: Boolean, onItemClick: (Int) -> Unit,navController: NavController) {
   Column(
     modifier = Modifier
       .fillMaxWidth()
@@ -87,7 +79,7 @@ fun ExpandableListItem(item: Item, isExpanded: Boolean, onItemClick: (Int) -> Un
           )
         }
         if (isExpanded) {
-          AlumbradoListaItem()
+          ReclamoListaItem(navController)
         }
       }
 
@@ -96,24 +88,26 @@ fun ExpandableListItem(item: Item, isExpanded: Boolean, onItemClick: (Int) -> Un
 }
 
 @Composable
-fun ExpandableList(items: List<Item>, modifier: Modifier) {
-  var expandedItemId by remember { mutableStateOf<Int?>(null) }
+fun ExpandableList(items: List<Item>, modifier: Modifier = Modifier,navController:NavController) {
+  var expandedItemId by remember { mutableStateOf(items.firstOrNull()?.id) }
 
-  LazyColumn {
+  LazyColumn(modifier = modifier) {
     items(items) { item ->
       ExpandableListItem(
         item = item,
         isExpanded = expandedItemId == item.id,
         onItemClick = { id ->
           expandedItemId = if (expandedItemId == id) null else id
-        }
+        },
+        navController=navController
       )
     }
   }
 }
 
+
 @Composable
-fun ProgramadoScreen() {
+fun ProgramadoScreen(navController:NavController) {
   val items = listOf(
     Item(id = 1, title = "00001", description = "Detalle del reclamo 1."),
     Item(id = 2, title = "00002", description = "Detalle del reclamo 2."),
@@ -121,12 +115,13 @@ fun ProgramadoScreen() {
 
   ExpandableList(
     items = items,
-    modifier = Modifier
+    modifier = Modifier,
+    navController=navController
   )
 }
 
 @Composable
-fun EjecutadoScreen(context: Context) {
+fun EjecutadoScreen(context: Context,navController:NavController) {
   val items = listOf(
     Item(id = 1, title = "Código 00004", description = "Detalle del reclamo 4."),
     Item(id = 2, title = "Código 00005", description = "Detalle del reclamo 5."),
@@ -135,7 +130,8 @@ fun EjecutadoScreen(context: Context) {
 
   ExpandableList(
     items = items,
-    modifier = Modifier
+    modifier = Modifier,
+    navController
   )
 }
 
@@ -179,8 +175,8 @@ fun ContentTabItem(navController: NavController, modifier: Modifier) {
       }
     }
     when (tabIndex) {
-      0 -> ProgramadoScreen()
-      1 -> EjecutadoScreen(context)
+      0 -> ProgramadoScreen(navController)
+      1 -> EjecutadoScreen(context,navController)
     }
   }
 }

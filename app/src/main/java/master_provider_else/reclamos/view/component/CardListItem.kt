@@ -16,18 +16,20 @@ import androidx.compose.ui.unit.dp
 import master_provider_else.reclamos.R
 
 @Composable
-fun CardListItem(textTitle: String, textValue: String, painter: Painter) {
+fun CardListItem(textTitle: String, textValue: String, painter: Painter? = null) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
     modifier = Modifier.padding(2.dp)
   ) {
-    Icon(
-      painter = painter,
-      contentDescription = "icono",
-      modifier = Modifier
-        .size(16.dp),
-      tint = colorResource(id = R.color.colorPrimary)
-    )
+    painter?.let {
+      Icon(
+        painter = it,
+        contentDescription = "icono",
+        modifier = Modifier.size(16.dp),
+        tint = colorResource(id = R.color.colorPrimary)
+      )
+      Spacer(modifier = Modifier.padding(1.dp))
+    }
     Spacer(
       modifier = Modifier.padding(1.dp)
     )

@@ -51,12 +51,10 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
   val focusManager = LocalFocusManager.current
   var showDialog by remember { mutableStateOf(false) }
   var showDialogTime by remember { mutableStateOf(false) }
-
   val stateFecha = rememberDatePickerState()
   var stateHora by remember { mutableStateOf("") }
 
-
-  LazyColumn(modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)) {
+  LazyColumn(modifier = Modifier.padding(top =20.dp , start =20.dp , end =20.dp , bottom =60.dp )) {
     item {
       Box(
         modifier = modifier
