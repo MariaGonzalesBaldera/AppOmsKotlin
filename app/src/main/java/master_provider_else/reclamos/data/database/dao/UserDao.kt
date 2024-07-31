@@ -40,6 +40,7 @@ interface UserDao {
 
   @Query("SELECT * FROM Reclamo WHERE codigoEstadoReclamo IN(:tipo) AND tipolistaReclamo like :tiporeclamo")
   fun getTipoReclamo(tipo: Array<String?>?, tiporeclamo: String?): List<ReclamoEntity?>
+  //fun getTipoReclamo(tipo: Array<String?>?, tiporeclamo: String?): List<ReclamoEntity?>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertMultipleClaims(reclamo: List<ReclamoEntity>)

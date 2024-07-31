@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 
-
+@Dao
 interface ClaimDao {
   @Query("SELECT * FROM Reclamo WHERE codigoReclamo  == :codigoReclamo")
   fun getReclamo(codigoReclamo: String?): ReclamoEntity?

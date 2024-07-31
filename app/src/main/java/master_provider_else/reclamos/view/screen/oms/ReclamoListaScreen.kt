@@ -12,19 +12,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.ProgressDialogLoading
 import master_provider_else.reclamos.ToolbarTop
 import master_provider_else.reclamos.ui.theme.view.component.BotonDefaultLine
 import master_provider_else.reclamos.ui.theme.view.component.ContentTabItem
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 import master_provider_else.reclamos.viewModel.UserViewModel
+
 //oms
+
 
 @Composable
 fun ReclamoListaScreen(
   navController: NavController,
-  userViewModel: UserViewModel
+  userViewModel: UserViewModel,
+  claimViewModel: ClaimViewModel,
+  ap: String
 ) {
   val username = userViewModel.userCredentials.value?.usuario ?: "usuario"
   var showProgress by remember { mutableStateOf(false) }
@@ -46,11 +53,12 @@ fun ReclamoListaScreen(
     }
   ) { padding ->
     ContentTabItem(
-      navController,
-      modifier = Modifier
-        .padding(padding),
-      //    userViewModel
+      navController = navController,
+      modifier = Modifier.padding(padding),
+      ap = ap,
+      claimViewModel
     )
   }
 }
+
 

@@ -11,27 +11,44 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import master_provider_else.reclamos.R
 
+@Preview(showBackground = true)
 @Composable
-fun CardListItem(textTitle: String, textValue: String, painter: Painter? = null) {
+private fun showPrev() {
+  CardListItem("hola", "hola", painterResource(id = R.drawable.ic_file))
+}
+
+@Composable
+fun CardListItem(
+  textTitle: String,
+  textValue: String,
+  painter: Painter? = null,
+  size: TextUnit = 15.sp,
+  letterSpacing: TextUnit = (-1).sp,
+  spacing: Dp=1.dp
+) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
-    modifier = Modifier.padding(2.dp)
+    modifier = Modifier.padding(horizontal = 0.dp, vertical = 2.dp)
   ) {
     painter?.let {
       Icon(
         painter = it,
         contentDescription = "icono",
-        modifier = Modifier.size(16.dp),
+        modifier = Modifier.size(12.dp),
         tint = colorResource(id = R.color.colorPrimary)
       )
-      Spacer(modifier = Modifier.padding(1.dp))
     }
     Spacer(
-      modifier = Modifier.padding(1.dp)
+      modifier = Modifier.padding(0.dp)
     )
     Text(
       text = textTitle,
@@ -40,13 +57,15 @@ fun CardListItem(textTitle: String, textValue: String, painter: Painter? = null)
     )
     Spacer(
       modifier = Modifier.padding(
-        horizontal = 4.dp,
+        horizontal = spacing,
         vertical = 10.dp
       )
     )
     Text(
       text = textValue,
       color = colorResource(id = R.color.colorTextGray),
+      fontSize = size,
+      letterSpacing = letterSpacing
     )
   }
 }

@@ -2,8 +2,10 @@ package master_provider_else.reclamos.ui.theme.view.component
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.activity.viewModels
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,9 +14,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -32,112 +38,167 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.ViewModelLifecycle
 import master_provider_else.reclamos.R
-
-data class Item(
-  val id: Int,
-  val title: String,
-  val description: String
-)
+import master_provider_else.reclamos.data.dto.ReclamoArray
+import master_provider_else.reclamos.navigation.AppScreens
+import master_provider_else.reclamos.utils.formatDateTime
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 
 @Composable
-fun ExpandableListItem(item: Item, isExpanded: Boolean, onItemClick: (Int) -> Unit,navController: NavController) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .clickable { onItemClick(item.id) }
-      .padding(10.dp)
-      .animateContentSize()
-  ) {
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-    ) {
-      Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-          horizontalArrangement = Arrangement.SpaceBetween,
-          modifier = Modifier
-            .fillMaxWidth()
-        ) {
-          Text(
-            text = "Clase Alumbrado: Nombre Clase Alumbrado", fontWeight = FontWeight.Bold,
-            fontSize = 15.sp,
-            color = colorResource(id = R.color.colorPrimary)
-          )
-          Image(
-            painter = painterResource(
-              id = if (isExpanded) R.drawable.ic_expand_less else R.drawable.ic_expand_more
-            ),
-            contentDescription = if (isExpanded) "Icono de contraer" else "Icono de expandir"
-          )
-        }
-        if (isExpanded) {
-          ReclamoListaItem(navController)
-        }
-      }
-
-    }
-  }
-}
-
-@Composable
-fun ExpandableList(items: List<Item>, modifier: Modifier = Modifier,navController:NavController) {
-  var expandedItemId by remember { mutableStateOf(items.firstOrNull()?.id) }
+fun ExpandableList(
+  items: List<ReclamoArray>,
+  modifier: Modifier = Modifier,
+  navController: NavController,
+  ap: String
+) {
+  var expandedItemId by remember { mutableStateOf(items.firstOrNull()?.codigoReclamo) }
 
   LazyColumn(modifier = modifier) {
     items(items) { item ->
-      ExpandableListItem(
+      ReclamoListaItem(
         item = item,
-        isExpanded = expandedItemId == item.id,
+        isExpanded = expandedItemId == item.codigoReclamo,
         onItemClick = { id ->
           expandedItemId = if (expandedItemId == id) null else id
         },
-        navController=navController
+        navController = navController,
+        ap
       )
     }
   }
 }
 
-
 @Composable
-fun ProgramadoScreen(navController:NavController) {
-  val items = listOf(
-    Item(id = 1, title = "00001", description = "Detalle del reclamo 1."),
-    Item(id = 2, title = "00002", description = "Detalle del reclamo 2."),
-  )
+fun ProgramadoScreen(navController: NavController, ap: String, claimViewModel: ClaimViewModel) {
+  val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+  val context = LocalContext.current
+  var items by remember { mutableStateOf(listOf<ReclamoArray>()) }
+  //llama al api
+  claimViewModel.onClaimView(ap, context,"3")
 
+  claimViewModel.reclamoModel.observe(lifecycleOwner) { value ->
+  items = value.map { reclamo ->
+      ReclamoArray(
+        codigoSuministro = reclamo.codigoSuministro,
+        codigoSED = reclamo.codigoSED,
+        codigoEstadoReclamo = reclamo.codigoEstadoReclamo,
+        direccionElectrica = reclamo.direccionElectrica,
+        nombreSuministros = reclamo.nombreSuministros,
+        codigoReclamo = reclamo.codigoReclamo,
+        nombreClaseReclamo = reclamo.nombreClaseReclamo,
+        codigoRutaSuministro = reclamo.codigoRutaSuministro,
+        celular = reclamo.celular,
+        latitud = reclamo.latitud,
+        longitud = reclamo.longitud,
+        descripcionReclamo = reclamo.descripcionReclamo,
+        referenciaUbicacion = reclamo.referenciaUbicacion,
+        codigoDireccionElectrica = reclamo.codigoDireccionElectrica,
+        fechaRegistro = reclamo.fechaRegistro,
+        sectorTipico = reclamo.sectorTipico,
+        plazoDias = reclamo.plazoDias,
+        fechaLimiteAtencion = reclamo.fechaLimiteAtencion,
+        tipoReclamo = reclamo.tipoReclamo
+      )
+  }
+  /*
+  codigoSuministro = reclamo.codigoSuministro,
+          codigoSED = reclamo.codigoSED,
+          codigoEstadoReclamo = reclamo.codigoEstadoReclamo,
+          direccionElectrica = reclamo.direccionElectrica,
+          nombreSuministros = reclamo.nombreSuministros,
+          codigoReclamo = reclamo.codigoReclamo,
+          nombreClaseReclamo = reclamo.nombreClaseReclamo,
+          codigoRutaSuministro = reclamo.codigoRutaSuministro,
+          celular = reclamo.celular,
+          latitud = reclamo.latitud,
+          longitud = reclamo.longitud,
+          descripcionReclamo = reclamo.descripcionReclamo,
+          referenciaUbicacion = reclamo.referenciaUbicacion,
+          codigoDireccionElectrica = reclamo.codigoDireccionElectrica,
+          fechaRegistro = reclamo.fechaRegistro,
+          sectorTipico = reclamo.sectorTipico,
+          plazoDias = reclamo.plazoDias,
+          fechaLimiteAtencion = reclamo.fechaLimiteAtencion,
+          tipoReclamo = reclamo.tipoReclamo
+  * */
+   }
   ExpandableList(
     items = items,
     modifier = Modifier,
-    navController=navController
+    navController = navController,
+    ap = ap
   )
 }
 
 @Composable
-fun EjecutadoScreen(context: Context,navController:NavController) {
-  val items = listOf(
-    Item(id = 1, title = "Código 00004", description = "Detalle del reclamo 4."),
-    Item(id = 2, title = "Código 00005", description = "Detalle del reclamo 5."),
-    Item(id = 3, title = "Código 00006", description = "Detalle del reclamo 6."),
-  )
+fun EjecutadoScreen(
+  context: Context,
+  navController: NavController,
+  ap: String,
+  claimViewModel: ClaimViewModel
+) {
+  val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+  val context = LocalContext.current
+  var items by remember { mutableStateOf(listOf<ReclamoArray>()) }
 
+  claimViewModel.onClaimView(ap, context,"5")
+
+  claimViewModel.reclamoModel.observe(lifecycleOwner) { value ->
+    items = value.map { reclamo ->
+      ReclamoArray(
+        codigoSuministro = reclamo.codigoSuministro,
+        codigoSED = reclamo.codigoSED,
+        codigoEstadoReclamo = reclamo.codigoEstadoReclamo,
+        direccionElectrica = reclamo.direccionElectrica,
+        nombreSuministros = reclamo.nombreSuministros,
+        codigoReclamo = reclamo.codigoReclamo,
+        nombreClaseReclamo = reclamo.nombreClaseReclamo,
+        codigoRutaSuministro = reclamo.codigoRutaSuministro,
+        celular = reclamo.celular,
+        latitud = reclamo.latitud,
+        longitud = reclamo.longitud,
+        descripcionReclamo = reclamo.descripcionReclamo,
+        referenciaUbicacion = reclamo.referenciaUbicacion,
+        codigoDireccionElectrica = reclamo.codigoDireccionElectrica,
+        fechaRegistro = reclamo.fechaRegistro,
+        sectorTipico = reclamo.sectorTipico,
+        plazoDias = reclamo.plazoDias,
+        fechaLimiteAtencion = reclamo.fechaLimiteAtencion,
+        tipoReclamo = reclamo.tipoReclamo
+      )
+    }
+
+  }
   ExpandableList(
     items = items,
     modifier = Modifier,
-    navController
+    navController = navController,
+    ap = ap
   )
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ContentTabItem(navController: NavController, modifier: Modifier) {
+fun ContentTabItem(
+  navController: NavController,
+  modifier: Modifier,
+  ap: String,
+  claimViewModel: ClaimViewModel = viewModel()
+) {
   var tabIndex by remember { mutableIntStateOf(0) }
   val tabs = listOf("Programado", "Ejecutado")
   val context = LocalContext.current
@@ -175,15 +236,8 @@ fun ContentTabItem(navController: NavController, modifier: Modifier) {
       }
     }
     when (tabIndex) {
-      0 -> ProgramadoScreen(navController)
-      1 -> EjecutadoScreen(context,navController)
+      0 -> ProgramadoScreen(navController, ap = ap, claimViewModel = claimViewModel)
+      1 -> EjecutadoScreen(context, navController, ap = ap, claimViewModel = claimViewModel)
     }
   }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ShowTabItem() {
-  val navController = rememberNavController()
-  ContentTabItem(navController = navController, modifier = Modifier)
 }
