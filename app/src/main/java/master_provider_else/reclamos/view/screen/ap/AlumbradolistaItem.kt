@@ -2,6 +2,7 @@ package master_provider_else.reclamos.view.screen.ap
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,15 +16,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.navigation.AppScreens
 import master_provider_else.reclamos.ui.theme.view.component.CallPhone
 import master_provider_else.reclamos.ui.theme.view.component.CardListItem
+
+@Preview(showBackground = true)
+@Composable
+private fun Hola() {
+  val navController = rememberNavController()
+  AlumbradolistaItem(navController)
+}
+
 
 @Composable
 fun AlumbradolistaItem(navController: NavController) {
@@ -40,50 +52,64 @@ fun AlumbradolistaItem(navController: NavController) {
       horizontalArrangement = Arrangement.SpaceBetween
     ) {
       Column {
-
         CardListItem(
           textTitle = "Reclamo:",
           textValue = "Código Reclamo",
-          painterResource(id = R.drawable.ic_id)
+          painterResource(id = R.drawable.ic_id),
+          spacing=10.dp
         )
         CardListItem(
           textTitle = "Nombre:",
-          textValue = "Nombre Suministro XXXXXXX",
-          painterResource(id = R.drawable.ic_suministro)
+          textValue = "MARIA CRI",
+          painterResource(id = R.drawable.ic_suministro),
+          spacing=12.dp
         )
         CardListItem(
           textTitle = "Dirección:",
-          textValue = "",
-          painterResource(id = R.drawable.ic_home)
+          textValue = "MZ A LOTE",
+          painterResource(id = R.drawable.ic_home),
+          spacing=8.dp
         )
         CardListItem(
           textTitle = "Descripción:",
-          textValue = "XXXXXXXXXXXXXXXXX",
+          textValue = "XXXXXXXXXX",
           painterResource(id = R.drawable.ic_source)
         )
         CardListItem(
           textTitle = "Referencia:",
-          textValue = "",
-          painterResource(id = R.drawable.ic_file)
+          textValue = "azsxdcfvghj",
+          painterResource(id = R.drawable.ic_file),
+          spacing=3.dp
         )
-        CardListItem(
-          textTitle = "Ruta:",
-          textValue = "Código Ruta",
-          painterResource(id = R.drawable.ic_place)
-        )
-        CardListItem(
-          textTitle = "SED:",
-          textValue = "Código SED",
-          painterResource(id = R.drawable.ic_sed)
-        )
+        Row(
+          modifier = Modifier
+            .fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+          Column(modifier = Modifier.width(210.dp)) {
+            CardListItem(
+              textTitle = "Ruta:",
+              textValue = "12323445670000",
+              painterResource(id = R.drawable.ic_place),
+              spacing = 22.dp
+            )
+          }
+          Column(modifier = Modifier.width(170.dp)) {
+            CardListItem(
+              textTitle = "SED:",
+              textValue = "34300543",
+              painterResource(id = R.drawable.ic_sed)
+            )
+          }
+        }
       }
       Column(modifier = Modifier
-        .padding(top = 5.dp)
+        .padding(top = 5.dp).border(width = 1.dp,color=Color.Red)
         .clickable {
           navController.navigate(route = AppScreens.LocationMap.createRoute("AP"))
         }) {
         Image(
-          painter = painterResource(id = R.drawable.pin_celeste_2),
+          painter = painterResource(id = R.drawable.pin_celeste),
           contentDescription = "pin celeste",
           modifier = Modifier.size(50.dp)
         )
@@ -95,7 +121,8 @@ fun AlumbradolistaItem(navController: NavController) {
         CardListItem(
           textTitle = "Celular:",
           textValue = "Celular reclamo",
-          painterResource(id = R.drawable.ic_call)
+          painterResource(id = R.drawable.ic_call),
+          spacing = 15.dp
         )
         Row() {
           IconButton(
@@ -122,24 +149,10 @@ fun AlumbradolistaItem(navController: NavController) {
       }
       CardListItem(
         textTitle = "Fecha Registro:",
-        textValue = "",
+        textValue = "wertyujiuytr",
         painterResource(id = R.drawable.ic_calendar)
       )
-      CardListItem(
-        textTitle = "Plazo:",
-        textValue = "",
-        painterResource(id = R.drawable.ic_outbound)
-      )
-      CardListItem(
-        textTitle = "Fecha Limite Atención:",
-        textValue = "",
-        painterResource(id = R.drawable.ic_calendar)
-      )
-      CardListItem(
-        textTitle = "Sector Típico:",
-        textValue = "",
-        painterResource(id = R.drawable.ic_group)
-      )
+
     }
   }
 }

@@ -55,7 +55,7 @@ fun LocationScreen(
   ),
   locationRequired: MutableState<Boolean> = remember { mutableStateOf(false) },
   startLocationUpdates: () -> Unit = {},
-  tipo: String
+  ap: String
 ) {
   val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
   val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
@@ -126,7 +126,7 @@ fun LocationScreen(
         Text(text = "Get your location", color = Color.White)
       }
       BotonDefault(title = "Iniciar Trabajo", onClick = {
-        if (tipo == "reclamo") {
+        if (ap == "0") {
           navController.navigate(route = AppScreens.InicioTrabajoOmsScreen.route)
         } else {
           navController.navigate(route = AppScreens.InicioTrabajoApScreen.route)

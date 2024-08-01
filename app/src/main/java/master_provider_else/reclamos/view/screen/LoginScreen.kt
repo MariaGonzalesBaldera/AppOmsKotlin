@@ -1,5 +1,6 @@
 package master_provider_else.reclamos.ui.theme.view.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,6 +50,7 @@ import master_provider_else.reclamos.view.ui.theme.toast
 import master_provider_else.reclamos.viewModel.UserViewModel
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
+import master_provider_else.reclamos.ProgressDialogLoading
 
 @Composable
 fun LoginScreen(navController: NavController, userViewModel: UserViewModel) {
@@ -68,6 +70,7 @@ fun LoginScreen(navController: NavController, userViewModel: UserViewModel) {
       dialogResponse = false
       navController.navigate(route = AppScreens.MenuActivityScreen.route)
     } else {
+      dialogResponse = false
       context.toast("Credenciales inválidas")
     }
   }
@@ -81,21 +84,20 @@ fun LoginScreen(navController: NavController, userViewModel: UserViewModel) {
         contentAlignment = Alignment.Center
       ) {
         BotonDefault(modifier = Modifier.width(150.dp), title = "Ingresar", onClick = {
-          navController.navigate(route = AppScreens.MenuActivityScreen.route)
-
-          //dialogResponse = true
-          //if (checkedState) {
-          //  userViewModel.saveCredentials(
-          //    userValue.value,
-          //    passwordValue.value,
-          //    "1"
-          //  )
-          //} else {
-          //  userViewModel.clearCredentials()
-          //}
-          //userViewModel.onLoginView(userValue.value, passwordValue.value)
+          dialogResponse = true
+          if (checkedState) {
+            userViewModel.saveCredentials(
+              userValue.value,
+              passwordValue.value,
+              "1"
+            )
+            Log.e("credenciales", userViewModel.userCredentials.value?.usuario ?: "")
+          } else {
+            userViewModel.clearCredentials()
+          }
+          userViewModel.onLoginView(userValue.value, passwordValue.value, context)
         })
-        //ProgressDialogLoading(onDismiss = { dialogResponse = false }, showProgress = dialogResponse)
+        ProgressDialogLoading(onDismiss = { dialogResponse = false }, showProgress = dialogResponse)
       }
     }
   ) { padding ->

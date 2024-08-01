@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import master_provider_else.reclamos.R
-import master_provider_else.reclamos.ui.theme.view.component.Item
 
 data class Item(
   val id: Int,

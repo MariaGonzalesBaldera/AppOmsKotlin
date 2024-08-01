@@ -30,7 +30,6 @@ import master_provider_else.reclamos.viewModel.ClaimViewModel
 
 @Composable
 fun MenuActivity(navController: NavController, claimViewModel: ClaimViewModel) {
-  //val username = userViewModel.userCredentials.value?.usuario ?: "usuario"
   val context = LocalContext.current
 
   Surface(color = MaterialTheme.colors.background) {
@@ -42,7 +41,7 @@ fun MenuActivity(navController: NavController, claimViewModel: ClaimViewModel) {
         modifier = Modifier.padding(padding),
         //username = username,
         context = context,
-        claimViewModel=claimViewModel
+        claimViewModel = claimViewModel
       )
     }
   }
@@ -55,7 +54,7 @@ fun MenuItem(
   modifier: Modifier,
   //username: String,
   context: Context,
-  claimViewModel:ClaimViewModel
+  claimViewModel: ClaimViewModel
 ) {
   var showDialog by remember { mutableStateOf(false) }
 
@@ -78,8 +77,7 @@ fun MenuItem(
         "OSM",
         "Icono de llamada de emergencia"
       ) {
-        claimViewModel.onClaimView()
-        navController.navigate(route = AppScreens.ReclamoListaScreen.route)
+        navController.navigate(route = AppScreens.ReclamoListaScreen.createRoute("0"))
       }
       Spacer(modifier = Modifier.padding(10.dp))
       CardItemContent(
@@ -88,7 +86,7 @@ fun MenuItem(
         "Icono de llamada de emergencia"
       ) {
         navController.navigate(
-          route = AppScreens.AlumbradoListaScreen.route
+          route = AppScreens.ReclamoListaScreen.createRoute("1")
         )
       }
     }

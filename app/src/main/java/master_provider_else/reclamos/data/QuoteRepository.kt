@@ -70,9 +70,8 @@ class QuoteRepository @Inject constructor(
     }
   }
 
-  suspend fun getTipoReclamoInDataBase(tipo: Array<String?>?, tiporeclamo: String?): List<Claim?> {
-    val response: List<ReclamoEntity?> = userDao.getTipoReclamo(tipo, tiporeclamo)
-    return response.map { it?.toDomain() }
+  suspend fun getTipoReclamoInDataBase(tipo: Array<String?>?, tiporeclamo: String?): List<ReclamoEntity?> {
+    return userDao.getTipoReclamo(tipo, tiporeclamo)
   }
 
   suspend fun insertMultipleClaimsInDataBase(claim: List<ReclamoEntity>) {

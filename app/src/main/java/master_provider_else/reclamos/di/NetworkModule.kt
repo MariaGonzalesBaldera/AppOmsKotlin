@@ -20,18 +20,11 @@ object NetworkModule {
   fun providerRetrofit(): Retrofit {
     val gson = GsonBuilder().create()
     //val url = "http://192.168.1.9:5000/";
-    //val url = "http://192.168.1.110:5000/";
-    val url = "http://192.168.1.110:5000/";
-    /*public static final String SERVER = "192.168.0.6:36611";
-    public static final String API_FOLDER = "";*/
-    val HTTPS_SCHEME ="https://"
-    val SERVER = "appsrvtest.else.com.pe/"
-    val API_FOLDER= "wAPIOMSEmergencias/"
+    val API_SERVER = "https://appsrvtest.else.com.pe/wAPIOMSEmergenciasV2/"
     return Retrofit.Builder()
-      .baseUrl("https://appsrvtest.else.com.pe/wAPIOMSEmergencias/")
+      .baseUrl(API_SERVER)
       .addConverterFactory(GsonConverterFactory.create(gson))
       .build()
-    Log.e("url",HTTPS_SCHEME+SERVER+API_FOLDER);
   }
 
   @Singleton

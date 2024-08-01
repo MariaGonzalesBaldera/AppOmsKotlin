@@ -1,8 +1,6 @@
 package master_provider_else.reclamos.viewModel
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.remember
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,14 +12,16 @@ import kotlinx.coroutines.launch
 import master_provider_else.reclamos.data.database.state.UserPreferences
 import master_provider_else.reclamos.domain.UseCase.GetLoginUseCase
 import master_provider_else.reclamos.domain.model.User
+import master_provider_else.reclamos.utils.isConnected
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
   var getLoginUseCase: GetLoginUseCase,
-  var userPreferences: UserPreferences
-) : ViewModel() {
-  var getToken: String = ""
+  var userPreferences: UserPreferences,
+
+  ) : ViewModel() {
+
   val validModel = MutableLiveData<Boolean>()
   private val _errorMessage = MutableLiveData<String?>()
   val errorMessage: LiveData<String?> get() = _errorMessage
@@ -37,23 +37,14 @@ class UserViewModel @Inject constructor(
     }
   }
 
-  fun onLoginView(usuario: String, pass: String) {
-
+  fun onLoginView(usuario: String, pass: String, context: Context) {
     viewModelScope.launch {
-      val result = getLoginUseCase(usuario, pass)
-      if (result != null) {
-        getToken = result.token
-
-      }
-      Log.e("onLoginView", result.toString())
-      Log.e("token de login", getToken)
-      if (result != null) {
-        validModel.postValue(true)
-        Log.e("Agregado al viewModel", result.toString())
-      } else {
-        validModel.postValue(false)
-        Log.e("UsuarioDBViewModel", "Error: No se pudo obtener el usuario")
-      }
+        val result = getLoginUseCase(usuario, pass,context)
+        if (result != null) {
+          validModel.postValue(true)
+        } else {
+          validModel.postValue(false)
+        }
     }
   }
 
@@ -63,8 +54,7 @@ class UserViewModel @Inject constructor(
         userPreferences.saveUserCredentials(
           username = username,
           password = password,
-          checked = checked,
-          token = getToken
+          checked = checked
         )
       } catch (e: Exception) {
         _errorMessage.value = e.message
@@ -77,5 +67,4 @@ class UserViewModel @Inject constructor(
       userPreferences.clearUserCredentials()
     }
   }
-
 }
