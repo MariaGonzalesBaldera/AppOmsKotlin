@@ -55,12 +55,22 @@ fun LocationScreen(
   ),
   locationRequired: MutableState<Boolean> = remember { mutableStateOf(false) },
   startLocationUpdates: () -> Unit = {},
-  ap: String
+  ap: String,
+  estado: String,
+  params: Map<String, String>
 ) {
   val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
   val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
       locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-
+  var latitud : Double = 0.0
+  var longitud : Double = 0.0
+  var codigoReclamo = ""
+  var codigoEstado = ""
+  var nombreClaseReclamo = ""
+  var sed = ""
+  var ruta = ""
+  var celular = ""
+  var codigoDireccionElectrica = ""
   val launchMultiplePermissions = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.RequestMultiplePermissions()
   ) { permissionMaps ->
@@ -73,6 +83,20 @@ fun LocationScreen(
       context.toast("Permission Denied")
     }
   }
+  ///recuperando datos
+  params.forEach { (key, value) ->
+    when (key) {
+      "latitud" -> latitud = value.toDouble()
+      "longitud" -> longitud = value.toDouble()
+      "codigoReclamo" -> codigoReclamo = value
+      "codigoEstado" -> codigoEstado = value
+      "nombreClaseReclamo" -> nombreClaseReclamo = value
+      "sed" -> sed = value
+      "ruta" -> ruta = value
+      "celular" -> celular = value
+      "codigoDireccionElectrica" -> codigoDireccionElectrica = value
+    }
+  }
 
   Box(Modifier.padding()) {
     MapboxMap(
@@ -80,13 +104,13 @@ fun LocationScreen(
       mapViewportState = MapViewportState().apply {
         setCameraOptions {
           zoom(15.0)
-          center(Point.fromLngLat(currentLocation.longitude, currentLocation.latitude))
+          center(Point.fromLngLat(longitud, latitud))
           pitch(0.0)
           bearing(0.0)
         }
       }
     ) {
-      AddPointer(Point.fromLngLat(currentLocation.longitude, currentLocation.latitude), context)
+      AddPointer(Point.fromLngLat(longitud, latitud), context)
     }
 
     Box(
@@ -110,7 +134,7 @@ fun LocationScreen(
       verticalArrangement = Arrangement.Bottom,
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      Text(text = "Your location: ${currentLocation.latitude}/${currentLocation.longitude}")
+      Text(text = "Your location: ${latitud}/${longitud}")
       Button(onClick = {
         if (permissions.all {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED

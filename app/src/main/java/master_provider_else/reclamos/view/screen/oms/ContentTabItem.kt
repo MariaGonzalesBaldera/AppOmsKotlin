@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,94 +54,87 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.ViewModelLifecycle
 import master_provider_else.reclamos.R
+import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.dto.ReclamoArray
 import master_provider_else.reclamos.navigation.AppScreens
 import master_provider_else.reclamos.utils.formatDateTime
+import master_provider_else.reclamos.view.ui.theme.toast
 import master_provider_else.reclamos.viewModel.ClaimViewModel
 
 @Composable
 fun ExpandableList(
-  items: List<ReclamoArray>,
+  items: List<ReclamoEntity>,
   modifier: Modifier = Modifier,
   navController: NavController,
-  ap: String
+  ap: String,
+  estado: String,
+  claimViewModel: ClaimViewModel
 ) {
-  var expandedItemId by remember { mutableStateOf(items.firstOrNull()?.codigoReclamo) }
+  var expandedItemId by remember { mutableStateOf(items.firstOrNull()?.CodigoReclamo) }
 
   LazyColumn(modifier = modifier) {
     items(items) { item ->
       ReclamoListaItem(
         item = item,
-        isExpanded = expandedItemId == item.codigoReclamo,
+        isExpanded = expandedItemId == item.CodigoReclamo,
         onItemClick = { id ->
           expandedItemId = if (expandedItemId == id) null else id
         },
         navController = navController,
-        ap
+        ap,
+        estado,
+        claimViewModel = claimViewModel
       )
     }
   }
 }
 
 @Composable
-fun ProgramadoScreen(navController: NavController, ap: String, claimViewModel: ClaimViewModel) {
+fun ProgramadoScreen(
+  context: Context,
+  navController: NavController,
+  ap: String,
+  claimViewModel: ClaimViewModel
+) {
   val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-  val context = LocalContext.current
-  var items by remember { mutableStateOf(listOf<ReclamoArray>()) }
+  var items by remember { mutableStateOf(listOf<ReclamoEntity>()) }
   //llama al api
-  claimViewModel.onClaimView(ap, context,"3")
+  LaunchedEffect(Unit) {
+    claimViewModel.onClaimView(ap, context, "2")
+  }
 
-  claimViewModel.reclamoModel.observe(lifecycleOwner) { value ->
-  items = value.map { reclamo ->
-      ReclamoArray(
-        codigoSuministro = reclamo.codigoSuministro,
-        codigoSED = reclamo.codigoSED,
-        codigoEstadoReclamo = reclamo.codigoEstadoReclamo,
-        direccionElectrica = reclamo.direccionElectrica,
-        nombreSuministros = reclamo.nombreSuministros,
-        codigoReclamo = reclamo.codigoReclamo,
-        nombreClaseReclamo = reclamo.nombreClaseReclamo,
-        codigoRutaSuministro = reclamo.codigoRutaSuministro,
-        celular = reclamo.celular,
+  claimViewModel.programadoReclamos.observe(lifecycleOwner) { value ->
+    items = value.map { reclamo ->
+      ReclamoEntity(
+        CodigoSuministro = reclamo.codigoSuministro,
+        CodigoSED = reclamo.codigoSED,
+        CodigoEstadoReclamo = reclamo.codigoEstadoReclamo,
+        DireccionElectrica = reclamo.direccionElectrica,
+        NombreSuministro = reclamo.nombreSuministros,
+        CodigoReclamo = reclamo.codigoReclamo,
+        NombreClaseReclamo = reclamo.nombreClaseReclamo,
+        CodigoRutaSuministro = reclamo.codigoRutaSuministro,
+        Celular = reclamo.celular,
         latitud = reclamo.latitud,
         longitud = reclamo.longitud,
-        descripcionReclamo = reclamo.descripcionReclamo,
-        referenciaUbicacion = reclamo.referenciaUbicacion,
-        codigoDireccionElectrica = reclamo.codigoDireccionElectrica,
-        fechaRegistro = reclamo.fechaRegistro,
-        sectorTipico = reclamo.sectorTipico,
-        plazoDias = reclamo.plazoDias,
-        fechaLimiteAtencion = reclamo.fechaLimiteAtencion,
+        DescripcionReclamo = reclamo.descripcionReclamo,
+        ReferenciaUbicacion = reclamo.referenciaUbicacion,
+        CodigoDireccionElectrica = reclamo.codigoDireccionElectrica,
+        FechaRegistro = reclamo.fechaRegistro,
+        SectorTipico = reclamo.sectorTipico,
+        Plazo = reclamo.plazoDias,
+        FechaLimiteAtencion = reclamo.fechaLimiteAtencion,
         tipoReclamo = reclamo.tipoReclamo
       )
+    }
   }
-  /*
-  codigoSuministro = reclamo.codigoSuministro,
-          codigoSED = reclamo.codigoSED,
-          codigoEstadoReclamo = reclamo.codigoEstadoReclamo,
-          direccionElectrica = reclamo.direccionElectrica,
-          nombreSuministros = reclamo.nombreSuministros,
-          codigoReclamo = reclamo.codigoReclamo,
-          nombreClaseReclamo = reclamo.nombreClaseReclamo,
-          codigoRutaSuministro = reclamo.codigoRutaSuministro,
-          celular = reclamo.celular,
-          latitud = reclamo.latitud,
-          longitud = reclamo.longitud,
-          descripcionReclamo = reclamo.descripcionReclamo,
-          referenciaUbicacion = reclamo.referenciaUbicacion,
-          codigoDireccionElectrica = reclamo.codigoDireccionElectrica,
-          fechaRegistro = reclamo.fechaRegistro,
-          sectorTipico = reclamo.sectorTipico,
-          plazoDias = reclamo.plazoDias,
-          fechaLimiteAtencion = reclamo.fechaLimiteAtencion,
-          tipoReclamo = reclamo.tipoReclamo
-  * */
-   }
   ExpandableList(
     items = items,
     modifier = Modifier,
     navController = navController,
-    ap = ap
+    ap = ap,
+    "2",
+    claimViewModel = claimViewModel
   )
 }
 
@@ -152,32 +146,32 @@ fun EjecutadoScreen(
   claimViewModel: ClaimViewModel
 ) {
   val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-  val context = LocalContext.current
-  var items by remember { mutableStateOf(listOf<ReclamoArray>()) }
+  var items by remember { mutableStateOf(listOf<ReclamoEntity>()) }
 
-  claimViewModel.onClaimView(ap, context,"5")
-
-  claimViewModel.reclamoModel.observe(lifecycleOwner) { value ->
+  LaunchedEffect(Unit) {
+    claimViewModel.onClaimView(ap, context, "5")
+  }
+  claimViewModel.ejecutadoReclamos.observe(lifecycleOwner) { value ->
     items = value.map { reclamo ->
-      ReclamoArray(
-        codigoSuministro = reclamo.codigoSuministro,
-        codigoSED = reclamo.codigoSED,
-        codigoEstadoReclamo = reclamo.codigoEstadoReclamo,
-        direccionElectrica = reclamo.direccionElectrica,
-        nombreSuministros = reclamo.nombreSuministros,
-        codigoReclamo = reclamo.codigoReclamo,
-        nombreClaseReclamo = reclamo.nombreClaseReclamo,
-        codigoRutaSuministro = reclamo.codigoRutaSuministro,
-        celular = reclamo.celular,
+      ReclamoEntity(
+        CodigoSuministro = reclamo.codigoSuministro,
+        CodigoSED = reclamo.codigoSED,
+        CodigoEstadoReclamo = reclamo.codigoEstadoReclamo,
+        DireccionElectrica = reclamo.direccionElectrica,
+        NombreSuministro = reclamo.nombreSuministros,
+        CodigoReclamo = reclamo.codigoReclamo,
+        NombreClaseReclamo = reclamo.nombreClaseReclamo,
+        CodigoRutaSuministro = reclamo.codigoRutaSuministro,
+        Celular = reclamo.celular,
         latitud = reclamo.latitud,
         longitud = reclamo.longitud,
-        descripcionReclamo = reclamo.descripcionReclamo,
-        referenciaUbicacion = reclamo.referenciaUbicacion,
-        codigoDireccionElectrica = reclamo.codigoDireccionElectrica,
-        fechaRegistro = reclamo.fechaRegistro,
-        sectorTipico = reclamo.sectorTipico,
-        plazoDias = reclamo.plazoDias,
-        fechaLimiteAtencion = reclamo.fechaLimiteAtencion,
+        DescripcionReclamo = reclamo.descripcionReclamo,
+        ReferenciaUbicacion = reclamo.referenciaUbicacion,
+        CodigoDireccionElectrica = reclamo.codigoDireccionElectrica,
+        FechaRegistro = reclamo.fechaRegistro,
+        SectorTipico = reclamo.sectorTipico,
+        Plazo = reclamo.plazoDias,
+        FechaLimiteAtencion = reclamo.fechaLimiteAtencion,
         tipoReclamo = reclamo.tipoReclamo
       )
     }
@@ -187,7 +181,9 @@ fun EjecutadoScreen(
     items = items,
     modifier = Modifier,
     navController = navController,
-    ap = ap
+    ap = ap,
+    "5",
+    claimViewModel = claimViewModel
   )
 }
 
@@ -236,7 +232,7 @@ fun ContentTabItem(
       }
     }
     when (tabIndex) {
-      0 -> ProgramadoScreen(navController, ap = ap, claimViewModel = claimViewModel)
+      0 -> ProgramadoScreen(context, navController, ap = ap, claimViewModel = claimViewModel)
       1 -> EjecutadoScreen(context, navController, ap = ap, claimViewModel = claimViewModel)
     }
   }

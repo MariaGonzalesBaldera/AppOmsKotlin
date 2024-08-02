@@ -18,7 +18,9 @@ import master_provider_else.reclamos.view.ui.theme.AppOmsKotlinTheme
 @Composable
 fun LocationMap(
   navController: NavController,
-  ap: String
+  ap: String,
+  estado: String,
+  params: Map<String, String>
 ) {
   val context = LocalContext.current
   var currentLocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
@@ -61,7 +63,9 @@ fun LocationMap(
           locationRequired = true
           startLocationUpdates(fusedLocationClient, locationCallback.value)
         },
-        ap = ap
+        ap = ap,
+        estado = estado,
+        params = params
       )
     }
   }
