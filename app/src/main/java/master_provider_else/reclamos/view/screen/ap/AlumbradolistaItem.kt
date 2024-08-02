@@ -106,7 +106,7 @@ fun AlumbradolistaItem(navController: NavController) {
       Column(modifier = Modifier
         .padding(top = 5.dp).border(width = 1.dp,color=Color.Red)
         .clickable {
-          navController.navigate(route = AppScreens.LocationMap.createRoute("AP"))
+         // navController.navigate(route = AppScreens.LocationMap.createRoute("AP",""))
         }) {
         Image(
           painter = painterResource(id = R.drawable.pin_celeste),

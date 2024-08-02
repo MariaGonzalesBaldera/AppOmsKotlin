@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -27,25 +28,29 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.R
+import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.dto.ReclamoArray
 import master_provider_else.reclamos.navigation.AppScreens
 import master_provider_else.reclamos.utils.formatDateTime
+import master_provider_else.reclamos.view.ui.theme.toast
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 
-@Composable()
+@Composable
 fun ReclamoListaItem(
-  item: ReclamoArray,
+  item: ReclamoEntity,
   isExpanded: Boolean,
   onItemClick: (String) -> Unit,
   navController: NavController,
-  ap: String
+  ap: String,
+  estado: String,
+  claimViewModel: ClaimViewModel
 ) {
-
   val context = LocalContext.current
 
   Column(
     modifier = Modifier
       .fillMaxWidth()
-      .clickable { onItemClick(item.codigoReclamo) }
+      .clickable { onItemClick(item.CodigoReclamo) }
       .padding(10.dp)
       .animateContentSize()
   ) {
@@ -59,7 +64,7 @@ fun ReclamoListaItem(
             .fillMaxWidth()
         ) {
           Text(
-            text = item.nombreClaseReclamo,
+            text = item.NombreClaseReclamo,
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp,
             color = colorResource(id = R.color.colorPrimary),
@@ -89,20 +94,20 @@ fun ReclamoListaItem(
 
                 CardListItem(
                   textTitle = "Reclamo:",
-                  textValue = item.codigoReclamo,
+                  textValue = item.CodigoReclamo,
                   painterResource(id = R.drawable.ic_id),
                   spacing = 10.dp
                 )
                 CardListItem(
                   textTitle = "Nombre:",
-                  textValue = item.nombreSuministros,
+                  textValue = item.NombreSuministro,
                   painterResource(id = R.drawable.ic_suministro),
                   spacing = 12.dp,
                   size = 12.sp
                 )
                 CardListItem(
                   textTitle = "Dirección:",
-                  textValue = item.direccionElectrica,
+                  textValue = item.DireccionElectrica,
                   painterResource(id = R.drawable.ic_home),
                   spacing = 8.dp,
                   size = 12.sp
@@ -110,27 +115,46 @@ fun ReclamoListaItem(
                 )
                 CardListItem(
                   textTitle = "Descripción:",
-                  textValue = item.descripcionReclamo,
+                  textValue = item.DescripcionReclamo,
                   painterResource(id = R.drawable.ic_source),
                   size = 12.sp
 
                 )
                 CardListItem(
                   textTitle = "Referencia:",
-                  textValue = item.referenciaUbicacion,
+                  textValue = item.ReferenciaUbicacion,
                   painterResource(id = R.drawable.ic_file),
                   spacing = 4.dp,
                   size = 12.sp
-
                 )
-
-
               }
               Column(modifier = Modifier
                 .clickable {
-                  navController.navigate(route = AppScreens.LocationMap.createRoute(ap))
+                  val result = claimViewModel.cambioEstadoViewModel(item, context, "2", "1")
+                  if (result) {
+                    val params = mapOf(
+                      "latitud" to item.latitud,
+                      "longitud" to item.longitud,
+                      "CodigoReclamo" to item.CodigoReclamo,
+                      "CodigoEstado" to item.CodigoEstadoReclamo,
+                      "NombreClaseReclamo" to item.NombreClaseReclamo,
+                      "SED" to item.CodigoSED,
+                      "Ruta" to item.CodigoRutaSuministro,
+                      "Celular" to item.Celular,
+                      "CodigoDireccionElectrica" to item.CodigoDireccionElectrica
+                    )
+                    navController.navigate(
+                      route = AppScreens.LocationMap.createRoute(
+                        ap,
+                        estado,
+                        params
+                      )
+                    )
+                  } else {
+                    context.toast("Ocurrió un error")
+                  }
                 }) {
-                val imageResource = when (item.codigoEstadoReclamo) {
+                val imageResource = when (item.CodigoEstadoReclamo) {
                   "2" -> R.drawable.pin_celeste
                   "3" -> R.drawable.pin_amarillo
                   "4" -> R.drawable.pin_verde
@@ -139,7 +163,7 @@ fun ReclamoListaItem(
                 }
                 Image(
                   painter = painterResource(id = imageResource),
-                  contentDescription = "Estado del reclamo: ${item.codigoEstadoReclamo}",
+                  contentDescription = "Estado del reclamo: ${item.CodigoEstadoReclamo}",
                   modifier = Modifier.size(45.dp)
                 )
               }
@@ -150,39 +174,41 @@ fun ReclamoListaItem(
               .fillMaxWidth()
           ) {
 
-                Row(
-                  modifier = Modifier
-                    .fillMaxWidth(),
-                  horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                  Column(modifier = Modifier.width(210.dp)) {
-                    CardListItem(
-                      textTitle = "Ruta:",
-                      textValue = item.codigoRutaSuministro,
-                      painterResource(id = R.drawable.ic_place),
-                      spacing = 23.dp
-                    )
-                  }
-                  Column(modifier = Modifier.width(170.dp)) {
-                    CardListItem(
-                      textTitle = "SED:",
-                      textValue = item.codigoSED,
-                      painterResource(id = R.drawable.ic_sed)
-                    )
-                  }
-                }
-            if (item.celular.isNotEmpty()) {
+            Row(
+              modifier = Modifier
+                .fillMaxWidth(),
+              horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+              Column(modifier = Modifier.width(210.dp)) {
+                CardListItem(
+                  textTitle = "Ruta:",
+                  textValue = item.CodigoRutaSuministro,
+                  painterResource(id = R.drawable.ic_place),
+                  spacing = 23.dp
+                )
+              }
+              Column(modifier = Modifier.width(170.dp)) {
+                CardListItem(
+                  textTitle = "SED:",
+                  textValue = item.CodigoSED,
+                  painterResource(id = R.drawable.ic_sed)
+                )
+              }
+            }
+            if (item.Celular.isNotEmpty()) {
               Row {
                 CardListItem(
                   textTitle = "Celular:",
-                  textValue = item.celular,
+                  textValue = item.Celular,
                   painter = painterResource(id = R.drawable.ic_call),
-                  size = 15.sp
+                  size = 15.sp,
+                  spacing = 15.dp,
+                  widthTextValue = 80.dp
                 )
                 Row {
                   IconButton(
                     onClick = {
-                      CallPhone(context, item.celular)
+                      CallPhone(context, item.Celular)
                     }, modifier = Modifier
                       .padding(start = 5.dp)
                       .width(30.dp)
@@ -203,11 +229,11 @@ fun ReclamoListaItem(
                 }
               }
             }
-              CardListItem(
-                textTitle = "Fecha Registro:",
-                textValue = (item.fechaRegistro), //formatDateTime
-                painterResource(id = R.drawable.ic_calendar)
-              )
+            CardListItem(
+              textTitle = "Fecha Registro:",
+              textValue = (item.FechaRegistro), //formatDateTime
+              painterResource(id = R.drawable.ic_calendar)
+            )
           }
         }
       }
@@ -215,17 +241,18 @@ fun ReclamoListaItem(
     }
   }
 }
+/*
 
 @Preview(showBackground = true)
 @Composable
 private fun Muestrareclamo() {
   val navController = rememberNavController()
   val item = ReclamoArray(
-    codigoSuministro = "CASAS PAREJA, RUT LORGIA",
+    codigoSuministro = "CASAS PAREJA, RUT LORGIA SEBASTIAN",
     codigoSED = "0010826",
     codigoEstadoReclamo = "2",
-    direccionElectrica = "APV. MINKA A - 7 SAN SEBASTIAN",
-    nombreSuministros = "nombreSuministros",
+    direccionElectrica = "APV. MINKA A - 7 SAN SEBASTIAN SEBASTIAN SEBASTIAN",
+    nombreSuministros = "nombre Suministros SEBASTIAN",
     codigoReclamo = "2024001000000028182",
     nombreClaseReclamo = "FALTA DE SERVICIO EN EL PREDIO",
     codigoRutaSuministro = "0010610006085",
@@ -246,6 +273,7 @@ private fun Muestrareclamo() {
     true,
     { },
     navController,
-    "0"
+    "0",
+    "2"
   )
-}
+}*/

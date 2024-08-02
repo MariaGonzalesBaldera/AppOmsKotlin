@@ -37,7 +37,12 @@ fun AppNavigation(userViewModel: UserViewModel, claimViewModel: ClaimViewModel) 
     }
     composable(route = AppScreens.LocationMap.route) { backStackEntry ->
       val ap = backStackEntry.arguments?.getString("ap") ?: ""
-      LocationMap(navController, ap = ap)
+      val estado = backStackEntry.arguments?.getString("estado") ?: ""
+      val query = backStackEntry.arguments?.getString("query") ?: ""
+      val params = query.split("&")
+        .map { it.substringBefore("=") to it.substringAfter("=") }
+        .toMap()
+      LocationMap(navController, ap = ap, estado = estado,params=params)
     }
     composable(route = AppScreens.AlumbradoDesestimarCard.route) {
       CardAlumbradoDesestimar()

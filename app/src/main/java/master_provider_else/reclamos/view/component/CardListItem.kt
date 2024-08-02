@@ -1,14 +1,18 @@
 package master_provider_else.reclamos.ui.theme.view.component
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -33,7 +37,8 @@ fun CardListItem(
   painter: Painter? = null,
   size: TextUnit = 15.sp,
   letterSpacing: TextUnit = (-1).sp,
-  spacing: Dp=1.dp
+  spacing: Dp = 1.dp,
+  widthTextValue: Dp = 220.dp
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
@@ -61,11 +66,16 @@ fun CardListItem(
         vertical = 10.dp
       )
     )
-    Text(
-      text = textValue,
-      color = colorResource(id = R.color.colorTextGray),
-      fontSize = size,
-      letterSpacing = letterSpacing
-    )
+    Box(
+      modifier = Modifier
+        .width(widthTextValue)
+    ) {
+      Text(
+        text = textValue,
+        color = colorResource(id = R.color.colorTextGray),
+        fontSize = size,
+        letterSpacing = letterSpacing
+      )
+    }
   }
 }
