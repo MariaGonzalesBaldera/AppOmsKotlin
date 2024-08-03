@@ -6,9 +6,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
+import master_provider_else.reclamos.data.database.entity.EncuestaEntity
+import master_provider_else.reclamos.data.database.entity.FotoEntity
+import master_provider_else.reclamos.data.database.entity.MaterialEntity
+import master_provider_else.reclamos.data.database.entity.PreguntaEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSEntity
+import master_provider_else.reclamos.data.database.entity.SolucionAveriaEntity
+import master_provider_else.reclamos.data.database.entity.SolucionInterrupcionEntity
+import master_provider_else.reclamos.data.database.entity.TipoAreaIntervencionEntity
+import master_provider_else.reclamos.data.database.entity.TipoDenunciaEntity
+import master_provider_else.reclamos.data.database.entity.TipoEquipoProteccionManiobraEntity
+import master_provider_else.reclamos.data.database.entity.TipoInstalacionAfectadaEntity
+import master_provider_else.reclamos.data.database.entity.TipoInstalacionElectricaAfectadaEntity
+import master_provider_else.reclamos.data.database.entity.TipoManiobraCapacidadEntity
 import master_provider_else.reclamos.data.database.entity.UserEntity
+import master_provider_else.reclamos.data.database.entity.gnMaterialEntity
 
 
 @Dao
@@ -41,7 +55,6 @@ interface UserDao {
 
   @Query("SELECT * FROM Reclamo WHERE codigoEstadoReclamo IN(:tipo) AND tipolistaReclamo like :tiporeclamo")
   fun getTipoReclamo(tipo: Array<String?>?, tiporeclamo: String?): List<ReclamoEntity?>
-  //fun getTipoReclamo(tipo: Array<String?>?, tiporeclamo: String?): List<ReclamoEntity?>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertMultipleClaims(reclamo: List<ReclamoEntity>)
@@ -51,10 +64,53 @@ interface UserDao {
 
   @Update(onConflict = OnConflictStrategy.IGNORE)
   fun Reclamo_Update(reclamo: ReclamoEntity)
-  //MATERIAL
-  //@Insert(onConflict = OnConflictStrategy.REPLACE)
-  //fun insertMultipleMateriales(list: List<MaterialEntity?>?)
 
-  //@Insert(onConflict = OnConflictStrategy.REPLACE)
-  //fun insertMultipleFotos(list: List<FotoEntity?>?)
+  //MATERIAL
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleMateriales(list: List<MaterialEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleFotos(list: List<FotoEntity>)
+
+  @Query("DELETE FROM Encuesta")
+  fun delete_All_Encuesta()
+
+  @Query("DELETE FROM Pregunta")
+  fun delete_All_Pregunta()
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleEncuesta(list: List<EncuestaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultiplePregunta(list: List<PreguntaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleTipoDenuncia(list: List<TipoDenunciaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleTipoInstalacionElectricaAfectada(list: List<TipoInstalacionElectricaAfectadaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleTipoInstalacionAfectada(list: List<TipoInstalacionAfectadaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleTipoEquipoProteccionManiobra(list: List<TipoEquipoProteccionManiobraEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleTipoManiobraCapacidad(list: List<TipoManiobraCapacidadEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleCausaAveria(list: List<CausaAveriaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleSolucionAveria(list: List<SolucionAveriaEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleSolucionInterrupcion(list: List<SolucionInterrupcionEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleTipoAreaIntervencion(list: List<TipoAreaIntervencionEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleMaterialesGeneral(list: List<gnMaterialEntity>)
 }

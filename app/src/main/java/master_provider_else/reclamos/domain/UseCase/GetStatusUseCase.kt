@@ -15,7 +15,6 @@ class GetStatusUseCase @Inject constructor(
   private val repository: QuoteRepository
 ) {
   suspend fun fetchChangeStatus(
-    contentType: String,
     authorization: String,
     context: Context,
     item: ReclamoEntity,
@@ -30,7 +29,7 @@ class GetStatusUseCase @Inject constructor(
 
     return try {
       val response = repository.getCambioEstado(
-        contentType, "Bearer $authorization", estadoRequest
+         "Bearer $authorization", estadoRequest
       )
       if (response.isSuccessful) {
         val responseBody = response.body()

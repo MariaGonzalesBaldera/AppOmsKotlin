@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "TipoDenuncia")
 data class TipoDenunciaEntity(
   @PrimaryKey
-  @ColumnInfo(name = "CodigoTipoDenuncia") val CodigoTipoDenuncia: String,
-  @ColumnInfo(name = "NombreTipoDenuncia") val NombreTipoDenuncia: String,
-  @ColumnInfo(name = "Simbolo") val Simbolo: String,
+  @ColumnInfo(name = "CodigoTipoDenuncia") var CodigoTipoDenuncia: String = "",
+  @ColumnInfo(name = "NombreTipoDenuncia") var NombreTipoDenuncia: String = "",
+  @ColumnInfo(name = "Simbolo") var Simbolo: String = "",
 )

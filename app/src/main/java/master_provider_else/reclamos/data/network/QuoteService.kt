@@ -9,6 +9,7 @@ import master_provider_else.reclamos.data.dto.ApiResponseArchivoMovil
 import master_provider_else.reclamos.data.dto.ApiResponseEncuesta
 import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
+import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
@@ -16,7 +17,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class QuoteService @Inject constructor(private val api: QuoteApliClient) {
-
+  ///del api
   suspend fun getLogin(usuario: String, pass: String): Response<ApiResponse> {
     return withContext(Dispatchers.IO) {
       val loginRequest = LoginRequest(usuario, pass);
@@ -27,7 +28,6 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
   }
 
   suspend fun getReclamo(
-    contentType: String,
     authorization: String,
     strCodigoCuadrilla: String,
     strCodigoEstadoReclamo: String,
@@ -36,7 +36,7 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
     return withContext(Dispatchers.IO) {
       val response: Response<ApiResponseReclamo> =
         api.reportClaim(
-          contentType,
+          "application/json; charset=UTF-8",
           authorization,
           strCodigoCuadrilla,
           strCodigoEstadoReclamo,
@@ -48,7 +48,6 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
   }
 
   suspend fun getFichaTecnica(
-    contentType: String,
     authorization: String,
     strCodigoReclamo: String,
     strCodigoCuadrilla: String,
@@ -56,7 +55,7 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
     return withContext(Dispatchers.IO) {
       val response: Response<ApiResponseFicha> =
         api.recuperarFicha(
-          contentType,
+          "application/json; charset=UTF-8",
           authorization,
           strCodigoReclamo,
           strCodigoCuadrilla,
@@ -67,7 +66,6 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
   }
 
   suspend fun getReclamoInformeMaterial(
-    contentType: String,
     authorization: String,
     strCodigoReclamo: String,
     strCodigoCuadrilla: String,
@@ -75,7 +73,7 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
     return withContext(Dispatchers.IO) {
       val response: Response<ApiResponseMaterial> =
         api.reclamoInformeMaterial(
-          contentType,
+          "application/json; charset=UTF-8",
           authorization,
           strCodigoReclamo,
           strCodigoCuadrilla,
@@ -86,14 +84,13 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
   }
 
   suspend fun getReclamoComercialArchivoMovilLeer(
-    contentType: String,
     authorization: String,
     strCodigoReclamo: String,
   ): Response<ApiResponseArchivoMovil> {
     return withContext(Dispatchers.IO) {
       val response: Response<ApiResponseArchivoMovil> =
         api.reclamoComercialArchivoMovilLeer(
-          contentType,
+          "application/json; charset=UTF-8",
           authorization,
           strCodigoReclamo,
         );
@@ -106,12 +103,11 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
   }
 
   suspend fun getEncuesta(
-    contentType: String,
     authorization: String,
   ): Response<ApiResponseEncuesta> {
     return withContext(Dispatchers.IO) {
       val response: Response<ApiResponseEncuesta> = api.reclamoEncuesta(
-        contentType,
+        "application/json; charset=UTF-8",
         authorization
       );
       Log.e("Log Encuesta", "Encuesta" + response.message().toString())
@@ -120,17 +116,30 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
   }
 
   suspend fun getCambioEstado(
-    contentType: String,
     authorization: String,
     request: EstadoRequest
   ): Response<ApiResponseEstado> {
     return withContext(Dispatchers.IO) {
       val response: Response<ApiResponseEstado> = api.cambiarEstado(
-        contentType,
+        "application/json; charset=UTF-8",
         authorization,
         request
       );
       Log.e("Log QuoteService", response.message().toString())
+      response
+    }
+  }
+
+  suspend fun getFichaTecnica(
+    authorization: String
+  ): Response<ApiResponseFichaTecnica> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseFichaTecnica> =
+        api.getFichaTecnica(
+          "application/json; charset=UTF-8",
+          authorization
+        );
+      Log.e("ReclamoInformeMaterial", "ReclamoInformeMaterial" + response.message().toString())
       response
     }
   }
