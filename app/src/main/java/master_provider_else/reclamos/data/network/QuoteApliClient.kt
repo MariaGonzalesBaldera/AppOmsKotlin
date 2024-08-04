@@ -6,10 +6,13 @@ import master_provider_else.reclamos.data.dto.ApiResponseArchivoMovil
 import master_provider_else.reclamos.data.dto.ApiResponseEncuesta
 import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
+import master_provider_else.reclamos.data.dto.ApiResponseFichaMapa
 import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
+import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
+import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -74,4 +77,29 @@ interface QuoteApliClient {
     @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
     @Header("Authorization") authorization: String,
   ): Response<ApiResponseFichaTecnica>
+
+  @GET("api/Reclamo/ObtenerMapa/{strCodigoCuadrilla}/{strAMT}")
+  suspend fun getMapa(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Path("strCodigoCuadrilla") strCodigoCuadrilla: String,
+    @Path("strAMT") strAMT: String
+  ): Response<ApiResponseFichaMapa>
+
+  @POST("api/Reclamo/InicioTrabajo")
+  suspend fun iniciarTrabajo(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: InicioTrabajoRequest
+  ): Response<ApiResponseInicioTrabajo>
+
 }
+
+
+
+
+
+
+
+
+

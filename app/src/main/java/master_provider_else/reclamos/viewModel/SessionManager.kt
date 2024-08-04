@@ -8,6 +8,7 @@ class SessionManager @Inject constructor() {
 
   private var token: String? = null
   private var cuadrilla: String? = null
+  private var usuario: String? = null
 
   fun saveToken(newToken: String) {
     token = newToken
@@ -24,4 +25,11 @@ class SessionManager @Inject constructor() {
   fun getCuadrilla(): String? {
     return cuadrilla
   }
+  fun saveUsuario(newUsuario: String) {
+    usuario = newUsuario
+  }
+  fun getUsuario(): String? {
+    return usuario
+  }
+
 }

@@ -7,8 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
+import master_provider_else.reclamos.data.database.entity.DaoCoordenadasEntity
 import master_provider_else.reclamos.data.database.entity.EncuestaEntity
 import master_provider_else.reclamos.data.database.entity.FotoEntity
+import master_provider_else.reclamos.data.database.entity.LineasEntity
 import master_provider_else.reclamos.data.database.entity.MaterialEntity
 import master_provider_else.reclamos.data.database.entity.PreguntaEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
@@ -113,4 +115,17 @@ interface UserDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleMaterialesGeneral(list: List<gnMaterialEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleDaoCoordenadas(list: List<DaoCoordenadasEntity>)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMultipleLineas(list: List<LineasEntity>)
+
+  @Query("SELECT * FROM Reclamo  WHERE CodigoReclamo  == :codigoReclamo")
+  fun reclamo_Get(codigoReclamo: String): ReclamoEntity
+
+  @Update(onConflict = OnConflictStrategy.IGNORE)
+  fun reclamo_Update(entity: ReclamoEntity)
+
 }

@@ -16,22 +16,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
-import master_provider_else.reclamos.data.dto.ReclamoArray
+import master_provider_else.reclamos.domain.model.ParamMap
 import master_provider_else.reclamos.navigation.AppScreens
-import master_provider_else.reclamos.utils.formatDateTime
 import master_provider_else.reclamos.view.ui.theme.toast
 import master_provider_else.reclamos.viewModel.ClaimViewModel
 
@@ -130,29 +127,42 @@ fun ReclamoListaItem(
               }
               Column(modifier = Modifier
                 .clickable {
-                  val result = claimViewModel.cambioEstadoViewModel(item, context, "2", "1")
-                  if (result) {
-                    val params = mapOf(
-                      "latitud" to item.latitud,
-                      "longitud" to item.longitud,
-                      "CodigoReclamo" to item.CodigoReclamo,
-                      "CodigoEstado" to item.CodigoEstadoReclamo,
-                      "NombreClaseReclamo" to item.NombreClaseReclamo,
-                      "SED" to item.CodigoSED,
-                      "Ruta" to item.CodigoRutaSuministro,
-                      "Celular" to item.Celular,
-                      "CodigoDireccionElectrica" to item.CodigoDireccionElectrica
+                  //val result = claimViewModel.cambioEstadoViewModel(item, context, "2", "1")
+                  //if (result) {
+                  //val params = mapOf(
+                  //  "latitud" to item.latitud,
+                  //  "longitud" to item.longitud,
+                  //  "codigoReclamo" to item.CodigoReclamo,
+                  //  "codigoEstado" to item.CodigoEstadoReclamo,
+                  //  "nombreClaseReclamo" to item.NombreClaseReclamo,
+                  //  "sed" to item.CodigoSED,
+                  // "ruta" to item.CodigoRutaSuministro,
+                  //  "celular" to item.Celular,
+                  //  "codigoDireccionElectrica" to item.CodigoDireccionElectrica
+                  //)
+                  val gson = Gson()
+
+                  val paramsJson = ParamMap(
+                    latitud = item.latitud.toDouble(),
+                    longitud = item.longitud.toDouble(),
+                    codigoReclamo = item.CodigoReclamo,
+                    codigoEstadoReclamo = item.CodigoEstadoReclamo,
+                    nombreClaseReclamo = item.NombreClaseReclamo,
+                    codigoSED = item.CodigoSED,
+                    codigoRutaSuministro = item.CodigoRutaSuministro,
+                    celular = item.Celular,
+                    codigoDireccionElectrica = item.CodigoDireccionElectrica
+                  )
+                  navController.navigate(
+                    route = AppScreens.LocationMap.createRoute(
+                      ap,
+                      estado,
+                      paramsJson
                     )
-                    navController.navigate(
-                      route = AppScreens.LocationMap.createRoute(
-                        ap,
-                        estado,
-                        params
-                      )
-                    )
-                  } else {
-                    context.toast("Ocurrió un error")
-                  }
+                  )
+                  //} else {
+                  //  context.toast("Ocurrió un error")
+                  // }
                 }) {
                 val imageResource = when (item.CodigoEstadoReclamo) {
                   "2" -> R.drawable.pin_celeste

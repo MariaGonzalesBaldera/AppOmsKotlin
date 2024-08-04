@@ -103,7 +103,8 @@ fun ProgramadoScreen(
     claimViewModel.onClaimView(ap, context, "2")
   }
 
-  claimViewModel.programadoReclamos.observe(lifecycleOwner) { value ->
+  /*
+  * claimViewModel.programadoReclamos.observe(lifecycleOwner) { value ->
     items = value.map { reclamo ->
       ReclamoEntity(
         CodigoSuministro = reclamo.codigoSuministro,
@@ -128,8 +129,32 @@ fun ProgramadoScreen(
       )
     }
   }
+  * */
+  val itemsFake = listOf(
+    ReclamoEntity(
+      CodigoSuministro = "codigoSuministro",
+      CodigoSED = "0010297",
+      CodigoEstadoReclamo = "2",
+      DireccionElectrica = "CALLE GARCILASO N°200 (4TO NIVEL)",
+      NombreSuministro = "GUISPECUSCO CCORIHUAMANI, LINDA GLORGINA",
+      CodigoReclamo = "codigoReclamo",
+      NombreClaseReclamo = "nombreClaseReclamo",
+      CodigoRutaSuministro = "0010609002844",
+      Celular = "954607452",
+      latitud = "-79.02123342224186",
+      longitud = "-8.130710445269498",
+      DescripcionReclamo = "DESCRIPCION PRUEBA",
+      ReferenciaUbicacion = "REFERENCIA PRUEBA",
+      CodigoDireccionElectrica = "codigoDireccionElectrica",
+      FechaRegistro = "16 jul. 2024 07:52:00",
+      SectorTipico = "sectorTipico",
+      Plazo = "1",
+      FechaLimiteAtencion = "fechaLimiteAtencion",
+      tipoReclamo = "tipoReclamo"
+    )
+  )
   ExpandableList(
-    items = items,
+    items = itemsFake,
     modifier = Modifier,
     navController = navController,
     ap = ap,

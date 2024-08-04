@@ -81,6 +81,8 @@ class GetClaimUseCase @Inject constructor(
     try {
       val response = repository.getFichaTecnica(authorizationContext)
       if (response.body()?.respuesta?.error != 0) {
+        Log.e("Log error", response.body()?.respuesta?.message.toString())
+      } else {
         val joFichaTecnica = JSONObject(response.body()?.respuesta?.body?.fichaTecnica)
 
         if (joFichaTecnica.length() > 0) {
@@ -336,6 +338,8 @@ class GetClaimUseCase @Inject constructor(
         )
       if (response.isSuccessful) {
         if (response.body()?.respuesta?.error != 0) {
+          Log.e("Log error", response.body()?.respuesta?.message.toString())
+        } else {
           val joEncuesta: JSONArray = JSONArray(response.body()?.respuesta?.body?.encuesta)
 
           for (i in 0 until joEncuesta.length()) {
@@ -389,6 +393,7 @@ class GetClaimUseCase @Inject constructor(
             repository.insertMultipleEncuesta(arrayListEncuesta)
             repository.insertMultiplePregunta(arrayListPregunta)
           }
+
 
         }
       } else {
@@ -452,6 +457,8 @@ class GetClaimUseCase @Inject constructor(
       )
       if (response.isSuccessful) {
         if (response.body()?.respuesta?.error != 0) {
+          Log.e("Log error", response.body()?.respuesta?.message.toString())
+        } else {
           val body = response.body()?.respuesta?.body
           val fotosReclamo = body?.fotosReclamo
           if (!fotosReclamo.isNullOrEmpty()) {
@@ -468,6 +475,8 @@ class GetClaimUseCase @Inject constructor(
           withContext(Dispatchers.IO) {
             repository.insertMultipleFotos(photos)
           }
+          Log.e("Log error", response.body()?.respuesta?.message.toString())
+
         }
       } else {
         Log.e("API Error", "HTTP error: ${response.code()} ${response.message()}")
@@ -531,7 +540,10 @@ class GetClaimUseCase @Inject constructor(
         )
       val respuesta = fichaResponse.body()?.respuesta
       if (respuesta?.error != 0) {
-        respuesta?.body?.let { body ->
+        Log.e("Mensaje", "Mensaje: " + respuesta?.message)
+
+      } else {
+        respuesta.body.let { body ->
           val jsonObject = JSONObject(body.reclamoInformeOMS)
           val reclamoInformeOMSEntity = ReclamoInformeOMSEntity(
             CodigoReclamo = jsonObject.optString("CodigoReclamo"),
@@ -552,8 +564,6 @@ class GetClaimUseCase @Inject constructor(
           )
           repository.reclamoInformeOMS_New(reclamoInformeOMSEntity)
         }
-      } else {
-        Log.e("Mensaje", "Mensaje: " + respuesta.message)
       }
     }
   }

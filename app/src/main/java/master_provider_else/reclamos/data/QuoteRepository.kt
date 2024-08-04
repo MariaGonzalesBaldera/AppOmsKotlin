@@ -6,8 +6,10 @@ import kotlinx.coroutines.withContext
 import master_provider_else.reclamos.data.database.dao.ClaimDao
 import master_provider_else.reclamos.data.database.dao.UserDao
 import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
+import master_provider_else.reclamos.data.database.entity.DaoCoordenadasEntity
 import master_provider_else.reclamos.data.database.entity.EncuestaEntity
 import master_provider_else.reclamos.data.database.entity.FotoEntity
+import master_provider_else.reclamos.data.database.entity.LineasEntity
 import master_provider_else.reclamos.data.database.entity.MaterialEntity
 import master_provider_else.reclamos.data.database.entity.PreguntaEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
@@ -28,10 +30,13 @@ import master_provider_else.reclamos.data.dto.ApiResponseArchivoMovil
 import master_provider_else.reclamos.data.dto.ApiResponseEncuesta
 import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
+import master_provider_else.reclamos.data.dto.ApiResponseFichaMapa
 import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
+import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
+import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
 import master_provider_else.reclamos.data.network.QuoteService
 import master_provider_else.reclamos.domain.model.Claim
 import master_provider_else.reclamos.domain.model.User
@@ -180,6 +185,35 @@ class QuoteRepository @Inject constructor(
     }
   }
 
+  suspend fun getMapa(
+    authorization: String,
+    strCodigoCuadrilla: String,
+    strAMT: String
+  ): Response<ApiResponseFichaMapa> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseFichaMapa> = api.getMapa(
+        authorization,
+        strCodigoCuadrilla,
+        strAMT
+      );
+      Log.e("Log getMapa ", "getMapa" + response.message().toString())
+      response
+    }
+  }
+
+
+  suspend fun InicioTrabajo(
+    authorization: String,
+    request: InicioTrabajoRequest
+  ): Response<ApiResponseInicioTrabajo> {
+    val response: Response<ApiResponseInicioTrabajo> = api.inicioTrabajo(
+      authorization,
+      request
+    )
+    Log.e("Inicio Trabajo", response.message())
+    return response
+  }
+
   suspend fun Reclamo_Update(reclamo: ReclamoEntity) {
     userDao.Reclamo_Update(reclamo)
   }
@@ -248,5 +282,20 @@ class QuoteRepository @Inject constructor(
     userDao.insertMultipleMaterialesGeneral(list)
   }
 
+  suspend fun insertMultipleDaoCoordenadas(list: List<DaoCoordenadasEntity>) {
+    userDao.insertMultipleDaoCoordenadas(list)
+  }
+
+  suspend fun insertMultipleLineas(list: List<LineasEntity>) {
+    userDao.insertMultipleLineas(list)
+  }
+
+  suspend fun reclamo_Get(codigoReclamo: String): ReclamoEntity {
+    return userDao.reclamo_Get(codigoReclamo)
+  }
+
+  suspend fun reclamo_Update(entity: ReclamoEntity) {
+    userDao.reclamo_Update(entity)
+  }
 
 }

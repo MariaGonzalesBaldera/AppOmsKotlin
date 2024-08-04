@@ -9,10 +9,13 @@ import master_provider_else.reclamos.data.dto.ApiResponseArchivoMovil
 import master_provider_else.reclamos.data.dto.ApiResponseEncuesta
 import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
+import master_provider_else.reclamos.data.dto.ApiResponseFichaMapa
 import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
+import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
+import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -140,6 +143,39 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
           authorization
         );
       Log.e("ReclamoInformeMaterial", "ReclamoInformeMaterial" + response.message().toString())
+      response
+    }
+  }
+
+  suspend fun getMapa(
+    authorization: String,
+    strCodigoCuadrilla: String,
+    strAMT: String
+  ): Response<ApiResponseFichaMapa> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseFichaMapa> =
+        api.getMapa(
+          "application/json; charset=UTF-8",
+          authorization,
+          strCodigoCuadrilla,
+          strAMT
+        );
+      Log.e("getMapa", "getMapa" + response.message().toString())
+      response
+    }
+  }
+
+  suspend fun inicioTrabajo(
+    authorization: String,
+    request: InicioTrabajoRequest
+  ): Response<ApiResponseInicioTrabajo> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseInicioTrabajo> = api.iniciarTrabajo(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Inicio Trabajo", response.message().toString())
       response
     }
   }
