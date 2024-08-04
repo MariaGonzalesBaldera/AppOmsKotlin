@@ -95,7 +95,9 @@ fun LoginScreen(navController: NavController, userViewModel: UserViewModel) {
           } else {
             userViewModel.clearCredentials()
           }
-          userViewModel.onLoginView(userValue.value, passwordValue.value, context)
+          //userViewModel.onLoginView(userValue.value, passwordValue.value, context)
+          navController.navigate(route = AppScreens.MenuActivityScreen.route)
+
         })
         ProgressDialogLoading(onDismiss = { dialogResponse = false }, showProgress = dialogResponse)
       }

@@ -1,5 +1,8 @@
 package master_provider_else.reclamos.navigation
 
+import com.google.gson.Gson
+import master_provider_else.reclamos.domain.model.ParamMap
+
 sealed class AppScreens(val route: String) {
   object LoginScreen : AppScreens("login_screen")
   object MenuActivityScreen : AppScreens("menu_screen")
@@ -26,10 +29,11 @@ sealed class AppScreens(val route: String) {
 
   object InicioTrabajoOmsScreen : AppScreens("inicio_trabajo_screen")
 
-  object LocationMap : AppScreens("location_map/{ap}/{estado}") {
-    fun createRoute(ap: String, estado: String, params: Map<String, String>): String {
-      val queryParams = params.entries.joinToString(separator = "&") { "${it.key}=${it.value}" }
-      return "location_map/$ap/$estado?$queryParams"
+  object LocationMap : AppScreens("location_map/{ap}/{estado}/{paramsJson}") {
+    fun createRoute(ap: String, estado: String, params: ParamMap): String {
+      val gson = Gson()
+      val paramsJson = gson.toJson(params)
+      return "location_map/$ap/$estado/$paramsJson"
     }
   }
 

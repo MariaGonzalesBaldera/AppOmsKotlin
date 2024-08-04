@@ -8,7 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 import master_provider_else.reclamos.ProgressDialogLoading
+import master_provider_else.reclamos.domain.model.ParamMap
 import master_provider_else.reclamos.ui.theme.view.component.CardAlumbradoDesestimar
 import master_provider_else.reclamos.ui.theme.view.component.CardSelectMaterial
 import master_provider_else.reclamos.ui.theme.view.component.ContentTabItem
@@ -20,13 +22,19 @@ import master_provider_else.reclamos.ui.theme.view.screen.ReclamoListaScreen
 import master_provider_else.reclamos.ui.theme.view.screen.ReclamosRegistroInfFichaTecnica
 import master_provider_else.reclamos.view.screen.oms.InicioTrabajoOmsScreen
 import master_provider_else.reclamos.view.screen.LocationMap
+import master_provider_else.reclamos.view.screen.LocationScreen
 import master_provider_else.reclamos.view.screen.ap.InicioTrabajoApScreen
 import master_provider_else.reclamos.viewModel.ClaimViewModel
+import master_provider_else.reclamos.viewModel.MapaViewModel
 import master_provider_else.reclamos.viewModel.UserViewModel
 
 
 @Composable
-fun AppNavigation(userViewModel: UserViewModel, claimViewModel: ClaimViewModel) {
+fun AppNavigation(
+  userViewModel: UserViewModel,
+  claimViewModel: ClaimViewModel,
+  mapaViewModel: MapaViewModel
+) {
   val navController = rememberNavController()
   NavHost(navController = navController, startDestination = AppScreens.LoginScreen.route) {
     composable(route = AppScreens.LoginScreen.route) {
@@ -38,12 +46,13 @@ fun AppNavigation(userViewModel: UserViewModel, claimViewModel: ClaimViewModel) 
     composable(route = AppScreens.LocationMap.route) { backStackEntry ->
       val ap = backStackEntry.arguments?.getString("ap") ?: ""
       val estado = backStackEntry.arguments?.getString("estado") ?: ""
-      val query = backStackEntry.arguments?.getString("query") ?: ""
-      val params = query.split("&")
-        .map { it.substringBefore("=") to it.substringAfter("=") }
-        .toMap()
-      LocationMap(navController, ap = ap, estado = estado,params=params)
+      val paramsJson = backStackEntry.arguments?.getString("paramsJson") ?: ""
+      val gson = Gson()
+      val params = gson.fromJson(paramsJson, ParamMap::class.java)
+      LocationScreen(navController = navController,mapaViewModel = mapaViewModel, ap = ap, estado = estado, params = params)
     }
+
+
     composable(route = AppScreens.AlumbradoDesestimarCard.route) {
       CardAlumbradoDesestimar()
     }
@@ -58,11 +67,6 @@ fun AppNavigation(userViewModel: UserViewModel, claimViewModel: ClaimViewModel) 
         claimViewModel = claimViewModel
       )
     }
-
-//show card
-    //composable(route = AppScreens.ReclamoListaItemCard.route) {
-    //ReclamoListaItem(navController)
-    //}
 
     composable(route = AppScreens.SelectMaterialCard.route) {
       CardSelectMaterial(onDismiss = {})

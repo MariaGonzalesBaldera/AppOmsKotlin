@@ -35,6 +35,7 @@ class GetLoginUseCase @Inject constructor(
           Log.e("UsuarioUseCase", result.body().toString())
           sessionManager.saveToken(result.body()?.respuesta?.body?.token ?: "")
           sessionManager.saveCuadrilla(result.body()?.respuesta?.body?.codigoCuadrilla ?: "")
+          sessionManager.saveUsuario(usuario)
           repository.insertUser(userEntity)
           userEntity.toDomain()
 
@@ -44,7 +45,7 @@ class GetLoginUseCase @Inject constructor(
       } else {
         null
       }
-    } else{
+    } else {
       return repository.getLoginFromDataBase(usuario = usuario, pass = pass)
     }
   }

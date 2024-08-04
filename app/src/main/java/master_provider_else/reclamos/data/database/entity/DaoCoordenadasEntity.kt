@@ -10,12 +10,13 @@ import javax.annotation.Nonnull
 data class DaoCoordenadasEntity(
   @PrimaryKey(autoGenerate = true)
   @Nonnull
-  @ColumnInfo(name = "id") val id: Int,
-  @ColumnInfo(name = "CodigoReclamo") val CodigoReclamo: String,
-  @ColumnInfo(name = "CodigoNTCSE") val CodigoNTCSE: String,
-  @ColumnInfo(name = "CodigoUbicacionElectrica") val CodigoUbicacionElectrica: Int,
-  @ColumnInfo(name = "Latitud") val Latitud: String,
-  @ColumnInfo(name = "Longitud") val Longitud: String,
-  @ColumnInfo(name = "codigoTipoUbicacion") val codigoTipoUbicacion: String,
-  @ColumnInfo(name = "tipoLista") val tipoLista: String
+  @ColumnInfo(name = "id") val id: Int = 0,
+  @ColumnInfo(name = "CodigoReclamo") val CodigoReclamo: String = "",
+  @ColumnInfo(name = "CodigoNTCSE") val CodigoNTCSE: String = "",
+  @ColumnInfo(name = "CodigoUbicacionElectrica") val CodigoUbicacionElectrica: Int = 0,
+  @ColumnInfo(name = "Latitud") val Latitud: String = "",
+  @ColumnInfo(name = "Longitud") val Longitud: String = "",
+  @ColumnInfo(name = "codigoTipoUbicacion") val codigoTipoUbicacion: String = "",
+  @ColumnInfo(name = "tipoLista") val tipoLista: String = "",
+  @ColumnInfo(name = "TipoCoordenada") val TipoCoordenada: String = ""
 )

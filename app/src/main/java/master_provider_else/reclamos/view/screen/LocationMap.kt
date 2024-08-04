@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import master_provider_else.reclamos.domain.model.ParamMap
 import master_provider_else.reclamos.view.ui.theme.AppOmsKotlinTheme
 
 @SuppressLint("UnrememberedMutableState")
@@ -20,7 +21,7 @@ fun LocationMap(
   navController: NavController,
   ap: String,
   estado: String,
-  params: Map<String, String>
+  params: ParamMap
 ) {
   val context = LocalContext.current
   var currentLocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
