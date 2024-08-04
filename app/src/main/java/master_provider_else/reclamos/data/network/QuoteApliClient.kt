@@ -6,6 +6,7 @@ import master_provider_else.reclamos.data.dto.ApiResponseArchivoMovil
 import master_provider_else.reclamos.data.dto.ApiResponseEncuesta
 import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
+import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
@@ -67,4 +68,10 @@ interface QuoteApliClient {
     @Header("Authorization") authorization: String,
     @Body request: EstadoRequest
   ): Response<ApiResponseEstado>
+
+  @GET("api/FichaTecnica")
+  suspend fun getFichaTecnica(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+  ): Response<ApiResponseFichaTecnica>
 }

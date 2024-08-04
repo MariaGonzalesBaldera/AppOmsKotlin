@@ -29,7 +29,6 @@ class ClaimViewModel @Inject constructor(
   fun onClaimView(strAP: String, context: Context, estado: String) {
     viewModelScope.launch {
       val result = getClaimUseCase.fetchClaims(
-        contentType = "application/json; charset=UTF-8",
         authorization = sessionManager.getToken().toString(),
         strCodigoCuadrilla = sessionManager.getCuadrilla().toString(),
         strCodigoEstadoReclamo = estado,
@@ -55,7 +54,6 @@ class ClaimViewModel @Inject constructor(
     var result = false
     viewModelScope.launch {
       result = getStatusUseCase.fetchChangeStatus(
-        contentType = "application/json; charset=UTF-8",
         authorization = sessionManager.getToken().toString(),
         context = context,
         item = item,

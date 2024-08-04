@@ -10,5 +10,5 @@ data class SolucionInterrupcionEntity(
   @ColumnInfo("CodigoTipoSolucionInterrupcion") val CodigoTipoSolucionInterrupcion: String,
   @ColumnInfo("NombreTipoSolucionInterrupcion") val NombreTipoSolucionInterrupcion: String,
   @ColumnInfo("Simbolo") val Simbolo: String,
-  @ColumnInfo("Observacion") val Observacion: String,
+  @ColumnInfo("Observacion") val Observacion: String = "",
 )

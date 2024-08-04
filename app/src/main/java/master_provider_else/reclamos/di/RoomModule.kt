@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import master_provider_else.reclamos.data.database.dao.ClaimDao
 import master_provider_else.reclamos.data.database.dao.UserDao
 import javax.inject.Singleton
 
@@ -20,10 +19,11 @@ object RoomModule {
   @Singleton
   @Provides
   fun provideRoom(@ApplicationContext context: Context) =
-    Room.databaseBuilder(context, QuoteDatabase::class.java, QUOTE_DATABASE_NAME).fallbackToDestructiveMigration().build()
+    Room.databaseBuilder(context, QuoteDatabase::class.java, QUOTE_DATABASE_NAME)
+      .fallbackToDestructiveMigration().build()
 
   @Singleton
   @Provides
   fun provideUserDao(db: QuoteDatabase): UserDao = db.getLogin()
 
- }
+}

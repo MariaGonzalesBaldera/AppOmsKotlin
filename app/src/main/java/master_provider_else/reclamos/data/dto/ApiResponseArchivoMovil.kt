@@ -14,5 +14,11 @@ data class RespuestaArchivo(
 )
 
 data class ResponseBodyArchivo(
-  @SerializedName("FotosReclamo") val fotosReclamo: String
+  @SerializedName("FotosReclamo") val fotosReclamo: List<FotoReclamo>
+)
+
+//validar que la respuesta sera asi
+data class FotoReclamo(
+  val itemID: String,
+  val base64Source: String
 )

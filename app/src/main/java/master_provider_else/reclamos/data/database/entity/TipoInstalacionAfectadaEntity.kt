@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "TipoInstalacionAfectada")
-data class TipoInstalacionAfectada(
+data class TipoInstalacionAfectadaEntity(
   @PrimaryKey
   @ColumnInfo("CodigoTipoUbicacionElectrica") val CodigoTipoUbicacionElectrica: String,
   @ColumnInfo("NombreTipoUbicacionElectrica") val NombreTipoUbicacionElectrica: String,
