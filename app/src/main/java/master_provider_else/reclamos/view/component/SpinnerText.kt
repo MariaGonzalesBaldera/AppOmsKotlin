@@ -64,6 +64,7 @@ fun SpinnerText(
             onClick = {
               selected = entry
               expanded = false
+              onSelectionChanged(entry)
             },
             colors = MenuDefaults.itemColors(
               textColor = colorResource(id = R.color.colorText),

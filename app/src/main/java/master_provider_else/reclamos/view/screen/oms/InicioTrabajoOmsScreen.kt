@@ -11,11 +11,13 @@ import androidx.navigation.compose.rememberNavController
 import master_provider_else.reclamos.domain.model.ParamMap
 import master_provider_else.reclamos.ui.theme.view.component.BottomBar
 import master_provider_else.reclamos.view.component.TopbarInfomacion
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 
 @Composable
 fun InicioTrabajoOmsScreen(
   navController: NavController,
-  params: ParamMap
+  params: ParamMap,
+  claimViewModel: ClaimViewModel
 ) {
   val context = LocalContext.current
   Scaffold(
@@ -33,25 +35,8 @@ fun InicioTrabajoOmsScreen(
     ContentTabOms(
       navController,
       modifier = Modifier
-        .padding(padding)
+        .padding(padding),
+      claimViewModel
     )
   }
-}
-
-@Preview
-@Composable
-private fun ShowPrev() {
-  val navController = rememberNavController()
-  val param=ParamMap(
-    0.0,
-    0.0,
-    "00145655566774",
-    "2",
-    "nombreClaseReclamo",
-    "0010297",
-    "0010609002844",
-    "999999999",
-    "234563"
-  )
-  InicioTrabajoOmsScreen(navController,param)
 }

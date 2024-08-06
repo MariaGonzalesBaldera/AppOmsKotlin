@@ -49,15 +49,20 @@ fun AppNavigation(
       val paramsJson = backStackEntry.arguments?.getString("paramsJson") ?: ""
       val gson = Gson()
       val params = gson.fromJson(paramsJson, ParamMap::class.java)
-      LocationScreen(navController = navController,mapaViewModel = mapaViewModel, ap = ap, estado = estado, params = params)
+      LocationScreen(
+        navController = navController,
+        mapaViewModel = mapaViewModel,
+        ap = ap,
+        estado = estado,
+        params = params
+      )
     }
 
-    composable(route = AppScreens.InicioTrabajoOmsScreen.route) {
-        backStackEntry ->
+    composable(route = AppScreens.InicioTrabajoOmsScreen.route) { backStackEntry ->
       val paramsJson = backStackEntry.arguments?.getString("paramsJson") ?: ""
       val gson = Gson()
       val params = gson.fromJson(paramsJson, ParamMap::class.java)
-      InicioTrabajoOmsScreen(navController,params = params)
+      InicioTrabajoOmsScreen(navController, params = params, claimViewModel)
     }
 
     composable(route = AppScreens.AlumbradoDesestimarCard.route) {
@@ -75,9 +80,9 @@ fun AppNavigation(
       )
     }
 
-    composable(route = AppScreens.SelectMaterialCard.route) {
-      CardSelectMaterial(onDismiss = {})
-    }
+    //composable(route = AppScreens.SelectMaterialCard.route) {
+    //  CardSelectMaterial(onDismiss = {})
+    //}
     composable(route = AppScreens.ProgressDialogLoadingCard.route) {
       val showProgress by remember { mutableStateOf(false) }
       ProgressDialogLoading({}, showProgress)

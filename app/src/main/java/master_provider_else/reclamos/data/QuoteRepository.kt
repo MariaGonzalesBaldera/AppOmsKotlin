@@ -335,4 +335,27 @@ class QuoteRepository @Inject constructor(
     userDao.reclamo_Update(entity)
   }
 
+  suspend fun material_Get_General(codigoReclamo: String): List<gnMaterialEntity> {
+    return userDao.material_Get_General(codigoReclamo)
+  }
+
+  suspend fun material_Get(codigoReclamo: String, tipo: Array<String>): List<MaterialEntity> {
+    return userDao.material_Get(codigoReclamo, tipo)
+  }
+
+  suspend fun material_Get_CodigoReclamo_CodigoMaterial(
+    codigoReclamo: String,
+    codigoMaterial: String
+  ): MaterialEntity {
+    return userDao.material_Get_CodigoReclamo_CodigoMaterial(
+      codigoReclamo, codigoMaterial
+    )
+  }
+
+  suspend fun material_Update(item: MaterialEntity) {
+    return userDao.material_Update(item)
+  }
+  suspend fun material_New(item: MaterialEntity): Long {
+    return userDao.material_New(item)
+  }
 }

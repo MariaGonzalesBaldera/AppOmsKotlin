@@ -578,39 +578,64 @@ class GetClaimUseCase @Inject constructor(
       repository.tipoInstalacionElectricaAfectada_All()
     }
   }
+
   suspend fun getTipoInstalacionAfectada(): List<TipoInstalacionAfectadaEntity> {
     return withContext(Dispatchers.IO) {
       repository.tipoInstalacionAfectada_All()
     }
   }
+
   suspend fun getTipoEquipoProteccionManiobra(): List<TipoEquipoProteccionManiobraEntity> {
     return withContext(Dispatchers.IO) {
       repository.tipoEquipoProteccionManiobra_All()
     }
   }
+
   suspend fun getTipoManiobraCapacidad(): List<TipoManiobraCapacidadEntity> {
     return withContext(Dispatchers.IO) {
       repository.tipoManiobraCapacidad_All()
     }
   }
+
   suspend fun getCausaAveria(): List<CausaAveriaEntity> {
     return withContext(Dispatchers.IO) {
       repository.causaAveria_All()
     }
   }
+
   suspend fun getSolucionAveria(): List<SolucionAveriaEntity> {
     return withContext(Dispatchers.IO) {
       repository.solucionAveria_All()
     }
   }
+
   suspend fun getSolucionInterrupcion(): List<SolucionInterrupcionEntity> {
     return withContext(Dispatchers.IO) {
       repository.solucionInterrupcion_All()
     }
   }
+
   suspend fun getTipoAreaIntervencion(): List<TipoAreaIntervencionEntity> {
     return withContext(Dispatchers.IO) {
       repository.tipoAreaIntervencion_All()
     }
   }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

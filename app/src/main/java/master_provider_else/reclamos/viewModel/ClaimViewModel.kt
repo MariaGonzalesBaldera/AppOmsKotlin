@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.dto.ReclamoArray
 import master_provider_else.reclamos.domain.UseCase.GetClaimUseCase
+import master_provider_else.reclamos.domain.UseCase.GetMaterialUseCase
 import master_provider_else.reclamos.domain.UseCase.GetStatusUseCase
 import javax.inject.Inject
 
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class ClaimViewModel @Inject constructor(
   var getClaimUseCase: GetClaimUseCase,
   var sessionManager: SessionManager,
-  var getStatusUseCase: GetStatusUseCase
+  var getStatusUseCase: GetStatusUseCase,
+  var getMaterialUseCase: GetMaterialUseCase
 ) : ViewModel() {
   private val _programadoReclamos = MutableLiveData<List<ReclamoArray>>()
   val programadoReclamos: LiveData<List<ReclamoArray>> get() = _programadoReclamos
@@ -59,6 +61,8 @@ class ClaimViewModel @Inject constructor(
   private val _tipoAreaIntervencionList = mutableStateOf<List<Pair<String, String>>>(emptyList())
   val tipoAreaIntervencionList: State<List<Pair<String, String>>> = _tipoAreaIntervencionList
 
+  private val _materialesList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val materialesList: State<List<Pair<String, String>>> = _materialesList
 
   fun onClaimView(strAP: String, context: Context, estado: String) {
     viewModelScope.launch {
@@ -195,6 +199,22 @@ class ClaimViewModel @Inject constructor(
           Pair(
             it.CodigoTipoAreaIntervencion,
             it.NombreTipoAreaIntervencion
+          )
+        }
+    }
+  }
+
+  fun datosMaterialesList(codigoReclamo: String, tipo: Array<String>) {
+    viewModelScope.launch {
+      val materiales = getMaterialUseCase.getMateriales(
+        cuadrilla = sessionManager.getCuadrilla().toString(),
+        codigoReclamo
+      )
+      _materialesList.value =
+        materiales.map {
+          Pair(
+            it.CodigoMaterial,
+            it.NombreMaterial
           )
         }
     }

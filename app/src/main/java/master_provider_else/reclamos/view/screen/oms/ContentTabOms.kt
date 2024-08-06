@@ -25,9 +25,14 @@ import master_provider_else.reclamos.R
 import master_provider_else.reclamos.ui.theme.view.screen.ReclamosRegistroInfFichaTecnica
 import master_provider_else.reclamos.view.component.ComponentMaterial
 import master_provider_else.reclamos.view.component.ImageCaptureFromCamera
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 
 @Composable
-fun ContentTabOms(navController: NavController, modifier: Modifier) {
+fun ContentTabOms(
+  navController: NavController,
+  modifier: Modifier,
+  claimViewModel: ClaimViewModel
+) {
   var tabIndex by remember { mutableIntStateOf(0) }
   val tabs = listOf("Ficha Técnica", "Materiales", "Fotos")
   val context = LocalContext.current
@@ -59,7 +64,7 @@ fun ContentTabOms(navController: NavController, modifier: Modifier) {
       }
     }
     when (tabIndex) {
-      0 -> FichaTecnicaScreen()
+      0 -> FichaTecnicaScreen(claimViewModel)
       1 -> MaterialesScreen()
       2 -> FotosScreen()
     }
@@ -77,6 +82,6 @@ fun MaterialesScreen() {
 }
 
 @Composable
-fun FichaTecnicaScreen() {
-  ReclamosRegistroInfFichaTecnica()
+fun FichaTecnicaScreen(claimViewModel: ClaimViewModel) {
+  ReclamosRegistroInfFichaTecnica(claimViewModel)
 }

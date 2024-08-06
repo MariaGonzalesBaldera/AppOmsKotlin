@@ -142,7 +142,6 @@ interface UserDao {
   fun tipoAreaIntervencion_All(): List<TipoAreaIntervencionEntity>
 
 
-
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleMaterialesGeneral(list: List<gnMaterialEntity>)
 
@@ -158,4 +157,21 @@ interface UserDao {
   @Update(onConflict = OnConflictStrategy.IGNORE)
   fun reclamo_Update(entity: ReclamoEntity)
 
+  @Query("SELECT * FROM gnMaterial where TipoReclamo == :tipoReclamo")
+  fun material_Get_General(tipoReclamo: String): List<gnMaterialEntity>
+
+  @Query("SELECT * FROM Material  WHERE CodigoReclamo  == :codigoReclamo AND Enviado IN (:tipo)")
+  fun material_Get(codigoReclamo: String, tipo: Array<String>): List<MaterialEntity>
+
+  @Query("SELECT * FROM Material  WHERE CodigoReclamo  == :codigoReclamo AND CodigoMaterial == :codigoMaterial")
+  fun material_Get_CodigoReclamo_CodigoMaterial(
+    codigoReclamo: String,
+    codigoMaterial: String
+  ): MaterialEntity
+
+  @Update(onConflict = OnConflictStrategy.IGNORE)
+  fun material_Update(item: MaterialEntity)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun material_New(item: MaterialEntity): Long
 }
