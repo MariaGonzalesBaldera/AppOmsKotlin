@@ -2,10 +2,8 @@ package master_provider_else.reclamos.view.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,10 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,8 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import master_provider_else.reclamos.R
-import master_provider_else.reclamos.TransparentTextField
-import master_provider_else.reclamos.ui.theme.view.component.CardListItem
+import master_provider_else.reclamos.domain.model.Material
 import master_provider_else.reclamos.ui.theme.view.component.CardSelectMaterial
 
 @Preview(showBackground = true)
@@ -42,6 +42,20 @@ private fun ShowPrev() {
 @Composable
 fun ComponentMaterial() {
   val showDialog = remember { mutableStateOf(false) }
+  val materials = remember { mutableStateListOf<Material>() }
+
+  //LaunchedEffect(Unit) {
+  //codigoReclamo: String, tipo: Array<String>
+  //  claimViewModel.datosMaterialesList(codigoReclamo.tipo)
+  //}
+
+  fun addMaterial(material: Material) {
+    materials.add(material)
+  }
+
+  fun removeMaterial(material: Material) {
+    materials.remove(material)
+  }
 
   LazyColumn(
     modifier = Modifier
@@ -53,6 +67,7 @@ fun ComponentMaterial() {
         modifier = Modifier
           .background(color = Color.White)
           .fillMaxWidth()
+          .padding(bottom = 10.dp)
       ) {
         Row(
           horizontalArrangement = Arrangement.SpaceBetween,
@@ -81,25 +96,19 @@ fun ComponentMaterial() {
                 .clickable { showDialog.value = true }
             )
             if (showDialog.value) {
-              CardSelectMaterial(onDismiss = { showDialog.value = false })
+              CardSelectMaterial(onDismiss = {
+                showDialog.value = false
+              }) { material, unidad, cantidad ->
+                addMaterial(Material(material, unidad, cantidad))
+                showDialog.value = false
+              }
             }
           }
         }
       }
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-      MaterialItem()
-
+    }
+    items(materials) { material ->
+      MaterialItem(material = material, onDelete = { removeMaterial(it) })
     }
   }
 }

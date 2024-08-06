@@ -41,7 +41,7 @@ import master_provider_else.reclamos.SpinnerText
 import master_provider_else.reclamos.TransparentTextField
 
 @Composable
-fun CardSelectMaterial(onDismiss: () -> Unit) {
+fun CardSelectMaterial(onDismiss: () -> Unit, onAdd: (String, String, String) -> Unit) {
   Dialog(onDismissRequest = onDismiss) {
     Surface(
       shape = MaterialTheme.shapes.medium,
@@ -50,27 +50,22 @@ fun CardSelectMaterial(onDismiss: () -> Unit) {
         .wrapContentHeight(),
       color = Color.Black,
     ) {
-      CardSelectMaterialContent(onDismiss)
+      CardSelectMaterialContent(onDismiss, onAdd)
     }
   }
 }
 
-@Preview(showBackground = true)
 @Composable
-private fun showPrev() {
-  CardSelectMaterialContent({})
-}
-
-@Composable
-fun CardSelectMaterialContent(onDismiss: () -> Unit) {
+fun CardSelectMaterialContent(onDismiss: () -> Unit, onAdd: (String, String, String) -> Unit) {
   val unidadValue = remember { mutableStateOf("") }
   val cantidadValue = remember { mutableStateOf("1") }
   val focusManager = LocalFocusManager.current
   val entry1 = Pair("Key1", "Entry1")
   val entry2 = Pair("Key2", "Entry2")
   val entry3 = Pair("Key3", "Entry3")
-  Box(modifier = Modifier.background(Color.White).height(400.dp)) {
+  val selectedMaterial = remember { mutableStateOf(entry1) }
 
+  Box(modifier = Modifier.background(Color.White).height(400.dp)) {
     Column(modifier = Modifier.padding(10.dp)) {
       Text(
         text = "Selección de Material",
@@ -83,6 +78,7 @@ fun CardSelectMaterialContent(onDismiss: () -> Unit) {
       )
       Spacer(modifier = Modifier.padding(5.dp))
       SpinnerText(label = "Material", list = listOf(entry1, entry2, entry3), preselected = entry1) {
+        selectedMaterial.value = it
       }
       Spacer(modifier = Modifier.padding(5.dp))
       TransparentTextField(
@@ -131,13 +127,18 @@ fun CardSelectMaterialContent(onDismiss: () -> Unit) {
               modifier = Modifier
                 .width(155.dp)
                 .padding(horizontal = 5.dp),
-              onClick = onDismiss)
+              onClick = {
+                onAdd(selectedMaterial.value.second, unidadValue.value, cantidadValue.value)
+                onDismiss()
+              }
+            )
             BotonDefaultLine(
               title = "Cancelar",
               modifier = Modifier
                 .width(155.dp)
                 .padding(horizontal = 5.dp),
-              onClick = onDismiss)
+              onClick = onDismiss
+            )
           }
         }
       }

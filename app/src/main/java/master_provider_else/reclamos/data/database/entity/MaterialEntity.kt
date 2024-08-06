@@ -5,13 +5,13 @@ import androidx.room.Entity
 
 @Entity(tableName = "Material", primaryKeys = ["CodigoReclamo", "CodigoMaterial"])
 data class MaterialEntity(
-  @ColumnInfo(name = "CodigoReclamo") val CodigoReclamo: String,
-  @ColumnInfo(name = "CodigoCuadrilla") val CodigoCuadrilla: String,
-  @ColumnInfo(name = "CodigoMaterial") val CodigoMaterial: String,
-  @ColumnInfo(name = "NombreMaterial") val NombreMaterial: String,
-  @ColumnInfo(name = "Unidad") val Unidad: String,
-  @ColumnInfo(name = "Cantidad") val Cantidad: String,
-  @ColumnInfo(name = "CodigoMaterialSAP") val CodigoMaterialSAP: String,
-  @ColumnInfo(name = "Tipo") val Tipo: String,
-  @ColumnInfo(name = "Enviado") val Enviado: String,
+  @ColumnInfo(name = "CodigoReclamo") var CodigoReclamo: String = "",
+  @ColumnInfo(name = "CodigoCuadrilla") var CodigoCuadrilla: String = "",
+  @ColumnInfo(name = "CodigoMaterial") var CodigoMaterial: String = "",
+  @ColumnInfo(name = "NombreMaterial") var NombreMaterial: String = "",
+  @ColumnInfo(name = "Unidad") var Unidad: String = "",
+  @ColumnInfo(name = "Cantidad") var Cantidad: String = "",
+  @ColumnInfo(name = "CodigoMaterialSAP") var CodigoMaterialSAP: String = "",
+  @ColumnInfo(name = "Tipo") var Tipo: String = "",
+  @ColumnInfo(name = "Enviado") var Enviado: String = "",
 )
