@@ -2,6 +2,8 @@ package master_provider_else.reclamos.viewModel
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +27,38 @@ class ClaimViewModel @Inject constructor(
 
   private val _ejecutadoReclamos = MutableLiveData<List<ReclamoArray>>()
   val ejecutadoReclamos: LiveData<List<ReclamoArray>> get() = _ejecutadoReclamos
+
+  private val _tipoDenunciaList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val tipoDenunciaList: State<List<Pair<String, String>>> = _tipoDenunciaList
+
+  private val _tipoInstalacionElectricaAfectadaList =
+    mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val tipoInstalacionElectricaAfectadaList: State<List<Pair<String, String>>> =
+    _tipoInstalacionElectricaAfectadaList
+
+  private val _tipoInstalacionAfectadaList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val tipoInstalacionAfectadaList: State<List<Pair<String, String>>> = _tipoInstalacionAfectadaList
+
+  private val _tipoEquipoProteccionManiobraList =
+    mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val tipoEquipoProteccionManiobraList: State<List<Pair<String, String>>> =
+    _tipoEquipoProteccionManiobraList
+
+  private val _tipoManiobraCapacidadList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val tipoManiobraCapacidadList: State<List<Pair<String, String>>> = _tipoManiobraCapacidadList
+
+  private val _causaAveriaList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val causaAveriaList: State<List<Pair<String, String>>> = _causaAveriaList
+
+  private val _solucionAveriaList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val solucionAveriaList: State<List<Pair<String, String>>> = _solucionAveriaList
+
+  private val _solucionInterrupcionList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val solucionInterrupcionList: State<List<Pair<String, String>>> = _solucionInterrupcionList
+
+  private val _tipoAreaIntervencionList = mutableStateOf<List<Pair<String, String>>>(emptyList())
+  val tipoAreaIntervencionList: State<List<Pair<String, String>>> = _tipoAreaIntervencionList
+
 
   fun onClaimView(strAP: String, context: Context, estado: String) {
     viewModelScope.launch {
@@ -62,5 +96,107 @@ class ClaimViewModel @Inject constructor(
       )
     }
     return result
+  }
+
+  fun datosTipoDenuncia() {
+    viewModelScope.launch {
+      val tipoDenuncia = getClaimUseCase.getTipoDenuncia()
+      _tipoDenunciaList.value =
+        tipoDenuncia.map { Pair(it.CodigoTipoDenuncia, it.NombreTipoDenuncia) }
+    }
+  }
+
+  fun datosTipoInstalacionElectricaAfectada() {
+    viewModelScope.launch {
+      val tipoInstalacionElectricaAfectada = getClaimUseCase.getInstalacionElectricaAfectada()
+      _tipoInstalacionElectricaAfectadaList.value =
+        tipoInstalacionElectricaAfectada.map {
+          Pair(
+            it.CodigoTipoInstalacionElectricaAfectada,
+            it.NombreTipoInstalacionElectricaAfectada
+          )
+        }
+    }
+  }
+
+  fun datosTipoInstalacionAfectada() {
+    viewModelScope.launch {
+      val tipoInstalacionAfectada = getClaimUseCase.getTipoInstalacionAfectada()
+      _tipoInstalacionAfectadaList.value =
+        tipoInstalacionAfectada.map {
+          Pair(
+            it.CodigoTipoUbicacionElectrica,
+            it.NombreTipoUbicacionElectrica
+          )
+        }
+    }
+  }
+
+  fun datosTipoEquipoProteccionManiobra() {
+    viewModelScope.launch {
+      val tipoEquipoProteccionManiobra = getClaimUseCase.getTipoEquipoProteccionManiobra()
+      _tipoEquipoProteccionManiobraList.value =
+        tipoEquipoProteccionManiobra.map {
+          Pair(
+            it.codigoTipoEquipoProteccionManiobra,
+            it.nombreTipoEquipoProteccionManiobra
+          )
+        }
+    }
+  }
+
+  fun datosTipoManiobraCapacidad() {
+    viewModelScope.launch {
+      val tipoManiobraCapacidad = getClaimUseCase.getTipoManiobraCapacidad()
+      _tipoManiobraCapacidadList.value =
+        tipoManiobraCapacidad.map {
+          Pair(
+            it.CodigoTipoManiobraCapacidad,
+            it.NombreTipoManiobraCapacidad
+          )
+        }
+    }
+  }
+
+  fun datosCausaAveria() {
+    viewModelScope.launch {
+      val causaAveria = getClaimUseCase.getCausaAveria()
+      _causaAveriaList.value =
+        causaAveria.map { Pair(it.codigoCausaAveria, it.nombreCausaAveriaElectrica) }
+    }
+  }
+
+  fun datosSolucionAveria() {
+    viewModelScope.launch {
+      val solucionAveria = getClaimUseCase.getSolucionAveria()
+      _solucionAveriaList.value =
+        solucionAveria.map { Pair(it.CodigoAccionSolucionAveria, it.NombreAccionSolucionAveria) }
+    }
+  }
+
+  fun datosSolucionInterrupcion() {
+    viewModelScope.launch {
+      val solucionInterrupcion = getClaimUseCase.getSolucionInterrupcion()
+      _solucionInterrupcionList.value =
+        solucionInterrupcion.map {
+          Pair(
+            it.CodigoTipoSolucionInterrupcion,
+            it.NombreTipoSolucionInterrupcion
+          )
+        }
+    }
+  }
+
+  fun datosTipoAreaIntervencion() {
+    viewModelScope.launch {
+      val tipoAreaIntervencion = getClaimUseCase.getTipoAreaIntervencion()
+      _tipoAreaIntervencionList.value =
+        tipoAreaIntervencion.map {
+          Pair(
+            it.CodigoTipoAreaIntervencion,
+            it.NombreTipoAreaIntervencion
+          )
+        }
+    }
   }
 }

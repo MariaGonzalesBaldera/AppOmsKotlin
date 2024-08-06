@@ -8,15 +8,12 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
 import androidx.compose.material.icons.Icons
@@ -27,16 +24,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -44,8 +40,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.Polyline
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.MapboxMap
@@ -53,6 +50,8 @@ import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import master_provider_else.reclamos.BotonDefault
 import master_provider_else.reclamos.R
+import master_provider_else.reclamos.data.database.entity.LineasEntity
+import master_provider_else.reclamos.data.model.Coordenadas
 import master_provider_else.reclamos.domain.model.ParamMap
 import master_provider_else.reclamos.navigation.AppScreens
 import master_provider_else.reclamos.ui.theme.view.component.CallPhone
@@ -83,13 +82,19 @@ fun LocationScreen(
 
   val latitud: Double by remember { mutableDoubleStateOf(params.latitud) }
   val longitud: Double by remember { mutableDoubleStateOf(params.longitud) }
-  var codigoReclamo by remember { mutableStateOf(params.codigoReclamo) }
-  var codigoEstado by remember { mutableStateOf(params.codigoEstadoReclamo) }
-  var nombreClaseReclamo by remember { mutableStateOf(params.nombreClaseReclamo) }
-  var sed by remember { mutableStateOf(params.codigoSED) }
-  var ruta by remember { mutableStateOf(params.codigoRutaSuministro) }
   val celular by remember { mutableStateOf(params.celular) }
-  var codigoDireccionElectrica by remember { mutableStateOf(params.codigoDireccionElectrica) }
+
+  val arrayListCoordenadasRedesMt: ArrayList<Coordenadas> = ArrayList<Coordenadas>()
+  val arrayListCoordenadasRedesMtLINEAS: ArrayList<Coordenadas> = ArrayList<Coordenadas>()
+  val arrayListCoordenadasRedesBt: ArrayList<Coordenadas> = ArrayList<Coordenadas>()
+  val arrayListLineRedesMt: List<LineasEntity> = ArrayList<LineasEntity>()
+
+
+  val markersRedesMt = java.util.ArrayList<Marker>()
+  val markersRedesBt = java.util.ArrayList<Marker>()
+  val linesRedesMt = java.util.ArrayList<Polyline>()
+  var colorPin by remember { mutableIntStateOf(R.drawable.ubication) }
+
 
   val launchMultiplePermissions = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -103,7 +108,6 @@ fun LocationScreen(
       context.toast("Permission Denied")
     }
   }
-  ///recuperando datos
 
   LaunchedEffect(Unit) {
     val response = mapaViewModel.obtenerPuntosGPSServicio(params, context)
@@ -121,6 +125,12 @@ fun LocationScreen(
       launchMultiplePermissions.launch(permissions)
     }
   }
+  val puntosRedesBt = remember { mutableStateListOf<Point>() }
+  val puntosRedesMt = remember { mutableStateListOf<Point>() }
+  val lineasRedesMt = remember { mutableStateListOf<Point>() }
+  var redesMT by remember { mutableStateOf(false) }
+  var redesBT by remember { mutableStateOf(false) }
+
   Box(Modifier.padding()) {
     MapboxMap(
       Modifier.fillMaxWidth(),
@@ -133,7 +143,10 @@ fun LocationScreen(
         }
       }
     ) {
-      AddPointer(Point.fromLngLat(latitud, longitud), context)
+      AddPointer(Point.fromLngLat(latitud, longitud), context, colorPin)
+      puntosRedesBt.forEach { punto ->
+        AddPointer(punto, context, colorPin)
+      }
     }
 
     Box(
@@ -154,20 +167,78 @@ fun LocationScreen(
         .fillMaxWidth()
         .padding(vertical = 50.dp, horizontal = 10.dp)
     ) {
-      var redesMT by remember { mutableStateOf(false) }
-      var redesBT by remember { mutableStateOf(false) }
 
       Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
           checked = redesMT,
-          onCheckedChange = { redesMT = it }
+          onCheckedChange = {
+            redesMT = it
+            if (redesMT) {
+              arrayListCoordenadasRedesMt.forEach { coordenada ->
+                colorPin=R.drawable.pin_rojo
+                if (coordenada.TipoCoordenada == "10") {
+                  puntosRedesMt.add(
+                    Point.fromLngLat(
+                      coordenada.latLng.latitude,
+                      coordenada.latLng.longitude
+                    )
+                  )
+                } else if (coordenada.TipoCoordenada == "8" || coordenada.TipoCoordenada == "17") {
+                  puntosRedesMt.add(
+                    Point.fromLngLat(
+                      coordenada.latLng.latitude,
+                      coordenada.latLng.longitude
+                    )
+                  )
+                }
+
+              }
+              for (i in arrayListCoordenadasRedesMtLINEAS.indices) {
+                val arrayLatlng = java.util.ArrayList<LatLng>()
+                arrayLatlng.clear()
+                for (j in arrayListLineRedesMt.indices) {
+                  if (arrayListCoordenadasRedesMtLINEAS[i].CodigoNTCSE
+                      .equals(arrayListLineRedesMt[j].CodigoNTCSE)
+                  ) {
+                    val latLng = LatLng(
+                      arrayListLineRedesMt[j].Latitud.toDouble(),
+                      arrayListLineRedesMt[j].Longitud.toDouble()
+                    )
+                    arrayLatlng.add(latLng)
+                  }
+                }
+                paintLine(arrayLatlng)
+              }
+            } else {
+              puntosRedesMt.clear()
+              lineasRedesMt.clear()
+            }
+          }
         )
         Text(text = "Redes MT", fontSize = 17.sp)
       }
       Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
           checked = redesBT,
-          onCheckedChange = { redesBT = it }
+          onCheckedChange = {
+            redesBT = it
+            if (redesBT) {
+              puntosRedesBt.clear()
+              arrayListCoordenadasRedesBt.forEach { coordenada ->
+                if (coordenada.TipoCoordenada == "7" || coordenada.TipoCoordenada == "16") {
+                  colorPin = R.drawable.pin_verde
+                  puntosRedesBt.add(
+                    Point.fromLngLat(
+                      coordenada.latLng.latitude,
+                      coordenada.latLng.longitude
+                    )
+                  )
+                }
+              }
+            } else {
+              puntosRedesBt.clear()
+            }
+          }
         )
         Text(text = "Redes BT", fontSize = 17.sp)
       }
@@ -182,7 +253,9 @@ fun LocationScreen(
 
       BotonDefault(title = "Iniciar Trabajo", onClick = {
         if (ap == "0") {
-          navController.navigate(route = AppScreens.InicioTrabajoOmsScreen.route)
+          mapaViewModel.inciarTrabajoBoton()
+          navController.navigate(route = AppScreens.InicioTrabajoOmsScreen.createRoute(params))
+
         } else {
           navController.navigate(route = AppScreens.InicioTrabajoApScreen.route)
         }
@@ -192,12 +265,17 @@ fun LocationScreen(
   }
 }
 
+fun paintLine(listPoint: ArrayList<LatLng>) {
+
+}
+
+
 @OptIn(MapboxExperimental::class)
 @Composable
-fun AddPointer(point: Point, context: Context) {
+fun AddPointer(point: Point, context: Context, colorPin: Int) {
   val drawable = ResourcesCompat.getDrawable(
     context.resources,
-    R.drawable.ubication,
+    colorPin,
     null
   )
   val bitmap = drawable!!.toBitmap(

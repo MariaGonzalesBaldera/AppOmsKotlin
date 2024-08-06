@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import master_provider_else.reclamos.CardTextImage
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.SpinnerText
@@ -33,18 +35,14 @@ import master_provider_else.reclamos.TransparentTextField
 import master_provider_else.reclamos.ui.theme.view.component.ShowDialogDate
 import master_provider_else.reclamos.ui.theme.view.component.ShowDialogTime
 import master_provider_else.reclamos.utils.formatSelectedDate
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 import java.util.Calendar
 import java.util.Locale
 
-@Preview(showBackground = true)
-@Composable
-private fun TestView() {
-  ReclamosRegistroInfFichaTecnica()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
+fun ReclamosRegistroInfFichaTecnica(claimViewModel: ClaimViewModel, modifier: Modifier = Modifier) {
   val circuitoBTValue = rememberSaveable() { mutableStateOf("") }
   val sedValue = rememberSaveable() { mutableStateOf("") }
   val observacionValue = rememberSaveable() { mutableStateOf("") }
@@ -54,7 +52,30 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
   val stateFecha = rememberDatePickerState()
   var stateHora by remember { mutableStateOf("") }
 
-  LazyColumn(modifier = Modifier.padding(top =20.dp , start =20.dp , end =20.dp , bottom =60.dp )) {
+  LaunchedEffect(Unit) {
+    claimViewModel.datosTipoDenuncia()
+    claimViewModel.datosTipoInstalacionElectricaAfectada()
+    claimViewModel.datosTipoInstalacionAfectada()
+    claimViewModel.datosTipoInstalacionElectricaAfectada()
+    claimViewModel.datosTipoEquipoProteccionManiobra()
+    claimViewModel.datosTipoManiobraCapacidad()
+    claimViewModel.datosCausaAveria()
+    claimViewModel.datosSolucionAveria()
+    claimViewModel.datosSolucionInterrupcion()
+    claimViewModel.datosTipoAreaIntervencion()
+  }
+
+  val tipoDenunciaList by claimViewModel.tipoDenunciaList
+  val tipoInstalacionElectricaAfectadaList by claimViewModel.tipoInstalacionElectricaAfectadaList
+  val tipoInstalacionAfectadaList by claimViewModel.tipoInstalacionAfectadaList
+  val tipoEquipoProteccionManiobraList by claimViewModel.tipoEquipoProteccionManiobraList
+  val tipoManiobraCapacidadList by claimViewModel.tipoManiobraCapacidadList
+  val causaAveriaList by claimViewModel.causaAveriaList
+  val solucionAveriaList by claimViewModel.solucionAveriaList
+  val solucionInterrupcionList by claimViewModel.solucionInterrupcionList
+  val tipoAreaIntervencionList by claimViewModel.tipoAreaIntervencionList
+
+  LazyColumn(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 60.dp)) {
     item {
       Box(
         modifier = modifier
@@ -62,17 +83,33 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
           .fillMaxSize()
       ) {
         MaterialTheme {
-
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Tipo Denuncia Verificada",
-            list = listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
+          if (tipoDenunciaList.isNotEmpty()) {
+            val preselected = tipoDenunciaList[1]
+            SpinnerText(
+              label = "Tipo Denuncia Verificada",
+              list = tipoDenunciaList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
+        }
+      }
+      Spacer(modifier = Modifier.padding(5.dp))
+      Box(
+        modifier = modifier
+          .background(color = Color.White)
+          .fillMaxSize()
+      ) {
+        MaterialTheme {
+          if (tipoInstalacionElectricaAfectadaList.isNotEmpty()) {
+            val preselected = tipoInstalacionElectricaAfectadaList[1]
+            SpinnerText(
+              label = "Tipo Instalción",
+              list = tipoInstalacionElectricaAfectadaList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
         }
 
       }
@@ -83,17 +120,16 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
           .fillMaxSize()
       ) {
         MaterialTheme {
+          if (tipoInstalacionAfectadaList.isNotEmpty()) {
+            val preselected = tipoInstalacionAfectadaList[1]
+            SpinnerText(
+              label = "Instalación Afectada",
+              list = tipoInstalacionAfectadaList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
 
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Tipo Instalción",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
         }
 
       }
@@ -104,19 +140,16 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
           .fillMaxSize()
       ) {
         MaterialTheme {
-
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Instalación Afectada",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
+          if (tipoEquipoProteccionManiobraList.isNotEmpty()) {
+            val preselected = tipoEquipoProteccionManiobraList[1]
+            SpinnerText(
+              label = "Punto Maniobra",
+              list = tipoEquipoProteccionManiobraList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
         }
-
       }
       Spacer(modifier = Modifier.padding(5.dp))
       Box(
@@ -125,40 +158,17 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
           .fillMaxSize()
       ) {
         MaterialTheme {
+          if (tipoManiobraCapacidadList.isNotEmpty()) {
+            val preselected = tipoManiobraCapacidadList[1]
 
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Punto Maniobra",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
+            SpinnerText(
+              label = "Capacidad",
+              list = tipoManiobraCapacidadList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
         }
-
-      }
-      Spacer(modifier = Modifier.padding(5.dp))
-      Box(
-        modifier = modifier
-          .background(color = Color.White)
-          .fillMaxSize()
-      ) {
-        MaterialTheme {
-
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Capacidad",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
-        }
-
       }
       Spacer(modifier = Modifier.padding(5.dp))
       TransparentTextField(
@@ -224,17 +234,34 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
           .fillMaxWidth()
       ) {
         MaterialTheme {
+          if(causaAveriaList.isNotEmpty()){
+            val preselected = causaAveriaList[1]
+            SpinnerText(
+              label = "Causa Avería",
+              list=causaAveriaList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
+        }
+      }
+      Spacer(modifier = Modifier.padding(5.dp))
+      Box(
+        modifier = modifier
+          .background(color = Color.White)
+          .fillMaxSize()
+      ) {
+        MaterialTheme {
+          if(solucionAveriaList.isNotEmpty()){
+            val preselected = solucionAveriaList[1]
+            SpinnerText(
+              label = "Acciones Realizadas",
+              list = solucionAveriaList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
 
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Causa Avería",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
         }
 
       }
@@ -246,16 +273,16 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
       ) {
         MaterialTheme {
 
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
+          if(solucionInterrupcionList.isNotEmpty()){
+            val preselected = solucionInterrupcionList[1]
+            SpinnerText(
+              label = "Tipo Solución",
+              list = solucionInterrupcionList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
 
-          SpinnerText(
-            label = "Acciones Realizadas",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
+          }
         }
 
       }
@@ -266,38 +293,16 @@ fun ReclamosRegistroInfFichaTecnica(modifier: Modifier = Modifier) {
           .fillMaxSize()
       ) {
         MaterialTheme {
+          if(tipoAreaIntervencionList.isNotEmpty()){
+            val preselected = tipoAreaIntervencionList[1]
+            SpinnerText(
+              label = "Requiere intervención",
+              list = tipoAreaIntervencionList,
+              preselected = preselected,
+              onSelectionChanged = { selected -> /* do something with selected */ }
+            )
+          }
 
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Tipo Solución",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
-        }
-
-      }
-      Spacer(modifier = Modifier.padding(5.dp))
-      Box(
-        modifier = modifier
-          .background(color = Color.White)
-          .fillMaxSize()
-      ) {
-        MaterialTheme {
-
-          val entry1 = Pair("Key1", "Entry1")
-          val entry2 = Pair("Key2", "Entry2")
-          val entry3 = Pair("Key3", "Entry3")
-
-          SpinnerText(
-            label = "Requiere intervención",
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected -> /* do something with selected */ }
-          )
         }
 
       }

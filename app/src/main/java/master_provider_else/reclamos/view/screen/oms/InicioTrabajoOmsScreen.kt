@@ -8,12 +8,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import master_provider_else.reclamos.domain.model.ParamMap
 import master_provider_else.reclamos.ui.theme.view.component.BottomBar
 import master_provider_else.reclamos.view.component.TopbarInfomacion
 
 @Composable
 fun InicioTrabajoOmsScreen(
-  navController: NavController
+  navController: NavController,
+  params: ParamMap
 ) {
   val context = LocalContext.current
   Scaffold(
@@ -21,8 +23,8 @@ fun InicioTrabajoOmsScreen(
       TopbarInfomacion(
         context = context,
         titulo = "0028140 POR ALUMBRADO PUBLICO",
-        subTitulo = "Ruta:0011703004290 - SED: 0011268 - Celular:99999999",
-        phone = "+51999000999"
+        subTitulo = "Ruta:0011703004290 - SED:${params.codigoSED} - Celular:${params.celular}",
+        phone = params.celular
       )
     },
 
@@ -40,5 +42,16 @@ fun InicioTrabajoOmsScreen(
 @Composable
 private fun ShowPrev() {
   val navController = rememberNavController()
-  InicioTrabajoOmsScreen(navController)
+  val param=ParamMap(
+    0.0,
+    0.0,
+    "00145655566774",
+    "2",
+    "nombreClaseReclamo",
+    "0010297",
+    "0010609002844",
+    "999999999",
+    "234563"
+  )
+  InicioTrabajoOmsScreen(navController,param)
 }
