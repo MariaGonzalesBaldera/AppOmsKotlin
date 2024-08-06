@@ -27,7 +27,13 @@ sealed class AppScreens(val route: String) {
   object ReclamosRegistroInfFichaTecnicaScreen :
     AppScreens("reclamos_registro_inf_ficha_tecnica_screen")
 
-  object InicioTrabajoOmsScreen : AppScreens("inicio_trabajo_screen")
+  object InicioTrabajoOmsScreen : AppScreens("inicio_trabajo_screen/{paramsJson}"){
+    fun createRoute(params: ParamMap): String {
+      val gson = Gson()
+      val paramsJson = gson.toJson(params)
+      return "inicio_trabajo_screen/$paramsJson"
+    }
+  }
 
   object LocationMap : AppScreens("location_map/{ap}/{estado}/{paramsJson}") {
     fun createRoute(ap: String, estado: String, params: ParamMap): String {

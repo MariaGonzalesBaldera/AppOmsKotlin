@@ -246,32 +246,69 @@ class QuoteRepository @Inject constructor(
     userDao.insertMultipleTipoDenuncia(list)
   }
 
+  suspend fun tipoDenuncia_All(): List<TipoDenunciaEntity> {
+    return userDao.tipoDenuncia_All()
+  }
+
   suspend fun insertMultipleTipoInstalacionElectricaAfectada(list: List<TipoInstalacionElectricaAfectadaEntity>) {
     userDao.insertMultipleTipoInstalacionElectricaAfectada(list)
+  }
+
+  suspend fun tipoInstalacionElectricaAfectada_All(): List<TipoInstalacionElectricaAfectadaEntity> {
+    return userDao.tipoInstalacionElectricaAfectada_All()
   }
 
   suspend fun insertMultipleTipoInstalacionAfectada(list: List<TipoInstalacionAfectadaEntity>) {
     userDao.insertMultipleTipoInstalacionAfectada(list)
   }
 
+  suspend fun tipoInstalacionAfectada_All(): List<TipoInstalacionAfectadaEntity> {
+    return userDao.tipoInstalacionAfectada_All()
+  }
+
   suspend fun insertMultipleTipoEquipoProteccionManiobra(list: List<TipoEquipoProteccionManiobraEntity>) {
     userDao.insertMultipleTipoEquipoProteccionManiobra(list)
+  }
+
+  suspend fun tipoEquipoProteccionManiobra_All(): List<TipoEquipoProteccionManiobraEntity> {
+    return userDao.tipoEquipoProteccionManiobra_All()
   }
 
   suspend fun insertMultipleTipoManiobraCapacidad(list: List<TipoManiobraCapacidadEntity>) {
     userDao.insertMultipleTipoManiobraCapacidad(list)
   }
 
+  suspend fun tipoManiobraCapacidad_All(): List<TipoManiobraCapacidadEntity> {
+    return userDao.tipoManiobraCapacidad_All()
+  }
+
   suspend fun insertMultipleCausaAveria(list: List<CausaAveriaEntity>) {
     userDao.insertMultipleCausaAveria(list)
+  }
+
+  suspend fun causaAveria_All(): List<CausaAveriaEntity> {
+    return userDao.causaAveria_All()
   }
 
   suspend fun insertMultipleSolucionAveria(list: List<SolucionAveriaEntity>) {
     userDao.insertMultipleSolucionAveria(list)
   }
 
+  suspend fun solucionAveria_All(): List<SolucionAveriaEntity> {
+    return userDao.solucionAveria_All()
+  }
+
+
+  suspend fun solucionInterrupcion_All(): List<SolucionInterrupcionEntity> {
+    return userDao.solucionInterrupcion_All()
+  }
+
   suspend fun insertMultipleSolucionInterrupcion(list: List<SolucionInterrupcionEntity>) {
     userDao.insertMultipleSolucionInterrupcion(list)
+  }
+
+  suspend fun tipoAreaIntervencion_All(): List<TipoAreaIntervencionEntity> {
+    return userDao.tipoAreaIntervencion_All()
   }
 
   suspend fun insertMultipleTipoAreaIntervencion(list: List<TipoAreaIntervencionEntity>) {

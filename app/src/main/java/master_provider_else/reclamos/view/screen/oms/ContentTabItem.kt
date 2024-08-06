@@ -137,7 +137,7 @@ fun ProgramadoScreen(
       CodigoEstadoReclamo = "2",
       DireccionElectrica = "CALLE GARCILASO N°200 (4TO NIVEL)",
       NombreSuministro = "GUISPECUSCO CCORIHUAMANI, LINDA GLORGINA",
-      CodigoReclamo = "codigoReclamo",
+      CodigoReclamo = "00145655566774",
       NombreClaseReclamo = "nombreClaseReclamo",
       CodigoRutaSuministro = "0010609002844",
       Celular = "954607452",

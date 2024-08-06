@@ -31,7 +31,7 @@ class MapaViewModel @Inject constructor(
     return result
   }
 
-  fun InciarTrabajo(
+  fun inciarTrabajo(
     context: Context,
   ) {
     viewModelScope.launch {
@@ -39,6 +39,11 @@ class MapaViewModel @Inject constructor(
         context = context,
         usuario = sessionManager.getUsuario().toString()
       )
+    }
+  }
+  fun inciarTrabajoBoton() {
+    viewModelScope.launch {
+      val result = getMapUseCase.InicioTrabajo()
     }
   }
 }

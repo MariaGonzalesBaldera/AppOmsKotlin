@@ -52,6 +52,13 @@ fun AppNavigation(
       LocationScreen(navController = navController,mapaViewModel = mapaViewModel, ap = ap, estado = estado, params = params)
     }
 
+    composable(route = AppScreens.InicioTrabajoOmsScreen.route) {
+        backStackEntry ->
+      val paramsJson = backStackEntry.arguments?.getString("paramsJson") ?: ""
+      val gson = Gson()
+      val params = gson.fromJson(paramsJson, ParamMap::class.java)
+      InicioTrabajoOmsScreen(navController,params = params)
+    }
 
     composable(route = AppScreens.AlumbradoDesestimarCard.route) {
       CardAlumbradoDesestimar()
@@ -80,11 +87,9 @@ fun AppNavigation(
       ReclamoListaScreen(navController, userViewModel, claimViewModel, ap = ap)
     }
     composable(route = AppScreens.ReclamosRegistroInfFichaTecnicaScreen.route) {
-      ReclamosRegistroInfFichaTecnica()
+      ReclamosRegistroInfFichaTecnica(claimViewModel = claimViewModel)
     }
-    composable(route = AppScreens.InicioTrabajoOmsScreen.route) {
-      InicioTrabajoOmsScreen(navController)
-    }
+
     composable(route = AppScreens.AlumbradoListaScreen.route) {
       AlumbradoListaScreen(navController, userViewModel)
     }

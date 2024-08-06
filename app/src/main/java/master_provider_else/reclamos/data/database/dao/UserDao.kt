@@ -89,29 +89,59 @@ interface UserDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleTipoDenuncia(list: List<TipoDenunciaEntity>)
 
+  @Query("SELECT * FROM TipoDenuncia")
+  fun tipoDenuncia_All(): List<TipoDenunciaEntity>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleTipoInstalacionElectricaAfectada(list: List<TipoInstalacionElectricaAfectadaEntity>)
+
+  @Query("SELECT * FROM TipoInstalacionElectricaAfectada")
+  fun tipoInstalacionElectricaAfectada_All(): List<TipoInstalacionElectricaAfectadaEntity>
+
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleTipoInstalacionAfectada(list: List<TipoInstalacionAfectadaEntity>)
 
+  @Query("SELECT * FROM TipoInstalacionAfectada")
+  fun tipoInstalacionAfectada_All(): List<TipoInstalacionAfectadaEntity>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleTipoEquipoProteccionManiobra(list: List<TipoEquipoProteccionManiobraEntity>)
+
+  @Query("SELECT * FROM TipoEquipoProteccionManiobra")
+  fun tipoEquipoProteccionManiobra_All(): List<TipoEquipoProteccionManiobraEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleTipoManiobraCapacidad(list: List<TipoManiobraCapacidadEntity>)
 
+  @Query("SELECT * FROM TipoManiobraCapacidad")
+  fun tipoManiobraCapacidad_All(): List<TipoManiobraCapacidadEntity>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleCausaAveria(list: List<CausaAveriaEntity>)
+
+  @Query("SELECT * FROM CausaAveria")
+  fun causaAveria_All(): List<CausaAveriaEntity>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleSolucionAveria(list: List<SolucionAveriaEntity>)
 
+  @Query("SELECT * FROM SolucionAveria")
+  fun solucionAveria_All(): List<SolucionAveriaEntity>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleSolucionInterrupcion(list: List<SolucionInterrupcionEntity>)
 
+  @Query("SELECT * FROM SolucionInterrupcion")
+  fun solucionInterrupcion_All(): List<SolucionInterrupcionEntity>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleTipoAreaIntervencion(list: List<TipoAreaIntervencionEntity>)
+
+  @Query("SELECT * FROM TipoAreaIntervencion")
+  fun tipoAreaIntervencion_All(): List<TipoAreaIntervencionEntity>
+
+
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMultipleMaterialesGeneral(list: List<gnMaterialEntity>)

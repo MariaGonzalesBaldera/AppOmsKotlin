@@ -186,7 +186,7 @@ class GetMapUseCase @Inject constructor(
     }
   }
 
-  private suspend fun InicioTrabajo() {
+  suspend fun InicioTrabajo() {
     withContext(Dispatchers.IO) {
       val reclamo: ReclamoEntity = repository.reclamo_Get(codigoReclamoContext)
       reclamo.CodigoEstadoReclamo = "4"
