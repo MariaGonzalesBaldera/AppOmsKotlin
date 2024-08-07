@@ -8,11 +8,11 @@ import androidx.room.Entity
   primaryKeys = ["CodigoReclamo", "CodigoActividad", "CodigoUbicacionElectrica"]
 )
 data class ReclamoInformeOMSAPNodoActividadEntity(
-  @ColumnInfo(name = "CodigoReclamo") val CodigoReclamo: String,
-  @ColumnInfo(name = "CodigoCuadrilla") val CodigoCuadrilla: String,
-  @ColumnInfo(name = "CodigoUbicacionElectrica") val CodigoUbicacionElectrica: String,
-  @ColumnInfo(name = "CodigoActividad") val CodigoActividad: String,
-  @ColumnInfo(name = "NombreActividad") val NombreActividad: String,
-  @ColumnInfo(name = "Realizada") val Realizada: String,
-  @ColumnInfo(name = "Enviado") val Enviado: String="-1",
+  @ColumnInfo(name = "CodigoReclamo") var CodigoReclamo: String = "",
+  @ColumnInfo(name = "CodigoCuadrilla") var CodigoCuadrilla: String = "",
+  @ColumnInfo(name = "CodigoUbicacionElectrica") var CodigoUbicacionElectrica: String = "",
+  @ColumnInfo(name = "CodigoActividad") var CodigoActividad: String = "",
+  @ColumnInfo(name = "NombreActividad") var NombreActividad: String = "",
+  @ColumnInfo(name = "Realizada") var Realizada: String = "",
+  @ColumnInfo(name = "Enviado") var Enviado: String = "-1",
 )

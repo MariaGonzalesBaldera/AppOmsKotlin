@@ -6,18 +6,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import master_provider_else.reclamos.data.database.entity.APActividadEntity
 import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
 import master_provider_else.reclamos.data.database.entity.DaoCoordenadasEntity
 import master_provider_else.reclamos.data.database.entity.EncuestaEntity
 import master_provider_else.reclamos.data.database.entity.FotoEntity
+import master_provider_else.reclamos.data.database.entity.InformeOMSAPNodoEntity
 import master_provider_else.reclamos.data.database.entity.LineasEntity
 import master_provider_else.reclamos.data.database.entity.MaterialEntity
 import master_provider_else.reclamos.data.database.entity.PreguntaEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
+import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSAPEntity
+import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSAPNodoActividadEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSEntity
 import master_provider_else.reclamos.data.database.entity.SolucionAveriaEntity
 import master_provider_else.reclamos.data.database.entity.SolucionInterrupcionEntity
 import master_provider_else.reclamos.data.database.entity.TipoAreaIntervencionEntity
+import master_provider_else.reclamos.data.database.entity.TipoDeficienciaEntity
 import master_provider_else.reclamos.data.database.entity.TipoDenunciaEntity
 import master_provider_else.reclamos.data.database.entity.TipoEquipoProteccionManiobraEntity
 import master_provider_else.reclamos.data.database.entity.TipoInstalacionAfectadaEntity
@@ -174,4 +179,84 @@ interface UserDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun material_New(item: MaterialEntity): Long
+
+  @Query("SELECT * FROM Foto WHERE CodigoReclamo  == :codigoReclamo AND Enviado IN(:enviado)")
+  fun foto_Get_CodigoReclamo(codigoReclamo: String?, enviado: Array<String?>): List<FotoEntity>
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun fotos_New(item: FotoEntity)
+
+  @Query("SELECT * FROM InformeOMSAPNodo WHERE CodigoReclamo == :codigoreclamo AND estado like '1'")
+  fun informeOMSAPNodo_Get_Codigo_Reclamo(codigoreclamo: String): List<InformeOMSAPNodoEntity>
+
+  @Query("SELECT * FROM TipoDeficiencia")
+  fun tipoDeficiencia_All(): List<TipoDeficienciaEntity>
+
+  @Query("SELECT * FROM ReclamoInformeOMSAP WHERE CodigoReclamo  == :codigoReclamo AND CodigoCuadrilla ==:codigoCuadrilla")
+  fun reclamoInformeOMSAP_Get_codigoReclamo(
+    codigoReclamo: String,
+    codigoCuadrilla: String
+  ): ReclamoInformeOMSAPEntity
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun reclamoInformeOMSAP_New(item: ReclamoInformeOMSAPEntity): Long
+
+  @Query("SELECT * FROM InformeOMSAPNodo WHERE CodigoReclamo == :codigoreclamo AND Nodo == :nodo AND estado like '1'")
+  fun informeOMSAPNodo_Get_Nodo(codigoreclamo: String, nodo: String): InformeOMSAPNodoEntity
+
+  @Query("SELECT * FROM APActividad ORDER BY CAST(CodigoActividad as Int)  asc")
+  fun apactividad_All(): List<APActividadEntity>
+
+  @Query("SELECT *  FROM ReclamoInformeOMSAPNodoActividad  WHERE CodigoReclamo == :codigoReclamo AND CodigoActividad == :codigoActividad AND CodigoUbicacionElectrica ==:codigoUbicacionElectrica")
+  fun reclamoInformeOMSAPNodoActividad_GET(
+    codigoReclamo: String,
+    codigoActividad: String,
+    codigoUbicacionElectrica: String
+  ): ReclamoInformeOMSAPNodoActividadEntity
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun reclamoInformeOMSAPNodoActividad_New(item: ReclamoInformeOMSAPNodoActividadEntity): Long
+
+  @Query("SELECT Material.* FROM Material INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Material.CodigoReclamo AND ReclamoInformeOMS.Enviado = 1  WHERE Material.Enviado IN ('1')")
+  fun material_All_Send(): List<MaterialEntity>
+
+  @Query("SELECT Material.* FROM Material INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Material.CodigoReclamo AND ReclamoInformeOMS.Enviado = 1  WHERE Material.Enviado IN ('-1')")
+  fun material_All_Send_delete(): List<MaterialEntity>
+
+  @Query("SELECT Material.* FROM Material INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Material.CodigoReclamo  WHERE Material.Enviado IN ('1') and Material.CodigoReclamo = :codigoReclamo")
+  fun material_All_Send(codigoReclamo: String): List<MaterialEntity>
+
+  @Query("SELECT Material.* FROM Material INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Material.CodigoReclamo  WHERE Material.Enviado IN ('-1') and Material.CodigoReclamo = :codigoReclamo")
+  fun material_All_Send_delete(codigoReclamo: String): List<MaterialEntity>
+
+  @Delete
+  fun Material_Delete(item: MaterialEntity)
+
+  @Query("SELECT Foto.* FROM Foto INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Foto.CodigoReclamo  WHERE Foto.Enviado  == :enviado and Foto.CodigoReclamo = :codigoReclamo")
+  fun foto_Get_enviados(enviado: String, codigoReclamo: String): List<FotoEntity>
+
+  @Delete
+  fun fotos_Delete(item: FotoEntity)
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

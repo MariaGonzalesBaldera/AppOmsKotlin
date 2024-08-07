@@ -11,11 +11,17 @@ import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
 import master_provider_else.reclamos.data.dto.ApiResponseFichaMapa
 import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
+import master_provider_else.reclamos.data.dto.ApiResponseFinTrabajoCompleto
+import master_provider_else.reclamos.data.dto.ApiResponseGeneral
+import master_provider_else.reclamos.data.dto.ApiResponseGuardarMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
+import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
+import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
+import master_provider_else.reclamos.data.dto.fotoRequest
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -176,6 +182,66 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
         request
       );
       Log.e("Log Inicio Trabajo", response.message().toString())
+      response
+    }
+  }
+
+  suspend fun finTrabajoCompletoService(
+    authorization: String,
+    request: FinTrabajoCompletoRequest
+  ): Response<ApiResponseFinTrabajoCompleto> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseFinTrabajoCompleto> = api.finTrabajoCompleto(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Fin trabajo", response.message().toString())
+      response
+    }
+  }
+
+  suspend fun guardarInformeMaterialService(
+    authorization: String,
+    request: GuardarMaterialRequest
+  ): Response<ApiResponseGuardarMaterial> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseGuardarMaterial> = api.guardarInformeMaterial(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Guardar material", "service " + response.message().toString())
+      response
+    }
+  }
+
+  suspend fun eliminarInformeMaterialService(
+    authorization: String,
+    request: GuardarMaterialRequest
+  ): Response<ApiResponseGuardarMaterial> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseGuardarMaterial> = api.eliminarInformeMaterial(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Eliminar material", "service " + response.message().toString())
+      response
+    }
+  }
+
+  suspend fun guardarArchivoComercialService(
+    authorization: String,
+    request: fotoRequest
+  ): Response<ApiResponseGeneral> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseGeneral> = api.guardarArchivoComercial(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Archivo comercial", "service " + response.message().toString())
       response
     }
   }

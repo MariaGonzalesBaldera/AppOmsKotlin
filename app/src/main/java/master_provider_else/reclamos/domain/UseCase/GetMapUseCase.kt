@@ -206,7 +206,7 @@ class GetMapUseCase @Inject constructor(
         codigoCuadrilla = cuadrillaContext,
         loginUsuario = usuario
       )
-      val response = repository.InicioTrabajo(authorizationContext, inicioTrabajoRequest)
+      val response = repository.inicioTrabajoRepository(authorizationContext, inicioTrabajoRequest)
 
       if (response.body()?.respuesta?.error != 0) {
         Log.e("Error", response.body()?.respuesta?.message.toString())

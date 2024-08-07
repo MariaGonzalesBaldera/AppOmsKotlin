@@ -77,15 +77,7 @@ fun TabDatos() {
 
 @Composable
 fun TabActividades() {
-  Column(
-    Modifier
-      .fillMaxWidth()
-      .height(500.dp),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    Text(text = "Actividades", fontSize = 25.sp)
-  }
+  ActividadesNodo()
 }
 
 @Composable

@@ -1,0 +1,25 @@
+package master_provider_else.reclamos.data.dto
+
+data class FinTrabajoCompletoRequest(
+  val CodigoReclamo: String,
+  val CodigoCuadrilla: String,
+  val LoginUsuario: String,
+  val CodigoTipoDenuncia: String,
+  val CodigoTipoUbicacionAfectada: String,
+  val CodigoTipoInstalacionElectricaAfectada: String,
+  val CodigoTipoEquipoProteccionManiobra: String,
+  val CapacidadCarga: String,
+  val CodigoEquipoProteccionManiobraNodoCircuito: String,
+  val CodigoEquipoProteccionManiobraSED: String,
+  val CodigoCausaAveriaElectrica: String,
+  val CodigoAccionSolucionAveria: String,
+  val CodigoTipoSolucionIntervencion: String,
+  val CodigoTipoAreaIntervencion: String,
+  val FechaFinInterrupcion: String,
+  val ObservacionAccionSolucionAveria: String,
+  val FechaProgramacion: String,
+  val FechaEnCamino: String,
+  val FechaEjecucionInicio: String,
+  val FechaInicioTrabajo: String,
+  val FechaFinTrabajo: String,
+)
