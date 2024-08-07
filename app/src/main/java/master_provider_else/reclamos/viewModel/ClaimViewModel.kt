@@ -12,7 +12,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.dto.ReclamoArray
+import master_provider_else.reclamos.domain.UseCase.GetActividadesUseCase
+import master_provider_else.reclamos.domain.UseCase.GetAlumbradoUseCase
 import master_provider_else.reclamos.domain.UseCase.GetClaimUseCase
+import master_provider_else.reclamos.domain.UseCase.GetFotoUseCase
 import master_provider_else.reclamos.domain.UseCase.GetMaterialUseCase
 import master_provider_else.reclamos.domain.UseCase.GetStatusUseCase
 import javax.inject.Inject
@@ -22,7 +25,9 @@ class ClaimViewModel @Inject constructor(
   var getClaimUseCase: GetClaimUseCase,
   var sessionManager: SessionManager,
   var getStatusUseCase: GetStatusUseCase,
-  var getMaterialUseCase: GetMaterialUseCase
+  var getMaterialUseCase: GetMaterialUseCase,
+  var getAlumbradoUseCase: GetAlumbradoUseCase,
+  var getActividadesUseCase: GetActividadesUseCase,
 ) : ViewModel() {
   private val _programadoReclamos = MutableLiveData<List<ReclamoArray>>()
   val programadoReclamos: LiveData<List<ReclamoArray>> get() = _programadoReclamos
@@ -66,6 +71,7 @@ class ClaimViewModel @Inject constructor(
 
   fun onClaimView(strAP: String, context: Context, estado: String) {
     viewModelScope.launch {
+      Log.e("token view",sessionManager.getToken().toString())
       val result = getClaimUseCase.fetchClaims(
         authorization = sessionManager.getToken().toString(),
         strCodigoCuadrilla = sessionManager.getCuadrilla().toString(),
@@ -219,4 +225,36 @@ class ClaimViewModel @Inject constructor(
         }
     }
   }
+
+  fun listarFotos(codigoReclamo: String): String {
+    var nodoValue = ""
+    viewModelScope.launch {
+      nodoValue = getAlumbradoUseCase.obtenerNodo()
+    }
+    return nodoValue
+  }
+
+  fun recuperarDataFichaTenica() {
+    viewModelScope.launch {
+      getAlumbradoUseCase.recuperarDataFichaTecnica()
+    }
+  }
+  fun cargarlistanodos() {
+    viewModelScope.launch {
+      getActividadesUseCase.cargarlistanodos()
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

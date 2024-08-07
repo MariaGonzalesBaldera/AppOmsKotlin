@@ -32,15 +32,10 @@ import androidx.compose.ui.unit.sp
 import master_provider_else.reclamos.R
 import master_provider_else.reclamos.domain.model.Material
 import master_provider_else.reclamos.ui.theme.view.component.CardSelectMaterial
-
-@Preview(showBackground = true)
-@Composable
-private fun ShowPrev() {
-  ComponentMaterial()
-}
+import master_provider_else.reclamos.viewModel.ClaimViewModel
 
 @Composable
-fun ComponentMaterial() {
+fun ComponentMaterial() { //claimViewModel: ClaimViewModel
   val showDialog = remember { mutableStateOf(false) }
   val materials = remember { mutableStateListOf<Material>() }
 

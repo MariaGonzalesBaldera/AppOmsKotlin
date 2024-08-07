@@ -23,5 +23,5 @@ data class ReclamoInformeOMSEntity(
   @ColumnInfo(name = "CodigoTipoSolucionIntervencion") val CodigoTipoSolucionIntervencion: String = "",
   @ColumnInfo(name = "CodigoTipoAreaIntervencion") val CodigoTipoAreaIntervencion: String = "",
   @ColumnInfo(name = "FechaFinInterrupcion") val FechaFinInterrupcion: String = "",
-  @ColumnInfo(name = "Enviado") val Enviado: Int = 0,
+  @ColumnInfo(name = "Enviado") var Enviado: Int = 0,
 )

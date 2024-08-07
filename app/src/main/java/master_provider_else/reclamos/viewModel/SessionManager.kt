@@ -6,15 +6,15 @@ import javax.inject.Singleton
 @Singleton
 class SessionManager @Inject constructor() {
 
-  private var token: String? = null
-  private var cuadrilla: String? = null
-  private var usuario: String? = null
+  private var token: String = ""
+  private var cuadrilla: String = ""
+  private var usuario: String = ""
 
   fun saveToken(newToken: String) {
     token = newToken
   }
 
-  fun getToken(): String? {
+  fun getToken(): String {
     return token
   }
 
@@ -22,13 +22,13 @@ class SessionManager @Inject constructor() {
     cuadrilla = newCuadrilla
   }
 
-  fun getCuadrilla(): String? {
+  fun getCuadrilla(): String {
     return cuadrilla
   }
   fun saveUsuario(newUsuario: String) {
     usuario = newUsuario
   }
-  fun getUsuario(): String? {
+  fun getUsuario(): String {
     return usuario
   }
 

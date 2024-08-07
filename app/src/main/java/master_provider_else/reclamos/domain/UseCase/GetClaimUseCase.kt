@@ -2,6 +2,7 @@ package master_provider_else.reclamos.domain.UseCase
 
 import android.content.Context
 import android.util.Log
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import master_provider_else.reclamos.data.QuoteRepository
@@ -42,10 +43,11 @@ class GetClaimUseCase @Inject constructor(
   ): List<Any> {
 
     cuadrilla = strCodigoCuadrilla
-    authorizationContext = authorization
+    authorizationContext = "Bearer $authorization"
     return if (isConnected(context)) {
+      Log.e("token: ", "use case $authorizationContext")
       val response = repository.getClaimFromApi(
-        authorization = "Bearer $authorization",
+        authorization = authorizationContext,
         strCodigoCuadrilla = strCodigoCuadrilla,
         strCodigoEstadoReclamo = strCodigoEstadoReclamo,
         strAP = strAP
@@ -54,14 +56,15 @@ class GetClaimUseCase @Inject constructor(
         emptyList()
       } else {
         val reclamos = response.body()?.respuesta?.body?.reclamo
+        getServicioEncuesta()
+        descargarFichaTecnica()
         if (reclamos != null && reclamos.isNotEmpty()) {
           insertarReclamos(reclamos.map { it.toEntity() }, strCodigoEstadoReclamo)
-          getServicioEncuesta()
-          descargarFichaTecnica()
           reclamos
         } else {
           emptyList()
         }
+
       }
     } else {
       val estados: Array<String?> = when (strCodigoEstadoReclamo) {
@@ -321,7 +324,7 @@ class GetClaimUseCase @Inject constructor(
       }
 
     } catch (e: Exception) {
-      Log.e("API Exception", "Exception: ${e.message}")
+      Log.e("API Exception FICHA T", "Exception: ${e.message}")
     }
   }
 
@@ -334,13 +337,17 @@ class GetClaimUseCase @Inject constructor(
     try {
       val response =
         repository.getEncuesta(
-          "Bearer $authorizationContext"
+          authorizationContext
         )
       if (response.isSuccessful) {
-        if (response.body()?.respuesta?.error != 0) {
+        val body = response.body()?.respuesta
+        if (body?.error != 0) {
           Log.e("Log error", response.body()?.respuesta?.message.toString())
         } else {
-          val joEncuesta: JSONArray = JSONArray(response.body()?.respuesta?.body?.encuesta)
+          val gson = Gson()
+          val bodyJson = gson.toJson(body.body)
+          val jsonObject = JSONObject(bodyJson)
+          val joEncuesta = JSONArray(jsonObject.getString("Encuesta"))
 
           for (i in 0 until joEncuesta.length()) {
             val jsonObjectChildEncuesta = joEncuesta.getJSONObject(i)
@@ -349,7 +356,6 @@ class GetClaimUseCase @Inject constructor(
             arrayListEncuesta.add(EncuestaEntity(i, "", i.toString()))
 
             val arrayListPosition = java.util.ArrayList<Int>()
-
 
             for (j in 0 until joPregunta.length()) {
               val jsonObjectChild = joPregunta.getJSONObject(j)
@@ -379,28 +385,31 @@ class GetClaimUseCase @Inject constructor(
               )
               Log.e("TAG", "Codigo encuesta: $NombrePregunta")
               Log.e("TAG", "Valor: $Valor")
-
+              //nombrePregunta = NombrePregunta;
               arrayListPosition.add(arrayListPregunta.size - 1)
             }
 
             arrayListPosition.clear()
           }
 
-          //base de datoss
-          withContext(Dispatchers.IO) {
-            repository.delete_All_Encuesta()
-            repository.delete_All_Pregunta()
-            repository.insertMultipleEncuesta(arrayListEncuesta)
-            repository.insertMultiplePregunta(arrayListPregunta)
-          }
-
 
         }
+        //base de datoss
+        withContext(Dispatchers.IO) {
+          Log.e("Encuesta", arrayListEncuesta.size.toString())
+          Log.e("Pregunta", arrayListPregunta.toString())
+          repository.delete_All_Encuesta()
+          repository.delete_All_Pregunta()
+          repository.insertMultipleEncuesta(arrayListEncuesta)
+          repository.insertMultiplePregunta(arrayListPregunta)
+        }
+
+
       } else {
         Log.e("API Error", "HTTP error: ${response.code()} ${response.message()}")
       }
     } catch (e: Exception) {
-      Log.e("API Exception", "Exception: ${e.message}")
+      Log.e("API Exception SERV ENCUESTA", "Exception: ${e.message}")
 
     }
   }
@@ -482,7 +491,7 @@ class GetClaimUseCase @Inject constructor(
       }
 
     } catch (e: Exception) {
-      Log.e("API Exception", "Exception: ${e.message}")
+      Log.e("API Exception INSERTAR FOTO", "Exception: ${e.message}")
     }
   }
 
@@ -525,7 +534,7 @@ class GetClaimUseCase @Inject constructor(
         }
       }
     } catch (e: Exception) {
-      Log.e("API Exception", "Exception: ${e.message}")
+      Log.e("API Exception MATERIAL", "Exception: ${e.message}")
     }
   }
 
@@ -533,7 +542,7 @@ class GetClaimUseCase @Inject constructor(
     withContext(Dispatchers.IO) {
       val fichaResponse =
         repository.getFichaApi(
-          "Bearer $authorizationContext",
+          authorizationContext,
           codigoReclamo,
           cuadrilla
         )

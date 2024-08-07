@@ -1,23 +1,27 @@
 package master_provider_else.reclamos.data
 
 import android.util.Log
+import androidx.room.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import master_provider_else.reclamos.data.database.dao.ClaimDao
 import master_provider_else.reclamos.data.database.dao.UserDao
+import master_provider_else.reclamos.data.database.entity.APActividadEntity
 import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
 import master_provider_else.reclamos.data.database.entity.DaoCoordenadasEntity
 import master_provider_else.reclamos.data.database.entity.EncuestaEntity
 import master_provider_else.reclamos.data.database.entity.FotoEntity
+import master_provider_else.reclamos.data.database.entity.InformeOMSAPNodoEntity
 import master_provider_else.reclamos.data.database.entity.LineasEntity
 import master_provider_else.reclamos.data.database.entity.MaterialEntity
 import master_provider_else.reclamos.data.database.entity.PreguntaEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSAPEntity
+import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSAPNodoActividadEntity
 import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSEntity
 import master_provider_else.reclamos.data.database.entity.SolucionAveriaEntity
 import master_provider_else.reclamos.data.database.entity.SolucionInterrupcionEntity
 import master_provider_else.reclamos.data.database.entity.TipoAreaIntervencionEntity
+import master_provider_else.reclamos.data.database.entity.TipoDeficienciaEntity
 import master_provider_else.reclamos.data.database.entity.TipoDenunciaEntity
 import master_provider_else.reclamos.data.database.entity.TipoEquipoProteccionManiobraEntity
 import master_provider_else.reclamos.data.database.entity.TipoInstalacionAfectadaEntity
@@ -32,13 +36,18 @@ import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
 import master_provider_else.reclamos.data.dto.ApiResponseFichaMapa
 import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
+import master_provider_else.reclamos.data.dto.ApiResponseFinTrabajoCompleto
+import master_provider_else.reclamos.data.dto.ApiResponseGeneral
+import master_provider_else.reclamos.data.dto.ApiResponseGuardarMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
+import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
+import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
+import master_provider_else.reclamos.data.dto.fotoRequest
 import master_provider_else.reclamos.data.network.QuoteService
-import master_provider_else.reclamos.domain.model.Claim
 import master_provider_else.reclamos.domain.model.User
 import master_provider_else.reclamos.domain.model.toDomain
 import retrofit2.Response
@@ -52,7 +61,7 @@ class QuoteRepository @Inject constructor(
   // *********** User ***********
   suspend fun getLoginFromApi(usuario: String, pass: String): Response<ApiResponse> {
     val response: Response<ApiResponse> = api.getLogin(usuario, pass)
-    Log.e("getLoginFromApi", response.message())
+    Log.e("getLoginFromApi", "repository " + response.message())
     return response
   }
 
@@ -85,7 +94,7 @@ class QuoteRepository @Inject constructor(
       strCodigoEstadoReclamo,
       strAP
     )
-    Log.e("getClaimFromApi", response.message())
+    Log.e("getClaimFromApi", "repository " + response.message())
     return response
   }
 
@@ -99,7 +108,7 @@ class QuoteRepository @Inject constructor(
       strCodigoReclamo,
       strCodigoCuadrilla,
     )
-    Log.e("getFicha", response.message())
+    Log.e("getFicha", "repository " + response.message())
     return response
   }
 
@@ -110,7 +119,7 @@ class QuoteRepository @Inject constructor(
       val response: Response<ApiResponseEncuesta> = api.getEncuesta(
         authorization
       );
-      Log.e("Log Encuesta", "Encuesta" + response.message().toString())
+      Log.e("Log Encuesta", "Encuesta repository " + response.message().toString())
       response
     }
   }
@@ -139,7 +148,7 @@ class QuoteRepository @Inject constructor(
       authorization,
       request
     )
-    Log.e("cambio estado", response.message())
+    Log.e("cambio estado", "repository " + response.message())
     return response
   }
 
@@ -154,7 +163,7 @@ class QuoteRepository @Inject constructor(
         strCodigoReclamo,
         strCodigoCuadrilla
       );
-      Log.e("Log Material", "Informe Material" + response.message().toString())
+      Log.e("Log Material", "Informe Material repository " + response.message().toString())
       response
     }
   }
@@ -168,7 +177,7 @@ class QuoteRepository @Inject constructor(
         authorization,
         strCodigoReclamo
       );
-      Log.e("Log Archivo", "Informe Archivo" + response.message().toString())
+      Log.e("Log Archivo", "Informe Archivo repository " + response.message().toString())
       response
     }
   }
@@ -180,7 +189,7 @@ class QuoteRepository @Inject constructor(
       val response: Response<ApiResponseFichaTecnica> = api.getFichaTecnica(
         authorization,
       );
-      Log.e("Log Ficha Tec", "Ficha tecnica" + response.message().toString())
+      Log.e("Log Ficha Tec", "Ficha tecnica repository " + response.message().toString())
       response
     }
   }
@@ -196,13 +205,13 @@ class QuoteRepository @Inject constructor(
         strCodigoCuadrilla,
         strAMT
       );
-      Log.e("Log getMapa ", "getMapa" + response.message().toString())
+      Log.e("Log getMapa ", "repository " + response.message().toString())
       response
     }
   }
 
 
-  suspend fun InicioTrabajo(
+  suspend fun inicioTrabajoRepository(
     authorization: String,
     request: InicioTrabajoRequest
   ): Response<ApiResponseInicioTrabajo> {
@@ -210,7 +219,55 @@ class QuoteRepository @Inject constructor(
       authorization,
       request
     )
-    Log.e("Inicio Trabajo", response.message())
+    Log.e("Inicio Trabajo", "repository " + response.message())
+    return response
+  }
+
+  suspend fun finTrabajoCompletoRepository(
+    authorization: String,
+    request: FinTrabajoCompletoRequest
+  ): Response<ApiResponseFinTrabajoCompleto> {
+    val response: Response<ApiResponseFinTrabajoCompleto> = api.finTrabajoCompletoService(
+      authorization,
+      request
+    )
+    Log.e("Fin trabajo ", "Fin trabajo Repository" + response.message())
+    return response
+  }
+
+  suspend fun eliminarInformeMaterialRepository(
+    authorization: String,
+    request: GuardarMaterialRequest
+  ): Response<ApiResponseGuardarMaterial> {
+    val response: Response<ApiResponseGuardarMaterial> = api.eliminarInformeMaterialService(
+      authorization,
+      request
+    )
+    Log.e("Eliminar InformeMaterial", "Repository " + response.message())
+    return response
+  }
+
+  suspend fun guardarInformeMaterialRepository(
+    authorization: String,
+    request: GuardarMaterialRequest
+  ): Response<ApiResponseGuardarMaterial> {
+    val response: Response<ApiResponseGuardarMaterial> = api.guardarInformeMaterialService(
+      authorization,
+      request
+    )
+    Log.e("Guardar InformeMaterial", "Service " + response.message())
+    return response
+  }
+
+  suspend fun guardarArchivoComercialRepository(
+    authorization: String,
+    request: fotoRequest
+  ): Response<ApiResponseGeneral> {
+    val response: Response<ApiResponseGeneral> = api.guardarArchivoComercialService(
+      authorization,
+      request
+    )
+    Log.e("Guardar InformeMaterial", "Service " + response.message())
     return response
   }
 
@@ -355,7 +412,125 @@ class QuoteRepository @Inject constructor(
   suspend fun material_Update(item: MaterialEntity) {
     return userDao.material_Update(item)
   }
+
   suspend fun material_New(item: MaterialEntity): Long {
     return userDao.material_New(item)
   }
+
+  suspend fun foto_Get_CodigoReclamo(
+    codigoReclamo: String,
+    enviado: Array<String?>
+  ): List<FotoEntity> {
+    return userDao.foto_Get_CodigoReclamo(codigoReclamo, enviado)
+  }
+
+  suspend fun fotos_New(item: FotoEntity) {
+    return userDao.fotos_New(item)
+  }
+
+  suspend fun informeOMSAPNodo_Get_Codigo_Reclamo(codigoreclamo: String): List<InformeOMSAPNodoEntity> {
+    return userDao.informeOMSAPNodo_Get_Codigo_Reclamo(codigoreclamo)
+  }
+
+  suspend fun tipoDeficiencia_All(): List<TipoDeficienciaEntity> {
+    return userDao.tipoDeficiencia_All()
+  }
+
+  suspend fun reclamoInformeOMSAP_Get_codigoReclamo(
+    codigoReclamo: String,
+    codigoCuadrilla: String
+  ): ReclamoInformeOMSAPEntity {
+    return userDao.reclamoInformeOMSAP_Get_codigoReclamo(
+      codigoReclamo,
+      codigoCuadrilla
+    )
+  }
+
+  suspend fun reclamoInformeOMSAP_New(
+    item: ReclamoInformeOMSAPEntity
+  ): Long {
+    return userDao.reclamoInformeOMSAP_New(item)
+  }
+
+  suspend fun informeOMSAPNodo_Get_Nodo(
+    codigoreclamo: String, nodo: String
+  ): InformeOMSAPNodoEntity {
+    return userDao.informeOMSAPNodo_Get_Nodo(codigoreclamo, nodo)
+  }
+
+  suspend fun apactividad_All(): List<APActividadEntity> {
+    return userDao.apactividad_All()
+  }
+
+  suspend fun reclamoInformeOMSAPNodoActividad_GET(
+    codigoReclamo: String,
+    codigoActividad: String,
+    codigoUbicacionElectrica: String
+  ): ReclamoInformeOMSAPNodoActividadEntity {
+    return userDao.reclamoInformeOMSAPNodoActividad_GET(
+      codigoReclamo,
+      codigoActividad,
+      codigoUbicacionElectrica
+    )
+  }
+
+  suspend fun reclamoInformeOMSAPNodoActividad_New(
+    item: ReclamoInformeOMSAPNodoActividadEntity
+  ): Long {
+    return userDao.reclamoInformeOMSAPNodoActividad_New(item)
+  }
+
+  suspend fun material_All_Send(): List<MaterialEntity> {
+    return userDao.material_All_Send()
+  }
+
+  suspend fun material_All_Send_delete(): List<MaterialEntity> {
+    return userDao.material_All_Send_delete()
+  }
+
+  suspend fun material_All_Send(
+    codigoReclamo: String
+  ): List<MaterialEntity> {
+    return userDao.material_All_Send(codigoReclamo)
+  }
+
+  suspend fun material_All_Send_delete(
+    codigoReclamo: String
+  ): List<MaterialEntity> {
+    return userDao.material_All_Send_delete(codigoReclamo)
+  }
+
+  suspend fun material_delete(
+    item: MaterialEntity
+  ) {
+    return userDao.Material_Delete(item)
+  }
+
+  suspend fun foto_Get_enviados(
+    enviado: String, codigoReclamo: String
+  ): List<FotoEntity> {
+    return userDao.foto_Get_enviados(enviado, codigoReclamo)
+  }
+
+  suspend fun fotos_delete(
+    item: FotoEntity
+  ) {
+    return userDao.fotos_Delete(item)
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

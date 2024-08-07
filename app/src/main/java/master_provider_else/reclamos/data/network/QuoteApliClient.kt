@@ -8,11 +8,17 @@ import master_provider_else.reclamos.data.dto.ApiResponseEstado
 import master_provider_else.reclamos.data.dto.ApiResponseFicha
 import master_provider_else.reclamos.data.dto.ApiResponseFichaMapa
 import master_provider_else.reclamos.data.dto.ApiResponseFichaTecnica
+import master_provider_else.reclamos.data.dto.ApiResponseFinTrabajoCompleto
+import master_provider_else.reclamos.data.dto.ApiResponseGeneral
+import master_provider_else.reclamos.data.dto.ApiResponseGuardarMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
 import master_provider_else.reclamos.data.dto.EstadoRequest
+import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
+import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
+import master_provider_else.reclamos.data.dto.fotoRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -92,6 +98,37 @@ interface QuoteApliClient {
     @Header("Authorization") authorization: String,
     @Body request: InicioTrabajoRequest
   ): Response<ApiResponseInicioTrabajo>
+
+
+  @POST("api/Reclamo/FinTrabajoCompleto")
+  suspend fun finTrabajoCompleto(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: FinTrabajoCompletoRequest
+  ): Response<ApiResponseFinTrabajoCompleto>
+
+
+  @POST("api/ReclamoInformeMaterial/Guardar")
+  suspend fun guardarInformeMaterial(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: GuardarMaterialRequest
+  ): Response<ApiResponseGuardarMaterial>
+
+
+  @POST("api/ReclamoInformeMaterial/Eliminar")
+  suspend fun eliminarInformeMaterial(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: GuardarMaterialRequest
+  ): Response<ApiResponseGuardarMaterial>
+
+  @POST("api/Reclamo/ReclamoComercialArchivoGuardar")
+  suspend fun guardarArchivoComercial(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: fotoRequest
+  ): Response<ApiResponseGeneral>
 
 }
 

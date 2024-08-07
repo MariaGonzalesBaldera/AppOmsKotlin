@@ -65,7 +65,7 @@ fun ContentTabOms(
     }
     when (tabIndex) {
       0 -> FichaTecnicaScreen(claimViewModel)
-      1 -> MaterialesScreen()
+      1 -> MaterialesScreen(claimViewModel)
       2 -> FotosScreen()
     }
   }
@@ -77,7 +77,7 @@ fun FotosScreen() {
 }
 
 @Composable
-fun MaterialesScreen() {
+fun MaterialesScreen(claimViewModel:ClaimViewModel) {
   ComponentMaterial()
 }
 
