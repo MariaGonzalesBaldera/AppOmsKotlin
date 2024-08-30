@@ -1,7 +1,6 @@
 package master_provider_else.reclamos.data
 
 import android.util.Log
-import androidx.room.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import master_provider_else.reclamos.data.database.dao.UserDao
@@ -9,6 +8,7 @@ import master_provider_else.reclamos.data.database.entity.APActividadEntity
 import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
 import master_provider_else.reclamos.data.database.entity.DaoCoordenadasEntity
 import master_provider_else.reclamos.data.database.entity.EncuestaEntity
+import master_provider_else.reclamos.data.database.entity.EncuestaEnviarEntity
 import master_provider_else.reclamos.data.database.entity.FotoEntity
 import master_provider_else.reclamos.data.database.entity.InformeOMSAPNodoEntity
 import master_provider_else.reclamos.data.database.entity.LineasEntity
@@ -42,10 +42,12 @@ import master_provider_else.reclamos.data.dto.ApiResponseGuardarMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
+import master_provider_else.reclamos.data.dto.EliminarFotoRequest
 import master_provider_else.reclamos.data.dto.EstadoRequest
 import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
 import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
+import master_provider_else.reclamos.data.dto.EncuestaRequest
 import master_provider_else.reclamos.data.dto.fotoRequest
 import master_provider_else.reclamos.data.network.QuoteService
 import master_provider_else.reclamos.domain.model.User
@@ -255,7 +257,7 @@ class QuoteRepository @Inject constructor(
       authorization,
       request
     )
-    Log.e("Guardar InformeMaterial", "Service " + response.message())
+    Log.e("Guardar InformeMaterial", "Repository " + response.message())
     return response
   }
 
@@ -267,9 +269,34 @@ class QuoteRepository @Inject constructor(
       authorization,
       request
     )
-    Log.e("Guardar InformeMaterial", "Service " + response.message())
+    Log.e("Guardar InformeMaterial", "Repository " + response.message())
     return response
   }
+
+  suspend fun guardarEncuestaRepository(
+    authorization: String,
+    request: EncuestaRequest
+  ): Response<ApiResponseGeneral> {
+    val response: Response<ApiResponseGeneral> = api.guardarEncuestaService(
+      authorization,
+      request
+    )
+    Log.e("Guardar guardarEncuesta", "Repository " + response.message())
+    return response
+  }
+
+  suspend fun archivoMovilEliminarRepository(
+    authorization: String,
+    request: EliminarFotoRequest
+  ): Response<ApiResponseGeneral> {
+    val response: Response<ApiResponseGeneral> = api.archivoMovilEliminarService(
+      authorization,
+      request
+    )
+    Log.e("Guardar Movil Eliminar", "Repository " + response.message())
+    return response
+  }
+
 
   suspend fun Reclamo_Update(reclamo: ReclamoEntity) {
     userDao.Reclamo_Update(reclamo)
@@ -512,10 +539,25 @@ class QuoteRepository @Inject constructor(
     return userDao.foto_Get_enviados(enviado, codigoReclamo)
   }
 
-  suspend fun fotos_delete(
-    item: FotoEntity
-  ) {
+  suspend fun foto_Get_enviados(
+    enviado: String
+  ): List<FotoEntity> {
+    return userDao.foto_Get_enviados(enviado)
+  }
+
+  suspend fun fotos_delete(item: FotoEntity) {
     return userDao.fotos_Delete(item)
+  }
+
+  suspend fun reclamoInformeOMS_Get_enviados(enviado: Int): List<ReclamoInformeOMSEntity> {
+    return userDao.reclamoInformeOMS_Get_enviados(enviado)
+  }
+
+  suspend fun encuestaEnviar_Get_Enviado(
+    enviado: Int,
+    codigoOrigenOMS: String
+  ): List<EncuestaEnviarEntity> {
+    return userDao.encuestaEnviar_Get_Enviado(enviado, codigoOrigenOMS)
   }
 }
 

@@ -10,6 +10,7 @@ import master_provider_else.reclamos.data.database.entity.APActividadEntity
 import master_provider_else.reclamos.data.database.entity.CausaAveriaEntity
 import master_provider_else.reclamos.data.database.entity.DaoCoordenadasEntity
 import master_provider_else.reclamos.data.database.entity.EncuestaEntity
+import master_provider_else.reclamos.data.database.entity.EncuestaEnviarEntity
 import master_provider_else.reclamos.data.database.entity.FotoEntity
 import master_provider_else.reclamos.data.database.entity.InformeOMSAPNodoEntity
 import master_provider_else.reclamos.data.database.entity.LineasEntity
@@ -235,8 +236,17 @@ interface UserDao {
   @Query("SELECT Foto.* FROM Foto INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Foto.CodigoReclamo  WHERE Foto.Enviado  == :enviado and Foto.CodigoReclamo = :codigoReclamo")
   fun foto_Get_enviados(enviado: String, codigoReclamo: String): List<FotoEntity>
 
+  @Query("SELECT Foto.* FROM Foto INNER JOIN ReclamoInformeOMS ON ReclamoInformeOMS.CodigoReclamo = Foto.CodigoReclamo  WHERE Foto.Enviado  == :enviado and Foto.CodigoReclamo = :codigoReclamo")
+  fun foto_Get_enviados(enviado: String): List<FotoEntity>
+
   @Delete
   fun fotos_Delete(item: FotoEntity)
+
+  @Query("SELECT * FROM ReclamoInformeOMS WHERE Enviado  == :enviado ")
+  fun reclamoInformeOMS_Get_enviados(enviado: Int): List<ReclamoInformeOMSEntity>
+
+  @Query("SELECT * FROM EncuestaEnviar WHERE Enviado  == :enviado AND CodigoOrigenOMS == :codigoOrigenOMS ")
+  fun encuestaEnviar_Get_Enviado(enviado: Int, codigoOrigenOMS: String): List<EncuestaEnviarEntity>
 
 }
 

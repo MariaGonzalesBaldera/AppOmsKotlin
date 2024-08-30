@@ -20,5 +20,5 @@ data class EncuestaEnviarEntity(
   @ColumnInfo(name = "Valor") val Valor: String,
 
   @ColumnInfo(name = "CodigoOrigenOMS") val CodigoOrigenOMS: String,
-  @ColumnInfo(name = "enviado") val enviado: Int = -1,
+  @ColumnInfo(name = "enviado") var enviado: Int = -1,
 )

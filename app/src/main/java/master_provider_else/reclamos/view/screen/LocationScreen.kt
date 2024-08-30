@@ -89,10 +89,6 @@ fun LocationScreen(
   val arrayListCoordenadasRedesBt: ArrayList<Coordenadas> = ArrayList<Coordenadas>()
   val arrayListLineRedesMt: List<LineasEntity> = ArrayList<LineasEntity>()
 
-
-  val markersRedesMt = java.util.ArrayList<Marker>()
-  val markersRedesBt = java.util.ArrayList<Marker>()
-  val linesRedesMt = java.util.ArrayList<Polyline>()
   var colorPin by remember { mutableIntStateOf(R.drawable.ubication) }
 
 

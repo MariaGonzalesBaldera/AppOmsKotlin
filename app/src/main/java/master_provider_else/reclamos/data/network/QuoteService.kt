@@ -17,10 +17,12 @@ import master_provider_else.reclamos.data.dto.ApiResponseGuardarMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
+import master_provider_else.reclamos.data.dto.EliminarFotoRequest
 import master_provider_else.reclamos.data.dto.EstadoRequest
 import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
 import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
+import master_provider_else.reclamos.data.dto.EncuestaRequest
 import master_provider_else.reclamos.data.dto.fotoRequest
 import retrofit2.Response
 import javax.inject.Inject
@@ -242,6 +244,36 @@ class QuoteService @Inject constructor(private val api: QuoteApliClient) {
         request
       );
       Log.e("Log Archivo comercial", "service " + response.message().toString())
+      response
+    }
+  }
+
+  suspend fun guardarEncuestaService(
+    authorization: String,
+    request: EncuestaRequest
+  ): Response<ApiResponseGeneral> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseGeneral> = api.guardarEncuesta(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Guardar Encuesta", "service " + response.message().toString())
+      response
+    }
+  }
+
+  suspend fun archivoMovilEliminarService(
+    authorization: String,
+    request: EliminarFotoRequest
+  ): Response<ApiResponseGeneral> {
+    return withContext(Dispatchers.IO) {
+      val response: Response<ApiResponseGeneral> = api.archivoMovilEliminar(
+        "application/json; charset=UTF-8",
+        authorization,
+        request
+      );
+      Log.e("Log Movil Eliminar", "service " + response.message().toString())
       response
     }
   }

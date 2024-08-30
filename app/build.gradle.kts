@@ -82,7 +82,7 @@ dependencies {
   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
   // LiveData
   implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
-  // Retrofitq
+  // Retrofit
   implementation("com.squareup.retrofit2:retrofit:2.9.0")
   implementation("com.squareup.retrofit2:converter-gson:2.9.0")
   //Corrutinas
