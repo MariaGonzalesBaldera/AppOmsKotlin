@@ -1,6 +1,5 @@
 package master_provider_else.reclamos.di
 
-import android.util.Log
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

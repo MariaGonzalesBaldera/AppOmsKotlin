@@ -15,12 +15,10 @@ class InitialLoginScreen() : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      //AppOmsKotlinTheme {
       val userViewModel: UserViewModel by viewModels()
       val claimViewModel: ClaimViewModel by viewModels()
       val mapaViewModel: MapaViewModel by viewModels()
       AppNavigation(userViewModel, claimViewModel, mapaViewModel)
-      //}
     }
   }
 }

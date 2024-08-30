@@ -1,6 +1,5 @@
 package master_provider_else.reclamos.view.ui.theme
 
-import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 

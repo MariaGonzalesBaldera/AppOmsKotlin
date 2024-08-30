@@ -14,10 +14,12 @@ import master_provider_else.reclamos.data.dto.ApiResponseGuardarMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseInicioTrabajo
 import master_provider_else.reclamos.data.dto.ApiResponseMaterial
 import master_provider_else.reclamos.data.dto.ApiResponseReclamo
+import master_provider_else.reclamos.data.dto.EliminarFotoRequest
 import master_provider_else.reclamos.data.dto.EstadoRequest
 import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
 import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.InicioTrabajoRequest
+import master_provider_else.reclamos.data.dto.EncuestaRequest
 import master_provider_else.reclamos.data.dto.fotoRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -128,6 +130,20 @@ interface QuoteApliClient {
     @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
     @Header("Authorization") authorization: String,
     @Body request: fotoRequest
+  ): Response<ApiResponseGeneral>
+
+  @POST("api/Reclamo/EncuestaGuardar")
+  suspend fun guardarEncuesta(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: EncuestaRequest
+  ): Response<ApiResponseGeneral>
+
+  @POST("api/Reclamo/ReclamoComercialArchivoMovilEliminar")
+  suspend fun archivoMovilEliminar(
+    @Header("Content-Type") contentType: String = "application/json; charset=UTF-8",
+    @Header("Authorization") authorization: String,
+    @Body request: EliminarFotoRequest
   ): Response<ApiResponseGeneral>
 
 }

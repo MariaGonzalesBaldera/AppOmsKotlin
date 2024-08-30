@@ -12,26 +12,32 @@ import master_provider_else.reclamos.data.database.entity.ReclamoInformeOMSEntit
 import master_provider_else.reclamos.data.dto.FinTrabajoCompletoRequest
 import master_provider_else.reclamos.data.dto.GuardarMaterialRequest
 import master_provider_else.reclamos.data.dto.fotoRequest
+import master_provider_else.reclamos.domain.shared.SharedFunctions
 import master_provider_else.reclamos.utils.isConnected
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
+//cuando se presiona el boton de finalizar trabajo
 class GetRegistrarFichaTecnicaOmsUseCase @Inject constructor(
-  private val repository: QuoteRepository
+  private val repository: QuoteRepository,
+  private val sharedFunctions: SharedFunctions
 ) {
   //falta recuperar datos
   val cuadrillaContext: String = ""
   val loginUsuarioContext: String = ""
   val authorizationContext: String = ""
   suspend fun registrarFichaTecnica() {
-
+    //se tiene que recuperar los datos de los formularios tabs, del reclamo parapoder registrarlo
   }
 
   suspend fun actualizarEstadoReclamo(
     reclamoInformeOMS: ReclamoInformeOMSEntity,
-    context: Context
+    context: Context,
+    cuadrilla: String,
+    loginUsuario: String,
+    authorization: String,
   ) {
     withContext(Dispatchers.IO) {
       val reclamo = repository.reclamo_Get(reclamoInformeOMS.CodigoReclamo)
@@ -66,7 +72,7 @@ class GetRegistrarFichaTecnicaOmsUseCase @Inject constructor(
       try {
         for (i in _arrayl.indices) {
           val foto: FotoEntity = _arrayl.get(i)
-          nuevaFoto(foto)
+          sharedFunctions.nuevaFoto(foto, authorizationContext)
         }
         for (i in _arraydelete.indices) {
           val foto: FotoEntity = _arraydelete.get(i)
@@ -81,43 +87,6 @@ class GetRegistrarFichaTecnicaOmsUseCase @Inject constructor(
   private suspend fun eliminarFoto(foto: FotoEntity) {
     withContext(Dispatchers.IO) {
       repository.fotos_delete(foto)
-    }
-  }
-
-  private suspend fun nuevaFoto(itemFoto: FotoEntity) {
-    try {
-      val params = fotoRequest(
-        CodigoReclamoComercial = itemFoto.CodigoReclamo,
-        Nombrearchivo = itemFoto.NombreArchivo,
-        Extensionarchivo = "jpg",
-        Itemimage = itemFoto.base64Source,
-        ItemID = itemFoto.ItemID,
-      )
-      val response = repository.guardarArchivoComercialRepository(authorizationContext, params)
-      if (response.isSuccessful) {
-        if (response.body()?.respuesta?.error != 0) {
-          Log.e("LOG", "Error de codigo")
-        } else {
-
-          //listarFotos(Codigo);
-          // actualizarestadoFotos
-          actualizarestadoFotosEnviado(itemFoto)
-        }
-      } else {
-        Log.e("API Error", "HTTP error: ${response.code()} ${response.message()}")
-
-      }
-
-    } catch (e: Exception) {
-      Log.e("API Exception nueva foto", "Exception: ${e.message}")
-
-    }
-  }
-
-  private suspend fun actualizarestadoFotosEnviado(itemFoto: FotoEntity) {
-    withContext(Dispatchers.IO) {
-      itemFoto.Enviado = "1"
-      repository.fotos_New(itemFoto)
     }
   }
 
@@ -209,7 +178,7 @@ class GetRegistrarFichaTecnicaOmsUseCase @Inject constructor(
     }
   }
 
-  private suspend fun finTrabajoCompleto(
+  suspend fun finTrabajoCompleto(
     reclamoInformeOMS: ReclamoInformeOMSEntity,
     reclamo: ReclamoEntity,
     tipo: Int
@@ -271,8 +240,8 @@ class GetRegistrarFichaTecnicaOmsUseCase @Inject constructor(
           Log.e("Error", "respuesta error")
         } else {
           Log.d("OK", "Envio Correcto")
-          actualizarReclamoInformeOMSEnviado(reclamoInformeOMS)
-          actualizarEstadoReclamoEnviado(reclamo)
+          sharedFunctions.actualizarReclamoInformeOMSEnviado(reclamoInformeOMS)
+          sharedFunctions.actualizarEstadoReclamoEnviado(reclamo)
 
           if (tipo == 0) {
             Log.d("OK", "Envio Correcto")//MENSAJE PPARA EL USUSARIO
@@ -280,25 +249,9 @@ class GetRegistrarFichaTecnicaOmsUseCase @Inject constructor(
         }
       } else {
         Log.e("API Error", "HTTP error: ${result.code()} ${result.message()}")
-
       }
-
     } catch (e: Exception) {
       Log.e("API Exception SERV ENCUESTA", "Exception: ${e.message}")
-
-    }
-
-  }
-
-  private suspend fun actualizarEstadoReclamoEnviado(reclamo: ReclamoEntity) {
-    reclamo.enviado = 1
-    repository.reclamo_Update(reclamo)
-  }
-
-  private suspend fun actualizarReclamoInformeOMSEnviado(reclamoInformeOMS: ReclamoInformeOMSEntity) {
-    withContext(Dispatchers.IO) {
-      reclamoInformeOMS.Enviado = 1
-      repository.reclamoInformeOMS_New(reclamoInformeOMS)
     }
   }
 }
